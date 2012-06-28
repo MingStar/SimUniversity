@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<log4net threshold="ALL">
+  <appender name="Trace" type="log4net.Appender.TraceAppender">
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%d{HH:mm:ss.fff} %M(%L) %p [%m]%n" />
+    </layout>
+  </appender>
+  <appender name="File" type="log4net.Appender.RollingFileAppender">
+    <file value="log\log4net.log" />
+    <appendToFile value="true" />
+    <rollingStyle value="Size" />
+    <maxSizeRollBackups value="10" />
+    <maximumFileSize value="250KB" />
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%d{yyyy-MM-dd HH:mm:ss.fff} %C::%M %p [%m] %n" />
+    </layout>
+  </appender>
+  <root>
+    <appender-ref ref="Trace" />
+    <appender-ref ref="File" />
+  </root>
+</log4net>
