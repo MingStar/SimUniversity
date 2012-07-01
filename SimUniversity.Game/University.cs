@@ -258,13 +258,13 @@ namespace MingStar.SimUniversity.Game
         {
             int total = 0;
             var visitedEdges = new HashSet<Edge>();
-            if (edge.ConnectsEdgesWithSameColor())
+            if (edge.ConnectsBothEndWithSameColorEdges())
             {
                 FullSearchLongestLink();
             }
             else // only connects on one side, but do not know which side
             {
-                foreach (Vertex vertex in edge.Adjacent.Vertices)
+                foreach (var vertex in edge.Adjacent.Vertices)
                 {
                     total += GetLongestLink(edge, vertex, visitedEdges);
                 }
@@ -306,7 +306,7 @@ namespace MingStar.SimUniversity.Game
             }
             visitedEdges.Add(currentEdge);
             int max = 0;
-            foreach (Edge edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
+            foreach (var edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
             {
                 if (edge.Color == Color)
                 {
@@ -360,7 +360,7 @@ namespace MingStar.SimUniversity.Game
             {
                 return;
             }
-            foreach (StudentGroup group in move.StudentsNeeded)
+            foreach (var group in move.StudentsNeeded)
             {
                 _game.Hashing.HashDegree(Color, group.Degree, Students[group.Degree]);
                 Students[group.Degree] -= group.Quantity;

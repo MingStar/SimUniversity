@@ -15,9 +15,9 @@ namespace MingStar.SimUniversity.Board
 
         #region Private Fields
 
-        private readonly Edge[] _edges = new Edge[6]; // 6 edges
-        private readonly Hexagon[] _hexagons = new Hexagon[6]; // 1 to 6 hexagons
-        private readonly Vertex[] _vertices = new Vertex[6]; // 6 vertices
+        internal readonly Edge[] _edges = new Edge[6]; // 6 edges
+        internal readonly Hexagon[] _hexagons = new Hexagon[6]; // 1 to 6 hexagons
+        internal readonly Vertex[] _vertices = new Vertex[6]; // 6 vertices
 
         #endregion
 
@@ -58,96 +58,16 @@ namespace MingStar.SimUniversity.Board
             get { return _edges[(int) so]; }
         }
 
-        #endregion
-
-        #region Board Construction Related
-
         internal Position GetPositionNextTo(EdgeOrientation so)
         {
-            return Position.Add(EdgeStaticInfo.Get(so).HexagonOffset);
+            return this.Position.Add(EdgeStaticInfo.Get(so).HexagonOffset);
         }
 
-        internal void PlaceEnd(Board board)
+        internal void AddAdjacent(Hexagon hex, EdgeOrientation eo)
         {
-            // set adjacent hexagons
-            for (int i = 0; i < Constant.EdgeOrentationCount; ++i)
-            {
-                if (_hexagons[i] != null) 
-                    continue;
-                var eo = (EdgeOrientation) i;
-                var hex = board[GetPositionNextTo(eo)];
-                if (hex != null)
-                {
-                    AtSideJoin(eo, hex);
-                }
-            }
-            // create vertices
-            for (int i = 0; i < Constant.VertexOrentationCount; ++i)
-            {
-                if (_vertices[i] == null)
-                {
-                    var vertex = UseOtherOrCreateVertex(board, (VertexOrientation) i);
-                    _vertices[i] = vertex;
-                    Adjacent.Add(vertex);
-                    vertex.Adjacent.Add(this);
-                }
-            }
-            // create edges 
-            for (int i = 0; i < Constant.EdgeOrentationCount; ++i)
-            {
-                if (_edges[i] != null) 
-                    continue;
-                Edge edge = UseOtherOrCreateEdge(board, (EdgeOrientation) i);
-                _edges[i] = edge;
-                Adjacent.Add(edge);
-                edge.Adjacent.Add(this);
-            }
-        }
-
-        private void AtSideJoin(EdgeOrientation eo, Hexagon hex)
-        {
-            AddAdjacent(hex, eo);
-            hex.AddAdjacent(this, EdgeStaticInfo.Get(eo).OppositeEdge);
-        }
-
-        private void AddAdjacent(Hexagon hex, EdgeOrientation eo)
-        {
-            _hexagons[(int) eo] = hex;
+            _hexagons[(int)eo] = hex;
             Adjacent.Add(hex);
         }
-
-        private Vertex UseOtherOrCreateVertex(Board board, VertexOrientation vo)
-        {
-            // can be 2 adjacent hexagons
-            foreach (var pos in VertexStaticInfo.Get(vo).RelativePositions)
-            {
-                var hex = board[Position.Add(pos.Offset)];
-                if (hex == null) 
-                    continue;
-                var vertex = hex[pos.Orientation];
-                if (vertex != null)
-                {
-                    return vertex;
-                }
-            }
-            return new Vertex(this, vo);
-        }
-
-        private Edge UseOtherOrCreateEdge(Board board, EdgeOrientation eo)
-        {
-            // only one adjacent hexagon
-            Hexagon hex = board[GetPositionNextTo(eo)];
-            if (hex != null)
-            {
-                Edge edge = hex[EdgeStaticInfo.Get(eo).OppositeEdge];
-                if (edge != null)
-                {
-                    return edge;
-                }
-            }
-            return new Edge(this, eo);
-        }
-
         #endregion
 
         internal void FindAdjacentsFor(Edge edge)

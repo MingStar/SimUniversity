@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MingStar.SimUniversity.Board.Cache;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
@@ -8,29 +9,25 @@ namespace MingStar.SimUniversity.Board
     {
         public readonly EdgePosition Position;
 
-        private readonly Dictionary<Vertex, List<Edge>> m_edgesSharingVertex =
-            new Dictionary<Vertex, List<Edge>>();
-
-        private readonly Hexagon m_originalHexagon;
-        private readonly EdgeOrientation m_originalOrientation;
-
+        private readonly Hexagon _originalHexagon;
+        private readonly EdgeOrientation _originalOrientation;
+        private readonly EdgeCache _cache;
 
         public Edge(Hexagon hex, EdgeOrientation so)
         {
             Adjacent.Add(hex);
-            m_originalHexagon = hex;
-            m_originalOrientation = so;
-            Position = new EdgePosition(m_originalHexagon.Position, m_originalOrientation);
-            ++TotalCount;
+            _originalHexagon = hex;
+            _originalOrientation = so;
+            Position = new EdgePosition(_originalHexagon.Position, _originalOrientation);
+            _cache = new EdgeCache(this);
         }
 
-        public static int TotalCount { get; private set; }
         public Color? Color { get; internal set; }
 
         public override string ToString()
         {
             return string.Format("Edge [{0}, {1}, {2}]",
-                                 m_originalHexagon.Position, m_originalOrientation, Color);
+                                 _originalHexagon.Position, _originalOrientation, Color);
         }
 
         internal override void Reset()
@@ -41,11 +38,11 @@ namespace MingStar.SimUniversity.Board
         internal void FindAllAdjacents(Board board)
         {
             // the original hex
-            m_originalHexagon.FindAdjacentsFor(this);
+            _originalHexagon.FindAdjacentsFor(this);
             // 3 other hex, to add edges
-            foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(m_originalOrientation).AdjacentEdgeOffsets)
+            foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
-                var pos = m_originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
+                var pos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
                 var hex = board[pos];
                 if (hex != null)
                 {
@@ -54,28 +51,17 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        internal void FindAdjacentSharedEdges()
+        internal void Cache()
         {
-            foreach (var vertex in Adjacent.Vertices)
-            {
-                m_edgesSharingVertex[vertex] = new List<Edge>();
-                foreach (var edge in Adjacent.Edges)
-                {
-                    if (edge.Adjacent.Vertices.Contains(vertex))
-                    {
-                        m_edgesSharingVertex[vertex].Add(edge);
-                    }
-                }
-            }
+            _cache.Cache();
         }
 
-        public List<Edge> GetAdjacentEdgesSharedWith(Vertex vertex)
+        public IEnumerable<Edge> GetAdjacentEdgesSharedWith(Vertex vertex)
         {
-            return m_edgesSharingVertex[vertex];
+            return _cache.GetAdjacentEdgesSharedWith(vertex);
         }
 
-
-        public bool ConnectsEdgesWithSameColor()
+        public bool ConnectsBothEndWithSameColorEdges()
         {
             var count = Adjacent.Vertices.Count(vertex => 
                 GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));

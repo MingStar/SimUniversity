@@ -13,7 +13,7 @@ namespace MingStar.SimUniversity.Board
         protected Dictionary<Position, Hexagon> _hexgonPositions = new Dictionary<Position, Hexagon>();
         protected Dictionary<int, List<Hexagon>> _id2HexgonMap = new Dictionary<int, List<Hexagon>>();
         protected ReadOnlyCollection<Vertex> _vertices;
-        private Hexagon m_lastPlacedHexagon;
+
 
         #region Board Consturction Related
 
@@ -22,42 +22,12 @@ namespace MingStar.SimUniversity.Board
         public int MinY { get; private set; }
         public int MaxY { get; private set; }
 
-        protected void PlaceFirstHexagon(int id, DegreeType degreeType)
-        {
-            Hexagon hex = CreateHexagon(id, degreeType, new Position(0, 0));
-            m_lastPlacedHexagon = hex;
-        }
-
-        protected void PlaceFirst(int id, DegreeType degreeType, DegreeType siteDegreeType)
-        {
-            Hexagon hex = CreateHexagon(id, degreeType, new Position(0, 0));
-            m_lastPlacedHexagon = hex;
-        }
-
-        protected void PlaceNextHexagon(int id, DegreeType degreeType, EdgeOrientation eo)
-        {
-            Position pos = m_lastPlacedHexagon.GetPositionNextTo(eo);
-            GetLimits(pos);
-            Hexagon hex = CreateHexagon(id, degreeType, pos);
-            m_lastPlacedHexagon = hex;
-        }
-
-        private void GetLimits(Position pos)
+        internal void GetLimits(Position pos)
         {
             MinX = Math.Min(pos.X, MinX);
             MaxX = Math.Max(pos.X, MaxX);
             MinY = Math.Min(pos.Y, MinY);
             MaxY = Math.Max(pos.Y, MaxY);
-        }
-
-
-        protected void PlaceHexagonsEnd()
-        {
-            m_lastPlacedHexagon = null;
-            foreach (Hexagon hex in _hexagons)
-            {
-                hex.PlaceEnd(this);
-            }
         }
 
         private Hexagon GetHexagonOrNull(Position position)
@@ -67,7 +37,7 @@ namespace MingStar.SimUniversity.Board
             return hex;
         }
 
-        private Hexagon CreateHexagon(int id, DegreeType degree, Position position)
+        internal Hexagon CreateHexagon(int id, DegreeType degree, Position position)
         {
             var hex = new Hexagon(id, degree, position);
             _hexagons.Add(hex);
@@ -79,7 +49,6 @@ namespace MingStar.SimUniversity.Board
             _id2HexgonMap[id].Add(hex);
             return hex;
         }
-
         #endregion
 
         public Hexagon[] this[int id]
@@ -90,7 +59,7 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        public bool IsLocked { get; private set; }
+        public bool IsLocked { get; internal set; }
 
         public Hexagon this[int x, int y]
         {
@@ -125,7 +94,7 @@ namespace MingStar.SimUniversity.Board
             return _hexagons.ToArray();
         }
 
-        public ReadOnlyCollection<Vertex> GetVertices()
+        public IEnumerable<Vertex> GetVertices()
         {
             if (_vertices == null)
             {
@@ -142,7 +111,7 @@ namespace MingStar.SimUniversity.Board
             return _vertices;
         }
 
-        public ReadOnlyCollection<Edge> GetEdges()
+        public IEnumerable<Edge> GetEdges()
         {
             if (_edges == null)
             {
@@ -179,50 +148,6 @@ namespace MingStar.SimUniversity.Board
         public void BuildLink(Edge side, Color color)
         {
             side.Color = color;
-        }
-
-        protected void Lock()
-        {
-            IsLocked = true;
-            FindAllAdjacents();
-        }
-
-        private void FindAllAdjacents()
-        {
-            foreach (var vertex in GetVertices())
-            {
-                vertex.FindAdjacents();
-            }
-            ReadOnlyCollection<Edge> allEdges = GetEdges();
-            foreach (var edge in allEdges)
-            {
-                edge.FindAllAdjacents(this);
-            }
-            foreach (var edge in allEdges)
-            {
-                edge.FindAdjacentSharedEdges();
-            }
-        }
-
-
-        public void SetNormalSites(int x, int y, VertexOrientation vo, VertexOrientation vo2)
-        {
-            var hex = this[x, y];
-            if (hex == null) 
-                return;
-            hex[vo].MakeMultiSite();
-            hex[vo2].MakeMultiSite();
-        }
-
-        public void SetSpecializedSites(int x, int y,
-                                        VertexOrientation vo, VertexOrientation vo2, DegreeType degree)
-        {
-            Hexagon hex = this[x, y];
-            if (hex != null)
-            {
-                hex[vo].MakeSpecialSite(degree);
-                hex[vo2].MakeSpecialSite(degree);
-            }
         }
 
         public void UnBuildCampus(VertexPosition whereAt)

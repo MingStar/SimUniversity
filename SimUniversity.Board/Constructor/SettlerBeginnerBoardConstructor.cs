@@ -1,10 +1,10 @@
 ﻿using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.Board.Boards
+namespace MingStar.SimUniversity.Board.Constructor
 {
-    public class SettlerBeginnerBoard : Board
+    public class SettlerBeginnerBoardConstructor : BoardConstructor
     {
-        public SettlerBeginnerBoard()
+        public SettlerBeginnerBoardConstructor()
         {
             // 1st bottom row - left to right
             PlaceFirstHexagon(5, DegreeType.Ore);

@@ -4,8 +4,6 @@ namespace MingStar.SimUniversity.Board
 {
     public class Vertex : Place
     {
-        public static int TotalCount { get; private set; }
-
         #region Public Read-Only Properties
 
         public VertexPosition Position { get; private set; }
@@ -17,8 +15,8 @@ namespace MingStar.SimUniversity.Board
 
         #region Private Fields
 
-        private readonly Hexagon m_originalHexagon;
-        private readonly VertexOrientation m_originalOrientation;
+        private readonly Hexagon _originalHexagon;
+        private readonly VertexOrientation _originalOrientation;
 
         #endregion
 
@@ -27,11 +25,10 @@ namespace MingStar.SimUniversity.Board
         public Vertex(Hexagon hex, VertexOrientation vo)
         {
             Adjacent.Add(hex);
-            m_originalHexagon = hex;
-            m_originalOrientation = vo;
+            _originalHexagon = hex;
+            _originalOrientation = vo;
             Position = new VertexPosition(hex.Position, vo);
             Reset();
-            ++TotalCount;
         }
 
         #endregion
@@ -41,7 +38,7 @@ namespace MingStar.SimUniversity.Board
         public override string ToString()
         {
             return string.Format("Vertex [{0}, {1}, {2}, {3}]",
-                                 m_originalHexagon.Position, m_originalOrientation, TradingSite, Campus);
+                                 _originalHexagon.Position, _originalOrientation, TradingSite, Campus);
         }
 
         #endregion
@@ -57,20 +54,12 @@ namespace MingStar.SimUniversity.Board
             return Campus == null && NumberOfNeighbourCampuses == 0;
         }
 
-        internal void FindAdjacents()
-        {
-            foreach (Hexagon hex in Adjacent.Hexagons)
-            {
-                hex.FindAdjacentsFor(this);
-            }
-        }
-
         internal void BuildCampus(CampusType type, Color color)
         {
             Campus = new Campus(type, color);
             if (type == CampusType.Traditional)
             {
-                foreach (Vertex adj in Adjacent.Vertices)
+                foreach (var adj in Adjacent.Vertices)
                 {
                     adj.NumberOfNeighbourCampuses += 1;
                 }
@@ -89,19 +78,20 @@ namespace MingStar.SimUniversity.Board
 
         internal void DowngradeCampus()
         {
-            if (Campus != null)
+            if (Campus == null)
             {
-                if (Campus.Type == CampusType.Super)
+                return;
+            }
+            if (Campus.Type == CampusType.Super)
+            {
+                Campus = new Campus(CampusType.Traditional, Campus.Color);
+            }
+            else // == CampusType.Traditional)
+            {
+                Campus = null;
+                foreach (var adj in Adjacent.Vertices)
                 {
-                    Campus = new Campus(CampusType.Traditional, Campus.Color);
-                }
-                else // == CampusType.Traditional)
-                {
-                    Campus = null;
-                    foreach (Vertex adj in Adjacent.Vertices)
-                    {
-                        adj.NumberOfNeighbourCampuses -= 1;
-                    }
+                    adj.NumberOfNeighbourCampuses -= 1;
                 }
             }
         }

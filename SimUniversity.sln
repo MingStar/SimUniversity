@@ -13,9 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.ConsoleContro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MingStar.Utilities", "MingStar.Utilities\MingStar.Utilities.csproj", "{2174A875-E5D2-48D7-BC14-7EA8753A0B3F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B1DF8C9-9C14-423A-8B73-EDE93EAED372}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.DAL", "SimUniversity.DAL\SimUniversity.DAL.csproj", "{CE3E0D55-C339-4D41-96FC-AD64A099E752}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.Board.Tests", "SimUniversity.Board.Tests\SimUniversity.Board.Tests.csproj", "{E5802436-3C24-48C8-93CC-43FE60FFEDB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +97,16 @@ Global
 		{CE3E0D55-C339-4D41-96FC-AD64A099E752}.Release|Mixed Platforms.Build.0 = Release|x86
 		{CE3E0D55-C339-4D41-96FC-AD64A099E752}.Release|x86.ActiveCfg = Release|x86
 		{CE3E0D55-C339-4D41-96FC-AD64A099E752}.Release|x86.Build.0 = Release|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Debug|x86.ActiveCfg = Debug|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Debug|x86.Build.0 = Debug|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Release|Any CPU.ActiveCfg = Release|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Release|x86.ActiveCfg = Release|x86
+		{E5802436-3C24-48C8-93CC-43FE60FFEDB0}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

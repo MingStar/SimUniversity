@@ -1,5 +1,6 @@
 ﻿using System;
-using MingStar.SimUniversity.Board.Boards;
+using System.Linq;
+using MingStar.SimUniversity.Board.Constructor;
 
 namespace MingStar.SimUniversity.Board
 {
@@ -7,20 +8,20 @@ namespace MingStar.SimUniversity.Board
     {
         private static void Main(string[] args)
         {
-            var board = new SettlerBeginnerBoard();
-            board.PrintToConsole();
+            var boardConstructor = new SettlerBeginnerBoardConstructor();
+            boardConstructor.Board.PrintToConsole();
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
 
         public static void PrintToConsole(this Board board)
         {
-            foreach (Hexagon hex in board.GetHexagons())
+            foreach (var hex in board.GetHexagons())
             {
                 Console.WriteLine("{0} \t{1}", hex, hex.Adjacent);
             }
-            Console.WriteLine("# Vertices: " + Vertex.TotalCount);
-            Console.WriteLine("# Edges: " + Edge.TotalCount);
+            Console.WriteLine("# Vertices: " + board.GetVertices().Count());
+            Console.WriteLine("# Edges: " + board.GetEdges().Count());
         }
     }
 }

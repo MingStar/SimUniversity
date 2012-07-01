@@ -77,7 +77,7 @@
     <Compile Include="EdgePosition.cs" />
     <Compile Include="IProbabilityPlayerMove.cs" />
     <Compile Include="IUniversity.cs" />
-    <Compile Include="Offset.cs" />
+    <Compile Include="HexagonOffset.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="IPlayerMove.cs" />
     <Compile Include="Position.cs" />

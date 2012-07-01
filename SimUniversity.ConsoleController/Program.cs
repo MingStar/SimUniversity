@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Player;
-using MingStar.SimUniversity.Board.Boards;
+using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
@@ -48,7 +48,7 @@ namespace MingStar.SimUniversity.ConsoleController
         {
             while (true)
             {
-                var game = new Game.Game(new SettlerBoard(), 4);
+                var game = new Game.Game((new SettlerBoardConstructor()).Board, 4);
                 IPlayer improvedEMM_AIPlayer = new ImprovedEMN(game, new GameScores());
                 var players = new IPlayer[4];
                 players.Fill(improvedEMM_AIPlayer);
@@ -74,7 +74,7 @@ namespace MingStar.SimUniversity.ConsoleController
             var stats = new Dictionary<string, TournamentPlayerStats>();
             for (int i = 1; i <= round; ++i)
             {
-                var game = new Game.Game(new SettlerBoard(), numPlayers);
+                var game = new Game.Game((new SettlerBoardConstructor()).Board, numPlayers);
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(game, new GameScores());
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(game, new ProductionGameScores());
                 var players = new IPlayer[numPlayers];

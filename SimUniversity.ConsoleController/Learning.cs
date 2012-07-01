@@ -4,7 +4,7 @@ using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
-using MingStar.SimUniversity.Board.Boards;
+using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
@@ -77,7 +77,7 @@ namespace MingStar.SimUniversity.ConsoleController
             while (true)
             {
                 ++round;
-                var game = new Game.Game(new SettlerBoard(), numPlayers);
+                var game = new Game.Game((new SettlerBoardConstructor()).Board, numPlayers);
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(game, new GameScores());
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(game, learnedScores);
                 var players = new IPlayer[numPlayers];

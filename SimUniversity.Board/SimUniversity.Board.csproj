@@ -70,19 +70,23 @@
   <ItemGroup>
     <Compile Include="AdjacentInfo.cs" />
     <Compile Include="Board.cs" />
-    <Compile Include="Boards\SettlerBoard.cs" />
-    <Compile Include="Constant.cs" />
-    <Compile Include="EdgeStaticInfo.cs" />
+    <Compile Include="Cache\EdgeCache.cs" />
+    <Compile Include="Constructor\BoardConstructor.cs" />
+    <Compile Include="Constructor\HexagonConstructor.cs" />
+    <Compile Include="Constructor\SettlerBoardConstructor.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Constructor\VertexAdjacentInfoFinder.cs" />
+    <Compile Include="Positioning\EdgeStaticInfo.cs" />
     <Compile Include="Hexagon.cs" />
     <Compile Include="Place.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Boards\SettlerBeginnerBoard.cs" />
+    <Compile Include="Constructor\SettlerBeginnerBoardConstructor.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="SpecialTradingSite.cs" />
     <Compile Include="TestProgram.cs" />
     <Compile Include="TradingSite.cs" />
     <Compile Include="Vertex.cs" />
-    <Compile Include="VertexStaticInfo.cs" />
+    <Compile Include="Positioning\VertexStaticInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MingStar.Utilities\MingStar.Utilities.csproj">

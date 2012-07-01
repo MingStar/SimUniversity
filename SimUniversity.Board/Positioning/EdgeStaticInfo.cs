@@ -16,7 +16,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.Top, EdgeOrientation.BottomLeft},
                         AdjacentVertexOrientations = new[] {VertexOrientation.TopLeft, VertexOrientation.Left},
                         OppositeEdge = EdgeOrientation.BottomRight,
-                        HexagonOffset = new Offset(-1, 1),
+                        HexagonOffset = new HexagonOffset(-1, 1),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(0, 1, EdgeOrientation.BottomLeft),
@@ -31,7 +31,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.TopLeft, EdgeOrientation.Bottom},
                         AdjacentVertexOrientations = new[] {VertexOrientation.Left, VertexOrientation.BottomLeft},
                         OppositeEdge = EdgeOrientation.TopRight,
-                        HexagonOffset = new Offset(-1, 0),
+                        HexagonOffset = new HexagonOffset(-1, 0),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(-1, 1, EdgeOrientation.Bottom),
@@ -46,7 +46,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.BottomLeft, EdgeOrientation.BottomRight},
                         AdjacentVertexOrientations = new[] {VertexOrientation.BottomLeft, VertexOrientation.BottomRight},
                         OppositeEdge = EdgeOrientation.Top,
-                        HexagonOffset = new Offset(0, -1),
+                        HexagonOffset = new HexagonOffset(0, -1),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(-1, 0, EdgeOrientation.BottomRight),
@@ -61,7 +61,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.Bottom, EdgeOrientation.TopRight},
                         AdjacentVertexOrientations = new[] {VertexOrientation.BottomRight, VertexOrientation.Right},
                         OppositeEdge = EdgeOrientation.TopLeft,
-                        HexagonOffset = new Offset(1, -1),
+                        HexagonOffset = new HexagonOffset(1, -1),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(0, -1, EdgeOrientation.TopRight),
@@ -76,7 +76,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.BottomRight, EdgeOrientation.Top},
                         AdjacentVertexOrientations = new[] {VertexOrientation.Right, VertexOrientation.TopRight},
                         OppositeEdge = EdgeOrientation.BottomLeft,
-                        HexagonOffset = new Offset(1, 0),
+                        HexagonOffset = new HexagonOffset(1, 0),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(1, -1, EdgeOrientation.Top),
@@ -91,7 +91,7 @@ namespace MingStar.SimUniversity.Board
                         AdjacentEdgeOrientations = new[] {EdgeOrientation.TopRight, EdgeOrientation.TopLeft},
                         AdjacentVertexOrientations = new[] {VertexOrientation.TopRight, VertexOrientation.TopLeft},
                         OppositeEdge = EdgeOrientation.Bottom,
-                        HexagonOffset = new Offset(0, 1),
+                        HexagonOffset = new HexagonOffset(0, 1),
                         AdjacentEdgeOffsets = new[]
                                                   {
                                                       new EdgePosition(1, 0, EdgeOrientation.TopLeft),
@@ -105,7 +105,7 @@ namespace MingStar.SimUniversity.Board
         public EdgeOrientation[] AdjacentEdgeOrientations { get; private set; }
         public VertexOrientation[] AdjacentVertexOrientations { get; private set; }
         public EdgeOrientation OppositeEdge { get; private set; }
-        public Offset HexagonOffset { get; private set; }
+        public HexagonOffset HexagonOffset { get; private set; }
         public EdgePosition[] AdjacentEdgeOffsets { get; private set; }
 
         internal static EdgeStaticInfo Get(EdgeOrientation eo)

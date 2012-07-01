@@ -242,7 +242,7 @@ namespace MingStar.SimUniversity.Board
 
         public class RelativePosition
         {
-            internal Offset Offset;
+            internal HexagonOffset Offset;
             internal VertexOrientation Orientation;
         }
 

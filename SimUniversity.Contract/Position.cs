@@ -22,7 +22,7 @@
             return X.GetHashCode() + Y.GetHashCode();
         }
 
-        public Position Add(Offset offset)
+        public Position Add(HexagonOffset offset)
         {
             return new Position(X + offset.X, Y + offset.Y);
         }

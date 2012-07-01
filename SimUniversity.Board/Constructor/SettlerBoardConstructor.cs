@@ -2,13 +2,13 @@
 using MingStar.SimUniversity.Contract;
 using MingStar.Utilities.Linq;
 
-namespace MingStar.SimUniversity.Board.Boards
+namespace MingStar.SimUniversity.Board.Constructor
 {
-    public class SettlerBoard : Board
+    public class SettlerBoardConstructor : BoardConstructor
     {
         private static readonly DegreeCount _originalList;
 
-        static SettlerBoard()
+        static SettlerBoardConstructor()
         {
             _originalList = new DegreeCount();
             _originalList[DegreeType.Grain] = 4;
@@ -19,7 +19,7 @@ namespace MingStar.SimUniversity.Board.Boards
             _originalList[DegreeType.None] = 1;
         }
 
-        public SettlerBoard()
+        public SettlerBoardConstructor()
         {
             IEnumerable<DegreeType> degrees = GetDegrees();
             bool isFirst = true;

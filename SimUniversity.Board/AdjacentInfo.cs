@@ -7,8 +7,8 @@ namespace MingStar.SimUniversity.Board
     public class AdjacentInfo
     {
         private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
-        private readonly HashSet<Edge> m_edges = new HashSet<Edge>();
-        private readonly HashSet<Vertex> m_vertices = new HashSet<Vertex>();
+        private readonly HashSet<Edge> _edges = new HashSet<Edge>();
+        private readonly HashSet<Vertex> _vertices = new HashSet<Vertex>();
         public ReadOnlyCollection<Hexagon> Hexagons { get; private set; }
         public ReadOnlyCollection<Edge> Edges { get; private set; }
         public ReadOnlyCollection<Vertex> Vertices { get; private set; }
@@ -36,14 +36,14 @@ namespace MingStar.SimUniversity.Board
             {
                 return;
             }
-            m_edges.Add(edge);
-            Edges = m_edges.ToList().AsReadOnly();
+            _edges.Add(edge);
+            Edges = _edges.ToList().AsReadOnly();
         }
 
         public void Add(IEnumerable<Edge> edges)
         {
-            m_edges.UnionWith(edges);
-            Edges = m_edges.ToList().AsReadOnly();
+            _edges.UnionWith(edges);
+            Edges = _edges.ToList().AsReadOnly();
         }
 
         public void Add(Vertex vertex)
@@ -52,14 +52,14 @@ namespace MingStar.SimUniversity.Board
             {
                 return;
             }
-            m_vertices.Add(vertex);
-            Vertices = m_vertices.ToList().AsReadOnly();
+            _vertices.Add(vertex);
+            Vertices = _vertices.ToList().AsReadOnly();
         }
 
         public void Add(IEnumerable<Vertex> vertices)
         {
-            m_vertices.UnionWith(vertices);
-            Vertices = m_vertices.ToList().AsReadOnly();
+            _vertices.UnionWith(vertices);
+            Vertices = _vertices.ToList().AsReadOnly();
         }
     }
 }

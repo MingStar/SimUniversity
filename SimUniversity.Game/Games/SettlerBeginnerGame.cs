@@ -1,11 +1,11 @@
-﻿using MingStar.SimUniversity.Board.Boards;
+﻿using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Games
 {
     public class SettlerBeginnerGame : Game
     {
-        public SettlerBeginnerGame() : base(new SettlerBoard(), 4)
+        public SettlerBeginnerGame() : base((new SettlerBoardConstructor()).Board, 4)
         {
             Setup();
         }
