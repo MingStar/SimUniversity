@@ -32,7 +32,7 @@ namespace MingStar.SimUniversity.Board.Constructor
                 if (degree == DegreeType.None)
                 {
                     token = 0;
-                    degreeToUse = DegreeType.Brick;
+                    degreeToUse = DegreeType.None;
                 }
                 else
                 {

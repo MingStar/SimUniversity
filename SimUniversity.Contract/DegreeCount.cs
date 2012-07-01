@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MingStar.SimUniversity.Contract
@@ -7,7 +8,7 @@ namespace MingStar.SimUniversity.Contract
     {
         public DegreeCount()
         {
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (DegreeType degree in Enum.GetValues(typeof(DegreeType)))
             {
                 base[degree] = 0;
             }

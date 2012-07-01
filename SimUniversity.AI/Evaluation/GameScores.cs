@@ -40,6 +40,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
             DegreeModifier[DegreeType.Wood] = 1.2;
             DegreeModifier[DegreeType.Sheep] = 1;
             DegreeModifier[DegreeType.Grain] = 1.1;
+            DegreeModifier[DegreeType.None] = 0;
 
             SetupDegreeModifier = new XmlSerializableDictionary<DegreeType, double>();
             SetupDegreeModifier[DegreeType.Ore] = 1.3;
@@ -47,6 +48,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
             SetupDegreeModifier[DegreeType.Wood] = 1.3;
             SetupDegreeModifier[DegreeType.Sheep] = 1;
             SetupDegreeModifier[DegreeType.Grain] = 1.1;
+            SetupDegreeModifier[DegreeType.None] = 0;
         }
     }
 }

@@ -395,7 +395,7 @@ namespace MingStar.SimUniversity.Game
                     _scarcity = new Dictionary<DegreeType, double>();
                     var hexCount = new DegreeCount();
                     var productionChance = new DegreeCount();
-                    foreach (Hexagon hex in Board.GetHexagons())
+                    foreach (var hex in Board.GetHexagons())
                     {
                         productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ID];
                         hexCount[hex.Degree] += 1;

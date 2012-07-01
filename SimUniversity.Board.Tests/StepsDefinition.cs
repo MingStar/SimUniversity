@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MingStar.SimUniversity.Board.Constructor;
+using MingStar.SimUniversity.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using MingStar.SimUniversity.Board;
@@ -59,6 +60,18 @@ namespace SimUniversity.Board.Tests
                 Assert.AreEqual(int.Parse(row["Adj. # of edges"]), adj.Edges.Count);                
             }
         }
+
+        [Then(@"the resource count should be the following:")]
+        public void ThenTheResourceCountShouldBeTheFollowing(Table table)
+        {
+            var hexes = _board.GetHexagons();
+            foreach (var row in table.Rows)
+            {
+                var type = (DegreeType)Enum.Parse(typeof (DegreeType), row["Resource"]);
+                Assert.AreEqual(int.Parse(row["Count"]), hexes.Count(h => h.Degree == type));
+            }
+        }
+
 
     }
 }
