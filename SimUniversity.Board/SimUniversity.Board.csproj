@@ -74,7 +74,7 @@
     <Compile Include="Constructor\BoardConstructor.cs" />
     <Compile Include="Constructor\HexagonConstructor.cs" />
     <Compile Include="Constructor\SettlerBoardConstructor.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="BoardConstants.cs" />
     <Compile Include="Constructor\VertexAdjacentInfoFinder.cs" />
     <Compile Include="Positioning\EdgeStaticInfo.cs" />
     <Compile Include="Hexagon.cs" />
@@ -83,7 +83,6 @@
     <Compile Include="Constructor\SettlerBeginnerBoardConstructor.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="SpecialTradingSite.cs" />
-    <Compile Include="TestProgram.cs" />
     <Compile Include="TradingSite.cs" />
     <Compile Include="Vertex.cs" />
     <Compile Include="Positioning\VertexStaticInfo.cs" />

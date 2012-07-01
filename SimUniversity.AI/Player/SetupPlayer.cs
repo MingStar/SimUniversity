@@ -72,7 +72,7 @@ namespace MingStar.SimUniversity.AI.Player
             if (game.CurrentPhase == GamePhase.Setup2)
             {
                 int hasDegreeNumber = productionChances.Values.Count(v => v != 0);
-                if (hasDegreeNumber == Constants.RealDegrees.Length)
+                if (hasDegreeNumber ==Constants.RealDegrees.Length)
                 {
                     score += _gameEvaluation.Scores.PRODUCTION_BASE*3;
                 }

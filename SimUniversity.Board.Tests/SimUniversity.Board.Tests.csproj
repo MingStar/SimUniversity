@@ -47,13 +47,37 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.8.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeginnerBoardSetupTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettlerBeginnerBoardSetup.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SettlerBeginnerBoardSetup.feature</DependentUpon>
+    </Compile>
+    <Compile Include="StepsDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="SettlerBeginnerBoardSetup.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SettlerBeginnerBoardSetup.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SimUniversity.Board\SimUniversity.Board.csproj">
+      <Project>{F37E59E9-3ABF-4597-AB7A-3E9516528F0A}</Project>
+      <Name>SimUniversity.Board</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimUniversity.Contract\SimUniversity.Contract.csproj">
+      <Project>{13B70D36-3E82-4304-8DF6-E85C77A2B304}</Project>
+      <Name>SimUniversity.Contract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

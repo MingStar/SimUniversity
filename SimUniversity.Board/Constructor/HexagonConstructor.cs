@@ -18,7 +18,7 @@ namespace MingStar.SimUniversity.Board.Constructor
         internal void PlaceEnd(Board board)
         {
             // set adjacent hexagons
-            for (int i = 0; i < Constants.EdgeOrentationCount; ++i)
+            for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
                 if (_hex._hexagons[i] != null)
                     continue;
@@ -30,7 +30,7 @@ namespace MingStar.SimUniversity.Board.Constructor
                 }
             }
             // create vertices
-            for (int i = 0; i < Constants.VertexOrentationCount; ++i)
+            for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)
             {
                 if (_hex._vertices[i] == null)
                 {
@@ -41,7 +41,7 @@ namespace MingStar.SimUniversity.Board.Constructor
                 }
             }
             // create edges 
-            for (int i = 0; i < Constants.EdgeOrentationCount; ++i)
+            for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
                 if (_hex._edges[i] != null)
                     continue;

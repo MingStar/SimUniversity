@@ -16,7 +16,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             PlaceNextHexagon(10, DegreeType.Sheep, EdgeOrientation.BottomLeft);
             PlaceNextHexagon(8, DegreeType.Brick, EdgeOrientation.BottomLeft);
             // 3rd row - left to right
-            PlaceNextHexagon(0, DegreeType.Brick, EdgeOrientation.TopLeft);
+            PlaceNextHexagon(0, DegreeType.None, EdgeOrientation.TopLeft);
             PlaceNextHexagon(3, DegreeType.Wood, EdgeOrientation.TopRight);
             PlaceNextHexagon(11, DegreeType.Grain, EdgeOrientation.TopRight);
             PlaceNextHexagon(4, DegreeType.Wood, EdgeOrientation.TopRight);
