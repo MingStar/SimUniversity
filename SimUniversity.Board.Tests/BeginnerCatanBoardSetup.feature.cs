@@ -19,20 +19,20 @@ namespace SimUniversity.Board.Tests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.8.1.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Settler of Catan Beginner Board set up")]
-    public partial class SettlerOfCatanBeginnerBoardSetUpFeature
+    [NUnit.Framework.DescriptionAttribute("Setting up boards")]
+    public partial class SettingUpBoardsFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "SettlerBeginnerBoardSetup.feature"
+#line 1 "BeginnerCatanBoardSetup.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Settler of Catan Beginner Board set up", "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Setting up boards", "", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -65,21 +65,19 @@ namespace SimUniversity.Board.Tests
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Set up the beginner board for Catan")]
-        [NUnit.Framework.CategoryAttribute("mytag")]
-        public virtual void SetUpTheBeginnerBoardForCatan()
+        [NUnit.Framework.DescriptionAttribute("Set up the beginner board for Catan (as from the game rules)")]
+        public virtual void SetUpTheBeginnerBoardForCatanAsFromTheGameRules()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set up the beginner board for Catan", new string[] {
-                        "mytag"});
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set up the beginner board for Catan (as from the game rules)", ((string[])(null)));
+#line 3
 this.ScenarioSetup(scenarioInfo);
-#line 5
+#line 4
  testRunner.When("I set up the beginner board for Catan");
-#line 6
+#line 5
  testRunner.Then("there should be 19 hexagons on the board");
-#line 7
+#line 6
  testRunner.And("there should be 54 vectices on the board");
-#line 8
+#line 7
  testRunner.And("there should be 72 edges on the board");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -242,8 +240,51 @@ this.ScenarioSetup(scenarioInfo);
                         "3",
                         "6",
                         "6"});
-#line 9
+#line 8
  testRunner.And("the details of hexagons should be the following:", ((string)(null)), table1);
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Set up the basic board for Catan")]
+        public virtual void SetUpTheBasicBoardForCatan()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set up the basic board for Catan", ((string[])(null)));
+#line 30
+this.ScenarioSetup(scenarioInfo);
+#line 31
+ testRunner.When("I set up the basic board for Catan");
+#line 32
+ testRunner.Then("there should be 19 hexagons on the board");
+#line 33
+ testRunner.And("there should be 54 vectices on the board");
+#line 34
+ testRunner.And("there should be 72 edges on the board");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Resource",
+                        "Count"});
+            table2.AddRow(new string[] {
+                        "Grain",
+                        "4"});
+            table2.AddRow(new string[] {
+                        "Wood",
+                        "4"});
+            table2.AddRow(new string[] {
+                        "Brick",
+                        "3"});
+            table2.AddRow(new string[] {
+                        "Ore",
+                        "3"});
+            table2.AddRow(new string[] {
+                        "Sheep",
+                        "4"});
+            table2.AddRow(new string[] {
+                        "None",
+                        "1"});
+#line 35
+ testRunner.And("the resource count should be the following:", ((string)(null)), table2);
 #line hidden
             this.ScenarioCleanup();
         }

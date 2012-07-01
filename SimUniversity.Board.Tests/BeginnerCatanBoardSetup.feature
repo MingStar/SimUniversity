@@ -1,7 +1,6 @@
-﻿Feature: Settler of Catan Beginner Board set up
+﻿Feature: Setting up boards
 
-@mytag
-Scenario: Set up the beginner board for Catan
+Scenario: Set up the beginner board for Catan (as from the game rules)
 	When I set up the beginner board for Catan
 	Then there should be 19 hexagons on the board
 	And there should be 54 vectices on the board	
@@ -28,3 +27,16 @@ Scenario: Set up the beginner board for Catan
 		| -1 | 4 | 12            | Sheep   | 4               | 6                  | 6               |
 		| 0  | 4 | 9             | Grain   | 3               | 6                  | 6               |
 
+Scenario: Set up the basic board for Catan
+	When I set up the basic board for Catan
+	Then there should be 19 hexagons on the board
+	And there should be 54 vectices on the board	
+	And there should be 72 edges on the board
+	And the resource count should be the following:
+		| Resource | Count |
+		| Grain    | 4     |
+		| Wood     | 4     |
+		| Brick    | 3     |
+		| Ore      | 3     |
+		| Sheep    | 4     |
+		| None     | 1     |

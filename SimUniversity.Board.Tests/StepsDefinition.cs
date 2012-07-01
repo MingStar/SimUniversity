@@ -20,6 +20,12 @@ namespace SimUniversity.Board.Tests
             _board = (new SettlerBeginnerBoardConstructor()).Board;
         }
 
+        [When(@"I set up the basic board for Catan")]
+        public void WhenISetUpTheBasicBoardForCatan()
+        {
+            _board = (new SettlerBoardConstructor()).Board;
+        }
+
         [Then(@"there should be (.*) hexagons on the board")]
         public void ThenThereShouldBeHexagonsOnTheBoard(int expected)
         {

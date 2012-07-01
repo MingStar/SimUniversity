@@ -54,19 +54,19 @@
   <ItemGroup>
     <Compile Include="BeginnerBoardSetupTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettlerBeginnerBoardSetup.feature.cs">
+    <Compile Include="BeginnerCatanBoardSetup.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SettlerBeginnerBoardSetup.feature</DependentUpon>
+      <DependentUpon>BeginnerCatanBoardSetup.feature</DependentUpon>
     </Compile>
     <Compile Include="StepsDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="SettlerBeginnerBoardSetup.feature">
+    <None Include="BeginnerCatanBoardSetup.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SettlerBeginnerBoardSetup.feature.cs</LastGenOutput>
+      <LastGenOutput>BeginnerCatanBoardSetup.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
