@@ -224,7 +224,7 @@ namespace MingStar.SimUniversity.Game
         {
             foreach (Hexagon hex in vertex.Adjacent.Hexagons)
             {
-                ProductionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ID];
+                ProductionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                 //DiceRollProductionChances[hex.ID] += GameConstants.HexID2Chance[hex.ID];
             }
         }
@@ -237,7 +237,7 @@ namespace MingStar.SimUniversity.Game
         {
             foreach (Hexagon hex in vertex.Adjacent.Hexagons)
             {
-                ProductionChances[hex.Degree] -= GameConstants.HexID2Chance[hex.ID];
+                ProductionChances[hex.Degree] -= GameConstants.HexID2Chance[hex.ProductionNumber];
                 //DiceRollProductionChances[hex.ID] -= GameConstants.HexID2Chance[hex.ID];
             }
         }

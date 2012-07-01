@@ -8,16 +8,16 @@ namespace MingStar.SimUniversity.Board
         #region Public ReadOnly Properties
 
         public Position Position { get; private set; }
-        public int ID { get; private set; }
+        public int ProductionNumber { get; private set; }
         public DegreeType Degree { get; private set; }
 
         #endregion
 
         #region Private Fields
 
-        internal readonly Edge[] _edges = new Edge[6]; // 6 edges
-        internal readonly Hexagon[] _hexagons = new Hexagon[6]; // 1 to 6 hexagons
-        internal readonly Vertex[] _vertices = new Vertex[6]; // 6 vertices
+        internal readonly Edge[] Edges = new Edge[6]; // 6 edges
+        internal readonly Hexagon[] Hexagons = new Hexagon[6]; // 1 to 6 hexagons
+        internal readonly Vertex[] Vertices = new Vertex[6]; // 6 vertices
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace MingStar.SimUniversity.Board
 
         public Hexagon(int id, DegreeType degree, Position position)
         {
-            ID = id;
+            ProductionNumber = id;
             Degree = degree;
             Position = position;
         }
@@ -36,7 +36,7 @@ namespace MingStar.SimUniversity.Board
 
         public override string ToString()
         {
-            return string.Format("Hexagon [{0}, {1}, {2}]", ID, Degree, Position);
+            return string.Format("Hexagon [{0}, {1}, {2}]", ProductionNumber, Degree, Position);
         }
 
         internal override void Reset()
@@ -50,12 +50,12 @@ namespace MingStar.SimUniversity.Board
 
         public Vertex this[VertexOrientation vo]
         {
-            get { return _vertices[(int) vo]; }
+            get { return Vertices[(int) vo]; }
         }
 
         public Edge this[EdgeOrientation so]
         {
-            get { return _edges[(int) so]; }
+            get { return Edges[(int) so]; }
         }
 
         internal Position GetPositionNextTo(EdgeOrientation so)
@@ -65,47 +65,9 @@ namespace MingStar.SimUniversity.Board
 
         internal void AddAdjacent(Hexagon hex, EdgeOrientation eo)
         {
-            _hexagons[(int)eo] = hex;
+            Hexagons[(int)eo] = hex;
             Adjacent.Add(hex);
         }
         #endregion
-
-        internal void FindAdjacentsFor(Edge edge)
-        {
-            for (int i = 0; i < _edges.Length; ++i)
-            {
-                if (_edges[i] == edge)
-                {
-                    var thisOrientation = (EdgeOrientation) i;
-                    edge.Adjacent.Add(
-                        (from eo in EdgeStaticInfo.Get(thisOrientation).AdjacentEdgeOrientations
-                         select this[eo])
-                        );
-                    edge.Adjacent.Add(
-                        (from vo in EdgeStaticInfo.Get(thisOrientation).AdjacentVertexOrientations
-                         select this[vo])
-                        );
-                }
-            }
-        }
-
-        internal void FindAdjacentsFor(Vertex vertex)
-        {
-            for (int i = 0; i < _vertices.Length; ++i)
-            {
-                if (_vertices[i] == vertex)
-                {
-                    VertexStaticInfo staticInfo = VertexStaticInfo.Get((VertexOrientation) i);
-                    vertex.Adjacent.Add(
-                        (from adjEO in staticInfo.AdjacentEdgeOrientations
-                         select this[adjEO])
-                        );
-                    vertex.Adjacent.Add(
-                        (from adjVO in staticInfo.AdjacentVertexOrientations
-                         select this[adjVO])
-                        );
-                }
-            }
-        }
     }
 }

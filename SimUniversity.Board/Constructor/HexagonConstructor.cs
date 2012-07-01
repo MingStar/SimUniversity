@@ -20,7 +20,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             // set adjacent hexagons
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                if (_hex._hexagons[i] != null)
+                if (_hex.Hexagons[i] != null)
                     continue;
                 var eo = (EdgeOrientation)i;
                 var nextHex = board[_hex.GetPositionNextTo(eo)];
@@ -32,10 +32,10 @@ namespace MingStar.SimUniversity.Board.Constructor
             // create vertices
             for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)
             {
-                if (_hex._vertices[i] == null)
+                if (_hex.Vertices[i] == null)
                 {
                     var vertex = UseOtherOrCreateVertex(board, (VertexOrientation)i);
-                    _hex._vertices[i] = vertex;
+                    _hex.Vertices[i] = vertex;
                     _hex.Adjacent.Add(vertex);
                     vertex.Adjacent.Add(_hex);
                 }
@@ -43,10 +43,10 @@ namespace MingStar.SimUniversity.Board.Constructor
             // create edges 
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                if (_hex._edges[i] != null)
+                if (_hex.Edges[i] != null)
                     continue;
                 var edge = UseOtherOrCreateEdge(board, (EdgeOrientation)i);
-                _hex._edges[i] = edge;
+                _hex.Edges[i] = edge;
                 _hex.Adjacent.Add(edge);
                 edge.Adjacent.Add(_hex);
             }

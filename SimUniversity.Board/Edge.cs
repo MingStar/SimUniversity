@@ -37,8 +37,24 @@ namespace MingStar.SimUniversity.Board
 
         internal void FindAllAdjacents(Board board)
         {
-            // the original hex
-            _originalHexagon.FindAdjacentsFor(this);
+            // from the original hex
+            for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
+            {
+                var thisOrientation = (EdgeOrientation)i;
+                if (_originalHexagon[thisOrientation] == this)
+                {
+                    // add edges
+                    this.Adjacent.Add(
+                        (from eo in EdgeStaticInfo.Get(thisOrientation).AdjacentEdgeOrientations
+                         select _originalHexagon[eo])
+                        );
+                    // add vertices
+                    this.Adjacent.Add(
+                        (from vo in EdgeStaticInfo.Get(thisOrientation).AdjacentVertexOrientations
+                         select _originalHexagon[vo])
+                        );
+                }
+            }
             // 3 other hex, to add edges
             foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {

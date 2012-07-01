@@ -52,7 +52,7 @@ namespace SimUniversity.Board.Tests
             {
                 var hex = _board[int.Parse(row["X"]), int.Parse(row["Y"])];
                 Assert.IsNotNull(hex);
-                Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ID);
+                Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ProductionNumber);
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
                 var adj = hex.Adjacent;
                 Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count);

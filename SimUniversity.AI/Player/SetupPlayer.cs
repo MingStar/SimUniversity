@@ -66,7 +66,7 @@ namespace MingStar.SimUniversity.AI.Player
             productionChances.Add(game.CurrentUniversity.ProductionChances);
             foreach (Hexagon hex in vertex.Adjacent.Hexagons)
             {
-                productionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ID];
+                productionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
             }
             double score = 0.0;
             if (game.CurrentPhase == GamePhase.Setup2)

@@ -160,17 +160,17 @@ namespace MingStar.SimUniversity.ConsoleController.View
         private void UpdateBuffer(Hexagon hex)
         {
             Position pos = HexToConsole(hex.Position);
-            ConsoleColor defaultForeColor = (hex.ID == 0)
+            ConsoleColor defaultForeColor = (hex.ProductionNumber == 0)
                                                 ? ConsolePixel.DefaultForeColor
                                                 : GameConsoleColor.Degree[hex.Degree];
-            printNumber(hex.ID, pos.Y - 1, pos.X, true, defaultForeColor);
+            printNumber(hex.ProductionNumber, pos.Y - 1, pos.X, true, defaultForeColor);
             _printBuffer[pos.Y, pos.X] = new ConsolePixel(',')
                                              {
                                                  ForeColor = defaultForeColor,
                                              };
             printNumberNegRed(hex.Position.X, pos.Y, pos.X - 1, true, defaultForeColor);
             printNumberNegRed(hex.Position.Y, pos.Y, pos.X + 1, false, defaultForeColor);
-            printNumber(GameConstants.HexID2Chance[hex.ID], pos.Y + 1, pos.X, true, ConsoleColor.DarkMagenta);
+            printNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true, ConsoleColor.DarkMagenta);
         }
 
         private void printNumber(int number, int bufferY, int bufferX, bool rightAligned, ConsoleColor foreColor)

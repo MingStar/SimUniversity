@@ -1,4 +1,5 @@
-﻿using MingStar.SimUniversity.Contract;
+﻿using System.Linq;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Constructor
 {
@@ -63,11 +64,29 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         private void FindAllAdjacents()
         {
+            // for all vertices
             foreach (var vertex in Board.GetVertices())
             {
+                // for all adjacent hexagons
                 foreach (var hex in vertex.Adjacent.Hexagons)
                 {
-                    hex.FindAdjacentsFor(vertex);
+                    // for all vertices on the hexagon
+                    for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)
+                    {
+                        var thisOritentation = (VertexOrientation) i;
+                        if (hex[thisOritentation] == vertex)
+                        {
+                            var staticInfo = VertexStaticInfo.Get(thisOritentation);
+                            // add edges
+                            vertex.Adjacent.Add(
+                                staticInfo.AdjacentEdgeOrientations.Select(adjEo => hex[adjEo])
+                                );
+                            // add vertices
+                            vertex.Adjacent.Add(
+                                staticInfo.AdjacentVertexOrientations.Select(adjVo => hex[adjVo])
+                                );
+                        }
+                    }
                 }
             }
             var allEdges = Board.GetEdges();

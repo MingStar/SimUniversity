@@ -397,7 +397,7 @@ namespace MingStar.SimUniversity.Game
                     var productionChance = new DegreeCount();
                     foreach (var hex in Board.GetHexagons())
                     {
-                        productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ID];
+                        productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                         hexCount[hex.Degree] += 1;
                     }
                     foreach (DegreeType degree in productionChance.Keys)
@@ -546,7 +546,7 @@ namespace MingStar.SimUniversity.Game
                 int chance = 0;
                 foreach (Hexagon hex in vertex.Adjacent.Hexagons)
                 {
-                    chance += GameConstants.HexID2Chance[hex.ID];
+                    chance += GameConstants.HexID2Chance[hex.ProductionNumber];
                 }
                 _vertexProductionChances[vertex] = chance;
             }
