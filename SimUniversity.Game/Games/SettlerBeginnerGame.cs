@@ -5,16 +5,10 @@ namespace MingStar.SimUniversity.Game.Games
 {
     public class SettlerBeginnerGame : Game
     {
-        public SettlerBeginnerGame() : base((new SettlerBoardConstructor()).Board, 4)
+        public SettlerBeginnerGame() : base((new SettlerBeginnerBoardConstructor()).Board, 4)
         {
             Setup();
         }
-
-        //public override void Reset()
-        //{
-        //    base.Reset();
-        //    Setup();
-        //}
 
         private void Setup()
         {
@@ -30,7 +24,6 @@ namespace MingStar.SimUniversity.Game.Games
 
             //white
             BuildCampus(-1, 3, VertexOrientation.Left, CampusType.Traditional);
-            //BuildLink(-2, 3, EdgeOrientation.Top);
             SetUpLink(-1, 3, EdgeOrientation.TopLeft);
             NextTurn();
 

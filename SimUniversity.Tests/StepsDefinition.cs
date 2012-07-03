@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game.Games;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using MingStar.SimUniversity.Board;
 
-namespace SimUniversity.Board.Tests
+namespace MingStar.SimUniversity.Tests
 {
     [Binding]
     public class StepsDefinition
     {
-        private MingStar.SimUniversity.Board.Board _board;
+        private Board.Board _board;
+        private Game.Game _game;
 
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
@@ -117,6 +118,28 @@ namespace SimUniversity.Board.Tests
         public void ThenAllEdgesShouldHave2AdjacentVertices()
         {
             Assert.IsTrue(_board.GetEdges().All(e => e.Adjacent.Vertices.Count == 2));
+        }
+
+        [When(@"I set up the Catan beginner's game")]
+        public void WhenISetUpTheCatanBeginnerSGame()
+        {
+            _game = new SettlerBeginnerGame();
+        }
+
+        [Then(@"the current game phase should be '(.*)'")]
+        public void ThenTheCurrentGamePhaseShouldBe(string expected)
+        {
+            StringAssert.AreEqualIgnoringCase(expected, _game.CurrentPhase.ToString());
+        }
+
+        [Then(@"the player information should be the following:")]
+        public void ThenThePlayerInformationShouldBeTheFollowing(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var player = _game.GetUniversityByColor((Color) Enum.Parse(typeof (Color), row["Player"]));
+                Assert.AreEqual(int.Parse(row["Score"]), _game.GetScore(player));
+            }
         }
 
     }

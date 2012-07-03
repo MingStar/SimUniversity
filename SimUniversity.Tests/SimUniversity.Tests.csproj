@@ -8,10 +8,11 @@
     <ProjectGuid>{E5802436-3C24-48C8-93CC-43FE60FFEDB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimUniversity.Board.Tests</RootNamespace>
-    <AssemblyName>SimUniversity.Board.Tests</AssemblyName>
+    <RootNamespace>MingStar.SimUniversity.Tests</RootNamespace>
+    <AssemblyName>MingStar.SimUniversity.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -52,21 +53,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BeginnerBoardSetupTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BeginnerCatanBoardSetup.feature.cs">
+    <Compile Include="GameSetup.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BeginnerCatanBoardSetup.feature</DependentUpon>
+      <DependentUpon>GameSetup.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BoardSetup.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BoardSetup.feature</DependentUpon>
     </Compile>
     <Compile Include="StepsDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="BeginnerCatanBoardSetup.feature">
+    <None Include="GameSetup.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>BeginnerCatanBoardSetup.feature.cs</LastGenOutput>
+      <LastGenOutput>GameSetup.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="BoardSetup.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BoardSetup.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +86,10 @@
     <ProjectReference Include="..\SimUniversity.Contract\SimUniversity.Contract.csproj">
       <Project>{13B70D36-3E82-4304-8DF6-E85C77A2B304}</Project>
       <Name>SimUniversity.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimUniversity.Game\SimUniversity.Game.csproj">
+      <Project>{37F4C174-81C4-4D7A-9BDD-9EDFB2240A98}</Project>
+      <Name>SimUniversity.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace SimUniversity.Board.Tests
+namespace MingStar.SimUniversity.Tests
 {
     using TechTalk.SpecFlow;
     
@@ -25,7 +25,7 @@ namespace SimUniversity.Board.Tests
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "BeginnerCatanBoardSetup.feature"
+#line 1 "BoardSetup.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]

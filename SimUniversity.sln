@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MingStar.Utilities", "MingS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.DAL", "SimUniversity.DAL\SimUniversity.DAL.csproj", "{CE3E0D55-C339-4D41-96FC-AD64A099E752}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.Board.Tests", "SimUniversity.Board.Tests\SimUniversity.Board.Tests.csproj", "{E5802436-3C24-48C8-93CC-43FE60FFEDB0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.Tests", "SimUniversity.Tests\SimUniversity.Tests.csproj", "{E5802436-3C24-48C8-93CC-43FE60FFEDB0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{02B395A0-C9FF-4151-AA5B-833E3CD6B920}"
 	ProjectSection(SolutionItems) = preProject
