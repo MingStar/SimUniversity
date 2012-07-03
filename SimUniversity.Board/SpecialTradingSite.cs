@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Board
 {
-    public class SpecialTradingSite : TradingSite
+    public class SpecialTradingSite : ITradingSite
     {
         public new const int TradeOutStudentQuantity = 2;
         private readonly StudentGroup _studentsNeeded;

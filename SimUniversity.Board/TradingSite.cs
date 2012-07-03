@@ -1,6 +1,8 @@
-﻿namespace MingStar.SimUniversity.Board
+﻿using MingStar.SimUniversity.Contract;
+
+namespace MingStar.SimUniversity.Board
 {
-    public class TradingSite
+    public class TradingSite : ITradingSite
     {
         public const int TradeOutStudentQuantity = 3;
 

@@ -76,6 +76,7 @@
     <Compile Include="IntTuple.cs" />
     <Compile Include="EdgePosition.cs" />
     <Compile Include="IProbabilityPlayerMove.cs" />
+    <Compile Include="ITradingSite.cs" />
     <Compile Include="IUniversity.cs" />
     <Compile Include="HexagonOffset.cs" />
     <Compile Include="IPlayer.cs" />

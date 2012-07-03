@@ -25,7 +25,7 @@ namespace MingStar.SimUniversity.Board
 
         public override string ToString()
         {
-            return string.Format("Adjacent: [hex: {0} ver: {1} edge: {2}]",
+            return string.Format("Adjacent: [hex: {0}, ver: {1}, edge: {2}]",
                                  Hexagons.Count, Vertices.Count, Edges.Count);
         }
 

@@ -49,7 +49,7 @@ namespace MingStar.SimUniversity.ConsoleController.View
                 }
                 else
                 {
-                    TradingSite site = vertex.TradingSite;
+                    var site = vertex.TradingSite;
                     if (site == null)
                     {
                         return new ConsolePixel

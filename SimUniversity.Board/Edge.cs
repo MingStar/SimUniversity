@@ -8,6 +8,7 @@ namespace MingStar.SimUniversity.Board
     public class Edge : Place
     {
         public readonly EdgePosition Position;
+        public Color? Color { get; internal set; }
 
         private readonly Hexagon _originalHexagon;
         private readonly EdgeOrientation _originalOrientation;
@@ -21,8 +22,6 @@ namespace MingStar.SimUniversity.Board
             Position = new EdgePosition(_originalHexagon.Position, _originalOrientation);
             _cache = new EdgeCache(this);
         }
-
-        public Color? Color { get; internal set; }
 
         public override string ToString()
         {
@@ -55,7 +54,7 @@ namespace MingStar.SimUniversity.Board
                         );
                 }
             }
-            // 3 other hexes, to add edges
+            // query 3 other hexes, to add edges
             foreach (var edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
                 var hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);

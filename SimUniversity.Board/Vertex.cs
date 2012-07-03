@@ -8,7 +8,7 @@ namespace MingStar.SimUniversity.Board
 
         public VertexPosition Position { get; private set; }
         public Campus Campus { get; private set; }
-        public TradingSite TradingSite { get; private set; }
+        public ITradingSite TradingSite { get; private set; }
         public int NumberOfNeighbourCampuses { get; private set; }
 
         #endregion
@@ -73,7 +73,7 @@ namespace MingStar.SimUniversity.Board
 
         internal void MakeMultiSite()
         {
-            TradingSite = TradingSite.Instance;
+            TradingSite = MingStar.SimUniversity.Board.TradingSite.Instance;
         }
 
         internal void DowngradeCampus()
