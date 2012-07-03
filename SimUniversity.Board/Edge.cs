@@ -40,26 +40,26 @@ namespace MingStar.SimUniversity.Board
             // from the original hex
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                var thisOrientation = (EdgeOrientation)i;
-                if (_originalHexagon[thisOrientation] == this)
+                var edgeOrientation = (EdgeOrientation)i;
+                if (_originalHexagon[edgeOrientation] == this)
                 {
                     // add edges
                     this.Adjacent.Add(
-                        (from eo in EdgeStaticInfo.Get(thisOrientation).AdjacentEdgeOrientations
+                        (from eo in EdgeStaticInfo.Get(edgeOrientation).AdjacentEdgeOrientations
                          select _originalHexagon[eo])
                         );
                     // add vertices
                     this.Adjacent.Add(
-                        (from vo in EdgeStaticInfo.Get(thisOrientation).AdjacentVertexOrientations
+                        (from vo in EdgeStaticInfo.Get(edgeOrientation).AdjacentVertexOrientations
                          select _originalHexagon[vo])
                         );
                 }
             }
-            // 3 other hex, to add edges
-            foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
+            // 3 other hexes, to add edges
+            foreach (var edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
-                var pos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
-                var hex = board[pos];
+                var hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
+                var hex = board[hexPos];
                 if (hex != null)
                 {
                     Adjacent.Add(hex[edgeOffset.Orientation]);

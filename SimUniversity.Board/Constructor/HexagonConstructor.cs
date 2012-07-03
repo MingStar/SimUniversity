@@ -20,9 +20,9 @@ namespace MingStar.SimUniversity.Board.Constructor
             // set adjacent hexagons
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                if (_hex.Hexagons[i] != null)
-                    continue;
                 var eo = (EdgeOrientation)i;
+                if (_hex[eo] != null)
+                    continue;
                 var nextHex = board[_hex.GetPositionNextTo(eo)];
                 if (nextHex != null)
                 {
@@ -30,34 +30,42 @@ namespace MingStar.SimUniversity.Board.Constructor
                 }
             }
             // create vertices
-            for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)
+            for (var i = 0; i < BoardConstants.VertexOrentationCount; ++i)
             {
-                if (_hex.Vertices[i] == null)
+                var vo = (VertexOrientation) i;
+                if (_hex[vo] != null)
                 {
-                    var vertex = UseOtherOrCreateVertex(board, (VertexOrientation)i);
-                    _hex.Vertices[i] = vertex;
-                    _hex.Adjacent.Add(vertex);
-                    vertex.Adjacent.Add(_hex);
+                    continue;
                 }
+                var vertex = UseOtherOrCreateVertex(board, vo);
+                _hex[vo] = vertex;
+                _hex.Adjacent.Add(vertex);
+                vertex.Adjacent.Add(_hex);
             }
             // create edges 
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                if (_hex.Edges[i] != null)
+                var eo = (EdgeOrientation) i;
+                if (_hex[eo] != null)
+                {
                     continue;
-                var edge = UseOtherOrCreateEdge(board, (EdgeOrientation)i);
-                _hex.Edges[i] = edge;
+                }
+                var edge = UseOtherOrCreateEdge(board, eo);
+                _hex[eo] = edge;
                 _hex.Adjacent.Add(edge);
                 edge.Adjacent.Add(_hex);
             }
         }
 
-
+        internal void AddAdjacent(Hexagon hex, EdgeOrientation eo, Hexagon otherHex)
+        {
+            hex.Adjacent.Add(otherHex);
+        }
 
         private void AtSideJoin(EdgeOrientation eo, Hexagon hex)
         {
-            _hex.AddAdjacent(hex, eo);
-            hex.AddAdjacent(_hex, EdgeStaticInfo.Get(eo).OppositeEdge);
+            AddAdjacent(_hex, eo, hex);
+            AddAdjacent(hex, EdgeStaticInfo.Get(eo).OppositeEdge, _hex);
         }
 
         private Vertex UseOtherOrCreateVertex(Board board, VertexOrientation vo)

@@ -73,6 +73,7 @@
     <Compile Include="Cache\EdgeCache.cs" />
     <Compile Include="Constructor\BoardConstructor.cs" />
     <Compile Include="Constructor\HexagonConstructor.cs" />
+    <Compile Include="Constructor\HexagonExtensions.cs" />
     <Compile Include="Constructor\SettlerBoardConstructor.cs" />
     <Compile Include="BoardConstants.cs" />
     <Compile Include="Constructor\VertexAdjacentInfoFinder.cs" />

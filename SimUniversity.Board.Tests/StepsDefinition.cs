@@ -31,18 +31,24 @@ namespace SimUniversity.Board.Tests
         public void ThenThereShouldBeHexagonsOnTheBoard(int expected)
         {
             Assert.AreEqual(expected, _board.GetHexagons().Count());
+            Assert.AreEqual(expected, _board.GetEdges().SelectMany(e => e.Adjacent.Hexagons).Distinct().Count());
+            Assert.AreEqual(expected, _board.GetVertices().SelectMany(e => e.Adjacent.Hexagons).Distinct().Count());
         }
 
         [Then(@"there should be (.*) vectices on the board")]
         public void ThenThereShouldBeVecticesOnTheBoard(int expected)
         {
             Assert.AreEqual(expected, _board.GetVertices().Count());
+            Assert.AreEqual(expected, _board.GetEdges().SelectMany(e => e.Adjacent.Vertices).Distinct().Count());
+            Assert.AreEqual(expected, _board.GetHexagons().SelectMany(e => e.Adjacent.Vertices).Distinct().Count());
         }
 
         [Then(@"there should be (.*) edges on the board")]
         public void ThenThereShouldBeEdgesOnTheBoard(int expected)
         {
             Assert.AreEqual(expected, _board.GetEdges().Count());
+            Assert.AreEqual(expected, _board.GetVertices().SelectMany(e => e.Adjacent.Edges).Distinct().Count());
+            Assert.AreEqual(expected, _board.GetHexagons().SelectMany(e => e.Adjacent.Edges).Distinct().Count());
         }
 
         [Then(@"the details of hexagons should be the following:")]
@@ -56,10 +62,45 @@ namespace SimUniversity.Board.Tests
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
                 var adj = hex.Adjacent;
                 Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count);
-                Assert.AreEqual(int.Parse(row["Adj. # of vertices"]), adj.Vertices.Count);
-                Assert.AreEqual(int.Parse(row["Adj. # of edges"]), adj.Edges.Count);                
             }
         }
+
+        [Then(@"the adjacent information should be the following:")]
+        public void ThenTheAdjacentInformationShouldBeTheFollowing(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                switch (row["Place Type"])
+                {
+                    case "Edge":
+                        AssertAdjacentInfo(_board.GetEdges(), row);
+                        break;
+                    case "Vertex":
+                        AssertAdjacentInfo(_board.GetVertices(), row);
+                        break;
+                    case "Hexagon":
+                        AssertAdjacentInfo(_board.GetHexagons(), row);
+                        break;
+                    default:
+                        throw new Exception("Unknown Place Type: " + row["Place Type"]);
+                }
+            }
+        }
+
+        private void AssertAdjacentInfo(IEnumerable<Place> places, TableRow row)
+        {
+            foreach (var place in places)
+            {
+                var adjacentInfo = place.Adjacent;
+                Assert.GreaterOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Min# of vertices"]));
+                Assert.LessOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Max# of vertices"]));
+                Assert.GreaterOrEqual(adjacentInfo.Edges.Count, int.Parse(row["Min# of edges"]));
+                Assert.LessOrEqual(adjacentInfo.Edges.Count, int.Parse(row["Max# of edges"]));
+                Assert.GreaterOrEqual(adjacentInfo.Hexagons.Count, int.Parse(row["Min# of hexagons"]));
+                Assert.LessOrEqual(adjacentInfo.Hexagons.Count, int.Parse(row["Max# of hexagons"]));
+            }
+        }
+
 
         [Then(@"the resource count should be the following:")]
         public void ThenTheResourceCountShouldBeTheFollowing(Table table)
@@ -72,6 +113,11 @@ namespace SimUniversity.Board.Tests
             }
         }
 
+        [Then(@"all edges should have 2 adjacent vertices")]
+        public void ThenAllEdgesShouldHave2AdjacentVertices()
+        {
+            Assert.IsTrue(_board.GetEdges().All(e => e.Adjacent.Vertices.Count == 2));
+        }
 
     }
 }

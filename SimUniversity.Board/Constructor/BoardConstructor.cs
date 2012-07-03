@@ -21,9 +21,9 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         protected void PlaceNextHexagon(int id, DegreeType degreeType, EdgeOrientation eo)
         {
-            Position pos = _lastPlacedHexagon.GetPositionNextTo(eo);
+            var pos = _lastPlacedHexagon.GetPositionNextTo(eo);
             Board.GetLimits(pos);
-            Hexagon hex = Board.CreateHexagon(id, degreeType, pos);
+            var hex = Board.CreateHexagon(id, degreeType, pos);
             _lastPlacedHexagon = hex;
         }
 

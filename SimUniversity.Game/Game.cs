@@ -183,9 +183,9 @@ namespace MingStar.SimUniversity.Game
         {
             var array = new DegreeCount[NumberOfUniversities];
             int index, number;
-            foreach (Hexagon hex in Board[hexID])
+            foreach (var hex in Board[hexID])
             {
-                foreach (Vertex vertex in hex.Adjacent.Vertices)
+                foreach (var vertex in hex.Adjacent.Vertices)
                 {
                     if (vertex.Campus != null)
                     {
