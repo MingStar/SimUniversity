@@ -139,8 +139,65 @@ namespace MingStar.SimUniversity.Tests
             {
                 var player = _game.GetUniversityByColor((Color) Enum.Parse(typeof (Color), row["Player"]));
                 Assert.AreEqual(int.Parse(row["Score"]), _game.GetScore(player));
+                var expectedVertices = row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
+                CollectionAssert.AreEquivalent(player.Campuses, expectedVertices);
+                var expectedEdges = row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
+                CollectionAssert.AreEquivalent(player.InternetLinks, expectedEdges);
             }
         }
 
+        private EdgePosition ParseEdgePosition(string str)
+        {
+            var items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
+            return new EdgePosition(new Position(int.Parse(items[0]), int.Parse(items[1])), GetEdgeOrientation(items[2]));
+        }
+
+        private VertexPosition ParseVertexPosition(string str)
+        {
+            var items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
+            return new VertexPosition(new Position(int.Parse(items[0]), int.Parse(items[1])), GetVertexOrientation(items[2]));
+        }
+
+        private VertexOrientation GetVertexOrientation(string str)
+        {
+            switch (str.ToLower())
+            {
+                case "r":
+                    return VertexOrientation.Right;
+                case "tr":
+                    return VertexOrientation.TopRight;
+                case "tl":
+                    return VertexOrientation.TopLeft;
+                case "l":
+                    return VertexOrientation.Left;
+                case "bl":
+                    return VertexOrientation.BottomLeft;
+                case "br":
+                    return VertexOrientation.BottomRight;
+                default:
+                    throw new Exception("Unknown vertex orientation: " + str);
+            }
+        }
+
+        private EdgeOrientation GetEdgeOrientation(string str)
+        {
+            switch (str.ToLower())
+            {
+                case "t":
+                    return EdgeOrientation.Top;
+                case "tr":
+                    return EdgeOrientation.TopRight;
+                case "tl":
+                    return EdgeOrientation.TopLeft;
+                case "b":
+                    return EdgeOrientation.Bottom;
+                case "bl":
+                    return EdgeOrientation.BottomLeft;
+                case "br":
+                    return EdgeOrientation.BottomRight;
+                default:
+                    throw new Exception("Unknown vertex orientation: " + str);
+            }
+        }
     }
 }
