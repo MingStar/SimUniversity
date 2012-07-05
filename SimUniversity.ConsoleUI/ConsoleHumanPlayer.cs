@@ -7,7 +7,7 @@ using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Move;
 using MingStar.Utilities;
 
-namespace MingStar.SimUniversity.ConsoleController
+namespace MingStar.SimUniversity.ConsoleUI
 {
     public class ConsoleHumanPlayer : IPlayer
     {

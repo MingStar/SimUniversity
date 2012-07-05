@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.AI", "SimUniv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.Contract", "SimUniversity.Contract\SimUniversity.Contract.csproj", "{13B70D36-3E82-4304-8DF6-E85C77A2B304}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.ConsoleController", "SimUniversity.ConsoleController\SimUniversity.ConsoleController.csproj", "{5EFC79A7-CAB6-481A-8D90-4A8BDB45A20C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimUniversity.ConsoleUI", "SimUniversity.ConsoleUI\SimUniversity.ConsoleUI.csproj", "{5EFC79A7-CAB6-481A-8D90-4A8BDB45A20C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MingStar.Utilities", "MingStar.Utilities\MingStar.Utilities.csproj", "{2174A875-E5D2-48D7-BC14-7EA8753A0B3F}"
 EndProject

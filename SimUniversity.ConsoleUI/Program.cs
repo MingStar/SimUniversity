@@ -4,7 +4,6 @@ using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
-using MingStar.SimUniversity.ConsoleController.View;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
@@ -12,7 +11,7 @@ using MingStar.Utilities.Linq;
 using log4net;
 using Random = MingStar.SimUniversity.AI.Player.Random;
 
-namespace MingStar.SimUniversity.ConsoleController
+namespace MingStar.SimUniversity.ConsoleUI
 {
     internal class Program
     {

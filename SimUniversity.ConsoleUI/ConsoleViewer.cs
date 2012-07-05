@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
 
-namespace MingStar.SimUniversity.ConsoleController.View
+namespace MingStar.SimUniversity.ConsoleUI
 {
     public class ConsoleViewer : IViewer
     {

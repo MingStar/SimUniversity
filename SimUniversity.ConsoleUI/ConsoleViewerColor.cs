@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.ConsoleController.View
+namespace MingStar.SimUniversity.ConsoleUI
 {
     public static class ConsoleViewerColor
     {
