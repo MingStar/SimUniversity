@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Games;
-using MingStar.SimUniversity.Game.Move;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
-using MingStar.SimUniversity.Board;
 
 namespace MingStar.SimUniversity.Tests
 {
     [Binding]
     public class StepsDefinition
     {
-        private Board.Board _board;
         private static Game.Game _game;
+        private Board.Board _board;
 
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
@@ -56,13 +56,13 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"the details of hexagons should be the following:")]
         public void ThenTheDetailsOfHexagonsShouldBeTheFollowing(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (TableRow row in table.Rows)
             {
-                var hex = _board[int.Parse(row["X"]), int.Parse(row["Y"])];
+                Hexagon hex = _board[int.Parse(row["X"]), int.Parse(row["Y"])];
                 Assert.IsNotNull(hex);
                 Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ProductionNumber);
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
-                var adj = hex.Adjacent;
+                AdjacentInfo adj = hex.Adjacent;
                 Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count);
             }
         }
@@ -70,7 +70,7 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"the adjacent information should be the following:")]
         public void ThenTheAdjacentInformationShouldBeTheFollowing(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (TableRow row in table.Rows)
             {
                 switch (row["Place Type"])
                 {
@@ -91,9 +91,9 @@ namespace MingStar.SimUniversity.Tests
 
         private void AssertAdjacentInfo(IEnumerable<Place> places, TableRow row)
         {
-            foreach (var place in places)
+            foreach (Place place in places)
             {
-                var adjacentInfo = place.Adjacent;
+                AdjacentInfo adjacentInfo = place.Adjacent;
                 Assert.GreaterOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Min# of vertices"]));
                 Assert.LessOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Max# of vertices"]));
                 Assert.GreaterOrEqual(adjacentInfo.Edges.Count, int.Parse(row["Min# of edges"]));
@@ -107,10 +107,10 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"the resource count should be the following:")]
         public void ThenTheResourceCountShouldBeTheFollowing(Table table)
         {
-            var hexes = _board.GetHexagons();
-            foreach (var row in table.Rows)
+            Hexagon[] hexes = _board.GetHexagons();
+            foreach (TableRow row in table.Rows)
             {
-                var type = (DegreeType)Enum.Parse(typeof (DegreeType), row["Resource"]);
+                var type = (DegreeType) Enum.Parse(typeof (DegreeType), row["Resource"]);
                 Assert.AreEqual(int.Parse(row["Count"]), hexes.Count(h => h.Degree == type));
             }
         }
@@ -136,26 +136,28 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"the university information should be the following:")]
         public void ThenTheUniversityInformationShouldBeTheFollowing(Table table)
         {
-            foreach (var row in table.Rows)
+            foreach (TableRow row in table.Rows)
             {
-                var university = _game.GetUniversityByColor(ParseColor(row["University"]));
+                University university = _game.GetUniversityByColor(ParseColor(row["University"]));
                 if (row.ContainsKey("Score"))
                 {
                     Assert.AreEqual(int.Parse(row["Score"]), _game.GetScore(university));
                 }
                 if (row.ContainsKey("Campuses"))
                 {
-                    var expectedVertices = row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
+                    IEnumerable<Vertex> expectedVertices =
+                        row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
                     CollectionAssert.AreEquivalent(university.Campuses, expectedVertices);
                 }
                 if (row.ContainsKey("Links"))
                 {
-                    var expectedEdges = row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
+                    IEnumerable<Edge> expectedEdges =
+                        row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
                     CollectionAssert.AreEquivalent(university.InternetLinks, expectedEdges);
                 }
                 if (row.ContainsKey("Students"))
                 {
-                    var expectedStudents = ParseStudents(row["Students"]);
+                    DegreeCount expectedStudents = ParseStudents(row["Students"]);
                     Assert.AreEqual(expectedStudents, university.Students);
                 }
             }
@@ -172,7 +174,7 @@ namespace MingStar.SimUniversity.Tests
 
         private DegreeCount ParseStudents(string str)
         {
-            var degrees = str.Split(',').Select(s => ParseStudent(s.Trim()));
+            IEnumerable<Tuple<DegreeType, int>> degrees = str.Split(',').Select(s => ParseStudent(s.Trim()));
             var count = new DegreeCount();
             foreach (var degree in degrees)
             {
@@ -196,7 +198,7 @@ namespace MingStar.SimUniversity.Tests
                     degree = DegreeType.Ore;
                     break;
                 case "g":
-                    degree = DegreeType.Grain;                    
+                    degree = DegreeType.Grain;
                     break;
                 case "s":
                     degree = DegreeType.Sheep;
@@ -214,14 +216,15 @@ namespace MingStar.SimUniversity.Tests
 
         private EdgePosition ParseEdgePosition(string str)
         {
-            var items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
+            string[] items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
             return new EdgePosition(new Position(int.Parse(items[0]), int.Parse(items[1])), GetEdgeOrientation(items[2]));
         }
 
         private VertexPosition ParseVertexPosition(string str)
         {
-            var items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
-            return new VertexPosition(new Position(int.Parse(items[0]), int.Parse(items[1])), GetVertexOrientation(items[2]));
+            string[] items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
+            return new VertexPosition(new Position(int.Parse(items[0]), int.Parse(items[1])),
+                                      GetVertexOrientation(items[2]));
         }
 
         private VertexOrientation GetVertexOrientation(string str)
@@ -271,6 +274,5 @@ namespace MingStar.SimUniversity.Tests
         {
             Assert.AreEqual(ParseColor(expected), _game.CurrentUniversityColor);
         }
-
     }
 }

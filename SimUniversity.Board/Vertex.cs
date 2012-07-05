@@ -59,7 +59,7 @@ namespace MingStar.SimUniversity.Board
             Campus = new Campus(type, color);
             if (type == CampusType.Traditional)
             {
-                foreach (var adj in Adjacent.Vertices)
+                foreach (Vertex adj in Adjacent.Vertices)
                 {
                     adj.NumberOfNeighbourCampuses += 1;
                 }
@@ -73,7 +73,7 @@ namespace MingStar.SimUniversity.Board
 
         internal void MakeMultiSite()
         {
-            TradingSite = MingStar.SimUniversity.Board.TradingSite.Instance;
+            TradingSite = SimUniversity.Board.TradingSite.Instance;
         }
 
         internal void DowngradeCampus()
@@ -89,7 +89,7 @@ namespace MingStar.SimUniversity.Board
             else // == CampusType.Traditional)
             {
                 Campus = null;
-                foreach (var adj in Adjacent.Vertices)
+                foreach (Vertex adj in Adjacent.Vertices)
                 {
                     adj.NumberOfNeighbourCampuses -= 1;
                 }

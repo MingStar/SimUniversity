@@ -14,11 +14,10 @@ namespace MingStar.SimUniversity.AI.Learning
 {
     public class Learning
     {
-        private IViewer _gameViewer;
-
         private const string FILE_NAME = "LearningResult.xml";
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
         private static bool IsFirstCall = true;
+        private readonly IViewer _gameViewer;
 
         public Learning(IViewer gameGameViewer)
         {
@@ -28,7 +27,7 @@ namespace MingStar.SimUniversity.AI.Learning
         public void Learn(int rounds)
         {
             _log.Info("Start to do simplex learning");
-            var result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
+            RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
             SaveResult(result);
             _log.Info("Finish to do simplex learning");
         }
@@ -97,9 +96,9 @@ namespace MingStar.SimUniversity.AI.Learning
                     if (!stats.ContainsKey(name))
                     {
                         stats[name] = new TournamentPlayerStats
-                        {
-                            PlayerName = name
-                        };
+                                          {
+                                              PlayerName = name
+                                          };
                     }
                 }
                 var controller = new GameController(_gameViewer, game, false, players);
@@ -141,7 +140,7 @@ namespace MingStar.SimUniversity.AI.Learning
             University challengerUni = game.Universities[challengerIndex];
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
-            foreach (var uni in game.Universities)
+            foreach (University uni in game.Universities)
             {
                 if (uni == challengerUni)
                 {

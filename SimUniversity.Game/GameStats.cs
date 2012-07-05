@@ -56,11 +56,11 @@ namespace MingStar.SimUniversity.Game
             }
              */
             ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Total dice rolls: {0}", TotalDiceRoll);
-            var pearsonError = GetPearsonError();
-            var isFair = pearsonError < PearsonThreshold;
-            ColorConsole.WriteLine(ConsoleColor.DarkYellow, 
-                "Pearson error rate: {0} {1} 11.07, dice is {2}fair.", 
-                pearsonError, isFair ? "<" : ">", isFair ? "" : "not ");
+            double pearsonError = GetPearsonError();
+            bool isFair = pearsonError < PearsonThreshold;
+            ColorConsole.WriteLine(ConsoleColor.DarkYellow,
+                                   "Pearson error rate: {0} {1} 11.07, dice is {2}fair.",
+                                   pearsonError, isFair ? "<" : ">", isFair ? "" : "not ");
             /*
             ConsoleHelper.WriteLine(ConsoleColor.DarkYellow, "Another error rate: {0}", error);
              */
@@ -72,9 +72,9 @@ namespace MingStar.SimUniversity.Game
             for (int i = 2; i <= 12; ++i)
             {
                 double expectedProbability = GameConstants.HexID2Chance[i]/GameConstants.Chance.TotalDiceRoll;
-                double expectedNumer = TotalDiceRoll * expectedProbability;
+                double expectedNumer = TotalDiceRoll*expectedProbability;
                 double diffNumber = expectedNumer - DiceRolls[i];
-                error += (diffNumber * diffNumber) / expectedNumer;
+                error += (diffNumber*diffNumber)/expectedNumer;
             }
             return error;
         }

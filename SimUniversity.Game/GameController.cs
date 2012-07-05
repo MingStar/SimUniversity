@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Move;
 
@@ -10,8 +10,6 @@ namespace MingStar.SimUniversity.Game
     {
         private readonly IPlayer[] _players;
         private DateTime _startTime;
-        public IViewer Viewer { get; private set; }
-        public Game Game { get; private set; }
 
         public GameController(IViewer viewer, Game game, bool hasHumanPlayer, params IPlayer[] players)
         {
@@ -27,6 +25,9 @@ namespace MingStar.SimUniversity.Game
             Debug.Assert(Game.Board.IsLocked);
         }
 
+        public IViewer Viewer { get; private set; }
+        public Game Game { get; private set; }
+
         public int Run()
         {
             _startTime = DateTime.Now;
@@ -40,13 +41,13 @@ namespace MingStar.SimUniversity.Game
                 bool askSamePlayer = true;
                 while (askSamePlayer)
                 {
-                    var currentPlayer = _players[Game.CurrentUniversityIndex];
-                    var moves = currentPlayer.MakeMoves(Game);
+                    IPlayer currentPlayer = _players[Game.CurrentUniversityIndex];
+                    List<IPlayerMove> moves = currentPlayer.MakeMoves(Game);
                     if (moves == null)
                     {
                         continue;
                     }
-                    foreach (var move in moves)
+                    foreach (IPlayerMove move in moves)
                     {
                         var iMove = move as IProbabilityPlayerMove;
                         if (iMove != null)
@@ -79,7 +80,5 @@ namespace MingStar.SimUniversity.Game
             Viewer.PrintFinalResult(DateTime.Now - _startTime);
             return Game.CurrentUniversityIndex;
         }
-
-
     }
 }

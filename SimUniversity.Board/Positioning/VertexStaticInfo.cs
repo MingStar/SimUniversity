@@ -10,113 +10,113 @@ namespace MingStar.SimUniversity.Board
         static VertexStaticInfo()
         {
             s_lookUp = new Dictionary<VertexOrientation, VertexStaticInfo>();
-            s_lookUp[VertexOrientation.TopLeft] = 
+            s_lookUp[VertexOrientation.TopLeft] =
                 new VertexStaticInfo
-                {
-                    AdjacentVertexOrientations =
-                        new[] {VertexOrientation.TopRight, VertexOrientation.Left},
-                    AdjacentEdgeOrientations =
-                        new[] {EdgeOrientation.Top, EdgeOrientation.TopLeft},
-                    RelativePositions = new[]
-                                            {
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation.
-                                                                    TopLeft).
-                                                            HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            Right
-                                                    },
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation.
-                                                                    Top).
-                                                            HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            BottomLeft
-                                                    }
-                                            },
-                };
-            s_lookUp[VertexOrientation.Left] = 
+                    {
+                        AdjacentVertexOrientations =
+                            new[] {VertexOrientation.TopRight, VertexOrientation.Left},
+                        AdjacentEdgeOrientations =
+                            new[] {EdgeOrientation.Top, EdgeOrientation.TopLeft},
+                        RelativePositions = new[]
+                                                {
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation.
+                                                                        TopLeft).
+                                                                HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                Right
+                                                        },
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation.
+                                                                        Top).
+                                                                HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                BottomLeft
+                                                        }
+                                                },
+                    };
+            s_lookUp[VertexOrientation.Left] =
                 new VertexStaticInfo
-                {
-                    AdjacentVertexOrientations =
-                        new[]
-                            {VertexOrientation.TopLeft, VertexOrientation.BottomLeft},
-                    AdjacentEdgeOrientations =
-                        new[] {EdgeOrientation.TopLeft, EdgeOrientation.BottomLeft},
-                    RelativePositions = new[]
-                                            {
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation.
-                                                                    TopLeft).
-                                                            HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            BottomRight
-                                                    },
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation.
-                                                                    BottomLeft).
-                                                            HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            TopRight
-                                                    }
-                                            }
-                };
-            s_lookUp[VertexOrientation.BottomLeft] = 
+                    {
+                        AdjacentVertexOrientations =
+                            new[]
+                                {VertexOrientation.TopLeft, VertexOrientation.BottomLeft},
+                        AdjacentEdgeOrientations =
+                            new[] {EdgeOrientation.TopLeft, EdgeOrientation.BottomLeft},
+                        RelativePositions = new[]
+                                                {
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation.
+                                                                        TopLeft).
+                                                                HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                BottomRight
+                                                        },
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation.
+                                                                        BottomLeft).
+                                                                HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                TopRight
+                                                        }
+                                                }
+                    };
+            s_lookUp[VertexOrientation.BottomLeft] =
                 new VertexStaticInfo
-                {
-                    AdjacentVertexOrientations =
-                        new[]
-                            {
-                                VertexOrientation.Left,
-                                VertexOrientation.BottomRight
-                            },
-                    AdjacentEdgeOrientations =
-                        new[]
-                            {
-                                EdgeOrientation.BottomLeft, EdgeOrientation.Bottom
-                            },
-                    RelativePositions = new[]
-                                            {
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation
-                                                                    .BottomLeft)
-                                                            .HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            Right,
-                                                    },
-                                                new RelativePosition
-                                                    {
-                                                        Offset =
-                                                            EdgeStaticInfo.Get(
-                                                                EdgeOrientation
-                                                                    .Bottom).
-                                                            HexagonOffset,
-                                                        Orientation =
-                                                            VertexOrientation.
-                                                            TopLeft
-                                                    }
-                                            }
-                };
+                    {
+                        AdjacentVertexOrientations =
+                            new[]
+                                {
+                                    VertexOrientation.Left,
+                                    VertexOrientation.BottomRight
+                                },
+                        AdjacentEdgeOrientations =
+                            new[]
+                                {
+                                    EdgeOrientation.BottomLeft, EdgeOrientation.Bottom
+                                },
+                        RelativePositions = new[]
+                                                {
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation
+                                                                        .BottomLeft)
+                                                                .HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                Right,
+                                                        },
+                                                    new RelativePosition
+                                                        {
+                                                            Offset =
+                                                                EdgeStaticInfo.Get(
+                                                                    EdgeOrientation
+                                                                        .Bottom).
+                                                                HexagonOffset,
+                                                            Orientation =
+                                                                VertexOrientation.
+                                                                TopLeft
+                                                        }
+                                                }
+                    };
             s_lookUp[VertexOrientation.BottomRight] = new VertexStaticInfo
                                                           {
                                                               AdjacentVertexOrientations =

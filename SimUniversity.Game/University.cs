@@ -67,13 +67,11 @@ namespace MingStar.SimUniversity.Game
             ResetStudentCounts();
             NumberOfSuccessfulCompanies = 0;
             NumberOfFailedCompanies = 0;
-            //DiceRollProductionChances = new Dictionary<int, int>();
-            //DiceRollProductionChances.InitialiseKeys(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         }
 
         private void ResetStudentCounts()
         {
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (var degree in Constants.RealDegrees)
             {
                 Students[degree] = 0;
             }
@@ -86,7 +84,7 @@ namespace MingStar.SimUniversity.Game
             sb.Append(" Score: " + _game.GetScore(this));
             sb.Append(" [");
             bool isFirst = true;
-            foreach (DegreeType degree in Students.Keys)
+            foreach (var degree in Students.Keys)
             {
                 if (Students[degree] != 0)
                 {
@@ -235,10 +233,9 @@ namespace MingStar.SimUniversity.Game
         /// <param name="vertex"></param>
         private void RemoveProductionChances(Vertex vertex)
         {
-            foreach (Hexagon hex in vertex.Adjacent.Hexagons)
+            foreach (var hex in vertex.Adjacent.Hexagons)
             {
                 ProductionChances[hex.Degree] -= GameConstants.HexID2Chance[hex.ProductionNumber];
-                //DiceRollProductionChances[hex.ID] -= GameConstants.HexID2Chance[hex.ID];
             }
         }
 
@@ -264,7 +261,7 @@ namespace MingStar.SimUniversity.Game
             }
             else // only connects on one side, but do not know which side
             {
-                foreach (var vertex in edge.Adjacent.Vertices)
+                foreach (Vertex vertex in edge.Adjacent.Vertices)
                 {
                     total += GetLongestLink(edge, vertex, visitedEdges);
                 }
@@ -285,9 +282,9 @@ namespace MingStar.SimUniversity.Game
         private void FullSearchLongestLink()
         {
             LengthOfLongestLink = 0;
-            foreach (Edge edge in InternetLinks)
+            foreach (var edge in InternetLinks)
             {
-                foreach (Vertex vertex in edge.Adjacent.Vertices)
+                foreach (var vertex in edge.Adjacent.Vertices)
                 {
                     CompareLongestLink(GetLongestLink(edge, vertex, new HashSet<Edge>()));
                 }
@@ -306,7 +303,7 @@ namespace MingStar.SimUniversity.Game
             }
             visitedEdges.Add(currentEdge);
             int max = 0;
-            foreach (var edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
+            foreach (Edge edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
             {
                 if (edge.Color == Color)
                 {
@@ -374,7 +371,7 @@ namespace MingStar.SimUniversity.Game
             {
                 return;
             }
-            foreach (StudentGroup group in move.StudentsNeeded)
+            foreach (var group in move.StudentsNeeded)
             {
                 Students[group.Degree] += group.Quantity;
             }
@@ -382,12 +379,10 @@ namespace MingStar.SimUniversity.Game
 
         internal void RemoveExtraStudents(DegreeCount roll)
         {
-            if (roll != null)
+            if (roll == null) return;
+            foreach (var degree in roll.Keys)
             {
-                foreach (DegreeType degree in roll.Keys)
-                {
-                    Students[degree] -= roll[degree];
-                }
+                Students[degree] -= roll[degree];
             }
         }
 
@@ -399,12 +394,10 @@ namespace MingStar.SimUniversity.Game
 
         internal void AddBackStudents(DegreeType[] degreeType)
         {
-            if (degreeType != null)
+            if (degreeType == null) return;
+            foreach (var degree in degreeType)
             {
-                foreach (DegreeType degree in degreeType)
-                {
-                    Students[degree] += 1;
-                }
+                Students[degree] += 1;
             }
         }
 

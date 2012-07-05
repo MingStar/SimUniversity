@@ -70,7 +70,7 @@ namespace MingStar.SimUniversity.AI.Learning
                         // next iteration
                         _shrinkSimplex(errorProfile, vertices, errorValues, objectiveFunction);
                         evaluationCount += numVertices;
-                            // that required one function evaluation for each vertex; keep track
+                        // that required one function evaluation for each vertex; keep track
                     }
                 }
                 // check to see if we have exceeded our alloted number of evaluations
@@ -154,7 +154,7 @@ namespace MingStar.SimUniversity.AI.Learning
                 if (errorValue > errorValues[errorProfile.HighestIndex])
                 {
                     errorProfile.NextHighestIndex = errorProfile.HighestIndex;
-                        // downgrade the current highest to next highest
+                    // downgrade the current highest to next highest
                     errorProfile.HighestIndex = index;
                 }
                 else if (errorValue > errorValues[errorProfile.NextHighestIndex] && index != errorProfile.HighestIndex)

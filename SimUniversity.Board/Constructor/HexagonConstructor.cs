@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MingStar.SimUniversity.Contract;
+﻿using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Constructor
 {
@@ -20,24 +16,24 @@ namespace MingStar.SimUniversity.Board.Constructor
             // set adjacent hexagons
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                var eo = (EdgeOrientation)i;
+                var eo = (EdgeOrientation) i;
                 if (_hex[eo] != null)
                     continue;
-                var nextHex = board[_hex.GetPositionNextTo(eo)];
+                Hexagon nextHex = board[_hex.GetPositionNextTo(eo)];
                 if (nextHex != null)
                 {
                     AtSideJoin(eo, nextHex);
                 }
             }
             // create vertices
-            for (var i = 0; i < BoardConstants.VertexOrentationCount; ++i)
+            for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)
             {
                 var vo = (VertexOrientation) i;
                 if (_hex[vo] != null)
                 {
                     continue;
                 }
-                var vertex = UseOtherOrCreateVertex(board, vo);
+                Vertex vertex = UseOtherOrCreateVertex(board, vo);
                 _hex[vo] = vertex;
                 _hex.Adjacent.Add(vertex);
                 vertex.Adjacent.Add(_hex);
@@ -50,7 +46,7 @@ namespace MingStar.SimUniversity.Board.Constructor
                 {
                     continue;
                 }
-                var edge = UseOtherOrCreateEdge(board, eo);
+                Edge edge = UseOtherOrCreateEdge(board, eo);
                 _hex[eo] = edge;
                 _hex.Adjacent.Add(edge);
                 edge.Adjacent.Add(_hex);
@@ -71,12 +67,12 @@ namespace MingStar.SimUniversity.Board.Constructor
         private Vertex UseOtherOrCreateVertex(Board board, VertexOrientation vo)
         {
             // can be 2 adjacent hexagons
-            foreach (var pos in VertexStaticInfo.Get(vo).RelativePositions)
+            foreach (VertexStaticInfo.RelativePosition pos in VertexStaticInfo.Get(vo).RelativePositions)
             {
-                var hex = board[_hex.Position.Add(pos.Offset)];
+                Hexagon hex = board[_hex.Position.Add(pos.Offset)];
                 if (hex == null)
                     continue;
-                var vertex = hex[pos.Orientation];
+                Vertex vertex = hex[pos.Orientation];
                 if (vertex != null)
                 {
                     return vertex;
@@ -88,10 +84,10 @@ namespace MingStar.SimUniversity.Board.Constructor
         private Edge UseOtherOrCreateEdge(Board board, EdgeOrientation eo)
         {
             // only one adjacent hexagon
-            var hex = board[_hex.GetPositionNextTo(eo)];
+            Hexagon hex = board[_hex.GetPositionNextTo(eo)];
             if (hex != null)
             {
-                var edge = hex[EdgeStaticInfo.Get(eo).OppositeEdge];
+                Edge edge = hex[EdgeStaticInfo.Get(eo).OppositeEdge];
                 if (edge != null)
                 {
                     return edge;
@@ -99,6 +95,5 @@ namespace MingStar.SimUniversity.Board.Constructor
             }
             return new Edge(_hex, eo);
         }
-
     }
 }

@@ -13,6 +13,93 @@ namespace MingStar.SimUniversity.ConsoleUI
         private int _maxXWithMaxY;
         private ConsolePixel[,] _printBuffer;
 
+        #region IViewer Members
+
+        public void PrintGame()
+        {
+            ColorConsole.WriteLine(ConsoleColor.Magenta,
+                                   "\n============= Game Phase: {0} === Turn: {1} =============",
+                                   _game.CurrentPhase,
+                                   _game.CurrentTurn);
+            UpdateBuffer();
+            PrintBufferToBoard();
+            PrintUniversityDetails();
+            PrintStats();
+        }
+
+        public void PrintStats()
+        {
+            if (_game.CurrentPhase != GamePhase.Play)
+            {
+                PrintScarcity();
+            }
+            foreach (University uni in _game.Universities)
+            {
+                ConsoleColor uniColor = (uni == _game.CurrentUniversity)
+                                            ? ConsoleColor.DarkYellow
+                                            : ConsoleColor.DarkCyan;
+                ColorConsole.Write(uniColor, "Production: {0}Uni {1} [",
+                                   (uni == _game.CurrentUniversity) ? "CURRENT " : "",
+                                   uni.Color
+                    );
+                int total = 0;
+                foreach (DegreeType degree in Constants.RealDegrees)
+                {
+                    int degreeChance = uni.ProductionChances[degree];
+                    if (degreeChance > 0)
+                    {
+                        ColorConsole.Write(uniColor, "{0}: {1} ", // ({2:#.##;;0}) ",
+                                           degree,
+                                           degreeChance //(int)GameConstants.Chance.TotalDiceRoll,
+                            //degreeChance / GameConstants.Chance.TotalDiceRoll
+                            );
+                        total += degreeChance;
+                    }
+                }
+                ColorConsole.WriteLine(uniColor, "] Total: {0}", total);
+            }
+        }
+
+        public void PrintFinalResult(TimeSpan timeTaken)
+        {
+            Console.Title = string.Format("Round {0}, Winner: {1}!", _game.Round, _game.CurrentUniversityColor);
+            PrintGame();
+            ColorConsole.WriteLine(ConsoleColor.Magenta, "Round {0}, turn {1}: the game has a winner!", _game.Round,
+                                   _game.CurrentTurn);
+            ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: {0}", timeTaken);
+            _game.GameStats.PrintDiceRolls();
+        }
+
+
+        public void PrintTitle()
+        {
+            Console.Title = string.Format("Round {0}, Turn: {1}", _game.Round, _game.CurrentTurn);
+        }
+
+
+        public void PrintLegalMove(IPlayerMove move)
+        {
+            ColorConsole.WriteLineIf(_game.HasHumanPlayer, ConsoleViewerColor.Move, move);
+        }
+
+        public void PrintIllegalMove(IPlayerMove move)
+        {
+            ColorConsole.WriteLine(ConsoleColor.Red,
+                                   "Illegal Move '{0}' for university {1}",
+                                   move,
+                                   _game.CurrentUniversity);
+        }
+
+
+        public void SetGame(Game.Game game)
+        {
+            _game = game;
+            _board = game.Board;
+            InitialiseBuffer();
+        }
+
+        #endregion
+
         /*
          * prints the board to console as something like:
          * 
@@ -60,18 +147,6 @@ namespace MingStar.SimUniversity.ConsoleUI
             return new Position(x, y);
         }
 
-        public void PrintGame()
-        {
-            ColorConsole.WriteLine(ConsoleColor.Magenta,
-                                   "\n============= Game Phase: {0} === Turn: {1} =============",
-                                   _game.CurrentPhase,
-                                   _game.CurrentTurn);
-            UpdateBuffer();
-            PrintBufferToBoard();
-            PrintUniversityDetails();
-            PrintStats();
-        }
-
         public void PrintUniversityDetails()
         {
             foreach (University uni in _game.Universities)
@@ -85,39 +160,6 @@ namespace MingStar.SimUniversity.ConsoleUI
                 {
                     ColorConsole.WriteLine(ConsoleColor.Cyan, uni);
                 }
-            }
-        }
-
-        public void PrintStats()
-        {
-            if (_game.CurrentPhase != GamePhase.Play)
-            {
-                PrintScarcity();
-            }
-            foreach (University uni in _game.Universities)
-            {
-                ConsoleColor uniColor = (uni == _game.CurrentUniversity)
-                                            ? ConsoleColor.DarkYellow
-                                            : ConsoleColor.DarkCyan;
-                ColorConsole.Write(uniColor, "Production: {0}Uni {1} [",
-                                   (uni == _game.CurrentUniversity) ? "CURRENT " : "",
-                                   uni.Color
-                    );
-                int total = 0;
-                foreach (DegreeType degree in Constants.RealDegrees)
-                {
-                    int degreeChance = uni.ProductionChances[degree];
-                    if (degreeChance > 0)
-                    {
-                        ColorConsole.Write(uniColor, "{0}: {1} ", // ({2:#.##;;0}) ",
-                                           degree,
-                                           degreeChance //(int)GameConstants.Chance.TotalDiceRoll,
-                            //degreeChance / GameConstants.Chance.TotalDiceRoll
-                            );
-                        total += degreeChance;
-                    }
-                }
-                ColorConsole.WriteLine(uniColor, "] Total: {0}", total);
             }
         }
 
@@ -161,7 +203,8 @@ namespace MingStar.SimUniversity.ConsoleUI
                                              };
             printNumberNegRed(hex.Position.X, pos.Y, pos.X - 1, true, defaultForeColor);
             printNumberNegRed(hex.Position.Y, pos.Y, pos.X + 1, false, defaultForeColor);
-            printNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true, ConsoleColor.DarkMagenta);
+            printNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true,
+                        ConsoleColor.DarkMagenta);
         }
 
         private void printNumber(int number, int bufferY, int bufferX, bool rightAligned, ConsoleColor foreColor)
@@ -292,45 +335,6 @@ namespace MingStar.SimUniversity.ConsoleUI
                 }
                 Console.WriteLine();
             }
-        }
-
-
-        public void PrintFinalResult(TimeSpan timeTaken)
-        {
-            Console.Title = string.Format("Round {0}, Winner: {1}!", _game.Round, _game.CurrentUniversityColor);
-            PrintGame();
-            ColorConsole.WriteLine(ConsoleColor.Magenta, "Round {0}, turn {1}: the game has a winner!", _game.Round,
-                                   _game.CurrentTurn);
-            ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: {0}", timeTaken);
-            _game.GameStats.PrintDiceRolls();
-        }
-
-
-        public void PrintTitle()
-        {
-            Console.Title = string.Format("Round {0}, Turn: {1}", _game.Round, _game.CurrentTurn);
-        }
-
-
-        public void PrintLegalMove(IPlayerMove move)
-        {
-            ColorConsole.WriteLineIf(_game.HasHumanPlayer, ConsoleViewerColor.Move, move);
-        }
-
-        public void PrintIllegalMove(IPlayerMove move)
-        {
-            ColorConsole.WriteLine(ConsoleColor.Red,
-                                   "Illegal Move '{0}' for university {1}",
-                                   move,
-                                   _game.CurrentUniversity);
-        }
-
-
-        public void SetGame(Game.Game game)
-        {
-            _game = game;
-            _board = game.Board;
-            InitialiseBuffer();
         }
     }
 }

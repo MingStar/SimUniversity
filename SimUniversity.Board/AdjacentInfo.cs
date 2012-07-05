@@ -6,8 +6,8 @@ namespace MingStar.SimUniversity.Board
 {
     public class AdjacentInfo
     {
-        private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
         private readonly HashSet<Edge> _edges = new HashSet<Edge>();
+        private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
         private readonly HashSet<Vertex> _vertices = new HashSet<Vertex>();
         public ReadOnlyCollection<Hexagon> Hexagons { get; private set; }
         public ReadOnlyCollection<Edge> Edges { get; private set; }

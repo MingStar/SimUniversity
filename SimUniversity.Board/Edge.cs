@@ -8,11 +8,10 @@ namespace MingStar.SimUniversity.Board
     public class Edge : Place
     {
         public readonly EdgePosition Position;
-        public Color? Color { get; internal set; }
+        private readonly EdgeCache _cache;
 
         private readonly Hexagon _originalHexagon;
         private readonly EdgeOrientation _originalOrientation;
-        private readonly EdgeCache _cache;
 
         public Edge(Hexagon hex, EdgeOrientation so)
         {
@@ -22,6 +21,8 @@ namespace MingStar.SimUniversity.Board
             Position = new EdgePosition(_originalHexagon.Position, _originalOrientation);
             _cache = new EdgeCache(this);
         }
+
+        public Color? Color { get; internal set; }
 
         public override string ToString()
         {
@@ -39,26 +40,26 @@ namespace MingStar.SimUniversity.Board
             // from the original hex
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
             {
-                var edgeOrientation = (EdgeOrientation)i;
+                var edgeOrientation = (EdgeOrientation) i;
                 if (_originalHexagon[edgeOrientation] == this)
                 {
                     // add edges
-                    this.Adjacent.Add(
+                    Adjacent.Add(
                         (from eo in EdgeStaticInfo.Get(edgeOrientation).AdjacentEdgeOrientations
                          select _originalHexagon[eo])
                         );
                     // add vertices
-                    this.Adjacent.Add(
+                    Adjacent.Add(
                         (from vo in EdgeStaticInfo.Get(edgeOrientation).AdjacentVertexOrientations
                          select _originalHexagon[vo])
                         );
                 }
             }
             // query 3 other hexes, to add edges
-            foreach (var edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
+            foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
-                var hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
-                var hex = board[hexPos];
+                Position hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
+                Hexagon hex = board[hexPos];
                 if (hex != null)
                 {
                     Adjacent.Add(hex[edgeOffset.Orientation]);
@@ -78,8 +79,8 @@ namespace MingStar.SimUniversity.Board
 
         public bool ConnectsBothEndWithSameColorEdges()
         {
-            var count = Adjacent.Vertices.Count(vertex => 
-                GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));
+            int count = Adjacent.Vertices.Count(vertex =>
+                                                GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));
             return count == 2;
         }
     }

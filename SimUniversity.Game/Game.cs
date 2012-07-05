@@ -183,9 +183,9 @@ namespace MingStar.SimUniversity.Game
         {
             var array = new DegreeCount[NumberOfUniversities];
             int index, number;
-            foreach (var hex in Board[hexID])
+            foreach (Hexagon hex in Board[hexID])
             {
-                foreach (var vertex in hex.Adjacent.Vertices)
+                foreach (Vertex vertex in hex.Adjacent.Vertices)
                 {
                     if (vertex.Campus != null)
                     {
@@ -395,7 +395,7 @@ namespace MingStar.SimUniversity.Game
                     _scarcity = new Dictionary<DegreeType, double>();
                     var hexCount = new DegreeCount();
                     var productionChance = new DegreeCount();
-                    foreach (var hex in Board.GetHexagons())
+                    foreach (Hexagon hex in Board.GetHexagons())
                     {
                         productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                         hexCount[hex.Degree] += 1;

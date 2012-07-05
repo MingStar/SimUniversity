@@ -17,14 +17,14 @@ namespace MingStar.SimUniversity.Game
         public ZobristHashing(Game game)
         {
             _game = game;
-            Board.Board board = game.Board;
-            foreach (University uni in game.Universities)
+            var board = game.Board;
+            foreach (var uni in game.Universities)
             {
                 if (!_coloredHashing.ContainsKey(uni.Color))
                 {
                     _coloredHashing[uni.Color] = new ColoredHashing();
                 }
-                ColoredHashing coloredHash = _coloredHashing[uni.Color];
+                var coloredHash = _coloredHashing[uni.Color];
                 foreach (DegreeType degree in Constants.RealDegrees)
                 {
                     for (int i = 1; i <= 20; ++i)
@@ -32,12 +32,12 @@ namespace MingStar.SimUniversity.Game
                         coloredHash.DegreeHash[degree][i] = NextNewInt64();
                     }
                 }
-                foreach (Vertex vertex in board.GetVertices())
+                foreach (var vertex in board.GetVertices())
                 {
                     coloredHash.CampusHash[CampusType.Traditional][vertex] = NextNewInt64();
                     coloredHash.CampusHash[CampusType.Super][vertex] = NextNewInt64();
                 }
-                foreach (Edge edge in board.GetEdges())
+                foreach (var edge in board.GetEdges())
                 {
                     coloredHash.LinkHash[edge] = NextNewInt64();
                 }

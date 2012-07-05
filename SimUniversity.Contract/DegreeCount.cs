@@ -32,7 +32,7 @@ namespace MingStar.SimUniversity.Contract
             var degrees = new List<DegreeType>();
             foreach (DegreeType degree in Keys)
             {
-                for (int i = 0; i < this[degree]; ++i)
+                for (var i = 0; i < this[degree]; ++i)
                 {
                     degrees.Add(degree);
                 }
@@ -43,7 +43,7 @@ namespace MingStar.SimUniversity.Contract
         public override bool Equals(object obj)
         {
             var other = obj as DegreeCount;
-            if (other == null || this.Keys.Count != other.Keys.Count)
+            if (other == null || Keys.Count != other.Keys.Count)
             {
                 return false;
             }

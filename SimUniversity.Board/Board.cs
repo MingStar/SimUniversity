@@ -14,7 +14,6 @@ namespace MingStar.SimUniversity.Board
         protected Dictionary<int, List<Hexagon>> _id2HexgonMap = new Dictionary<int, List<Hexagon>>();
         protected ReadOnlyCollection<Vertex> _vertices;
 
-
         #region Board Consturction Related
 
         public int MinX { get; private set; }
@@ -49,14 +48,12 @@ namespace MingStar.SimUniversity.Board
             _id2HexgonMap[id].Add(hex);
             return hex;
         }
+
         #endregion
 
         public Hexagon[] this[int id]
         {
-            get
-            {
-                return _id2HexgonMap.ContainsKey(id) ? _id2HexgonMap[id].ToArray() : new Hexagon[] {};
-            }
+            get { return _id2HexgonMap.ContainsKey(id) ? _id2HexgonMap[id].ToArray() : new Hexagon[] {}; }
         }
 
         public bool IsLocked { get; internal set; }
@@ -75,7 +72,7 @@ namespace MingStar.SimUniversity.Board
         {
             get
             {
-                var hex = GetHexagonOrNull(pos.HexPosition);
+                Hexagon hex = GetHexagonOrNull(pos.HexPosition);
                 return hex != null ? hex[pos.Orientation] : null;
             }
         }
@@ -84,7 +81,7 @@ namespace MingStar.SimUniversity.Board
         {
             get
             {
-                var hex = GetHexagonOrNull(pos.HexPosition);
+                Hexagon hex = GetHexagonOrNull(pos.HexPosition);
                 return hex != null ? hex[pos.Orientation] : null;
             }
         }
@@ -99,9 +96,9 @@ namespace MingStar.SimUniversity.Board
             if (_vertices == null)
             {
                 var vertices = new HashSet<Vertex>();
-                foreach (var hex in _hexagons)
+                foreach (Hexagon hex in _hexagons)
                 {
-                    foreach (var v in hex.Adjacent.Vertices)
+                    foreach (Vertex v in hex.Adjacent.Vertices)
                     {
                         vertices.Add(v);
                     }
@@ -116,9 +113,9 @@ namespace MingStar.SimUniversity.Board
             if (_edges == null)
             {
                 var edges = new HashSet<Edge>();
-                foreach (var hex in _hexagons)
+                foreach (Hexagon hex in _hexagons)
                 {
-                    foreach (var e in hex.Adjacent.Edges)
+                    foreach (Edge e in hex.Adjacent.Edges)
                     {
                         edges.Add(e);
                     }
@@ -130,11 +127,11 @@ namespace MingStar.SimUniversity.Board
 
         public void Clear()
         {
-            foreach (var vertex in GetVertices())
+            foreach (Vertex vertex in GetVertices())
             {
                 vertex.Reset();
             }
-            foreach (var edge in GetEdges())
+            foreach (Edge edge in GetEdges())
             {
                 edge.Reset();
             }

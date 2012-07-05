@@ -94,14 +94,14 @@ namespace MingStar.SimUniversity.ConsoleUI
                 var controller = new GameController(new ConsoleViewer(), game, false, players);
                 controller.Game.Round = i;
                 int winnerIndex = controller.Run();
-                var stat = stats[players[winnerIndex].Name];
+                TournamentPlayerStats stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",
                                        controller.Game.Universities[winnerIndex].Color,
                                        stat.PlayerName
                     );
                 stat.HasWon(controller.Game.GameStats.AreDiceFair());
-                foreach (var statForPrint in stats.Values)
+                foreach (TournamentPlayerStats statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();
                 }
