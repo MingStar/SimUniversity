@@ -4,6 +4,7 @@ using System.Linq;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Games;
+using MingStar.SimUniversity.Game.Move;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using MingStar.SimUniversity.Board;
@@ -14,7 +15,7 @@ namespace MingStar.SimUniversity.Tests
     public class StepsDefinition
     {
         private Board.Board _board;
-        private Game.Game _game;
+        private static Game.Game _game;
 
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
@@ -159,6 +160,15 @@ namespace MingStar.SimUniversity.Tests
                 }
             }
         }
+
+        [When(@"the enrolment happens with dice roll (.*)")]
+        public void WhenTheEnrolmentHappensWithDiceRoll(int roll)
+        {
+            Assert.LessOrEqual(roll, 12);
+            Assert.GreaterOrEqual(roll, 2);
+            //_game.EndTurn(roll);
+        }
+
 
         private DegreeCount ParseStudents(string str)
         {

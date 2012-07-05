@@ -12,6 +12,8 @@ Difference from the original COMP1711 SimUniversity game
 * Resource are Wood, Brick, Ore, Grain and Sheep (too hard to remember the student degrees)
 
 TODO:
+* Extract the game controlling logic out from the GameController and Game.ApplyMove
+* Enable mocking for the game controlling logic
 * Write tests for the game play
 
 Tidy up:

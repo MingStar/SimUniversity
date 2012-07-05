@@ -124,17 +124,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
 this.ScenarioSetup(scenarioInfo);
 #line 16
- testRunner.When("the enrolment happens with dice roll 6");
+ testRunner.When("the enrolment happens with dice roll 5");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "University",
                         "Students"});
             table2.AddRow(new string[] {
                         "Red",
-                        ""});
+                        "b"});
             table2.AddRow(new string[] {
                         "Blue",
-                        ""});
+                        "o"});
             table2.AddRow(new string[] {
                         "White",
                         ""});

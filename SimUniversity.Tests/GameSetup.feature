@@ -13,11 +13,11 @@ Scenario: 010 Set up the Catan beginnger's game
 
 @ignore
 Scenario: 020 Enrolment
-	When the enrolment happens with dice roll 6
+	When the enrolment happens with dice roll 5
 	Then the university information should be the following:
 		| University | Students |
-		| Red        |          |
-		| Blue       |          |
+		| Red        | b        |
+		| Blue       | o        |
 		| White      |          |
 		| Orange     |          |
 	And the current university of the turn should be 'Red'
