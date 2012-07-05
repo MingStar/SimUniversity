@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MingStar.SimUniversity.AI.Evaluation;
+using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.ConsoleController.View;
@@ -19,10 +20,10 @@ namespace MingStar.SimUniversity.ConsoleController
 
         private static IPlayer _randomAIPlayer = new Random();
         private static IPlayer _smarterAIPlayer = new Smarter();
-        private static readonly HumanConsolePlayer _humanConsolePlayer = new HumanConsolePlayer();
+        private static readonly ConsoleHumanPlayer _humanConsolePlayer = new ConsoleHumanPlayer();
         private static IPlayer _expetiMiniMaxAIPlayer = new ExpectiMaxN();
 
-        private static void Main(string[] args)
+        private static void Main()
         {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
             ConsoleKey key = Console.ReadKey().Key;
@@ -34,18 +35,19 @@ namespace MingStar.SimUniversity.ConsoleController
                     break;
                 case ConsoleKey.L:
                     _log.Info("start ai learning");
-                    Learning.Learn(30);
+                    var learning = new Learning(new ConsoleViewer());
+                    learning.Learn(30);
                     break;
                 default:
                     _log.Info("start human vs. ai");
-                    Run();
+                    PlayGame();
                     break;
             }
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
 
-        public static void Run()
+        public static void PlayGame()
         {
             while (true)
             {
@@ -54,8 +56,7 @@ namespace MingStar.SimUniversity.ConsoleController
                 var players = new IPlayer[4];
                 players.Fill(improvedEMM_AIPlayer);
                 players[RandomGenerator.Next(4)] = _humanConsolePlayer;
-                var consoleViewer = new ConsoleViewer(game);
-                var controller = new GameController(consoleViewer, game, true, players);
+                var controller = new GameController(new ConsoleViewer(), game, true, players);
                 _humanConsolePlayer.GameController = controller;
                 controller.Run();
                 Console.WriteLine("Try again? y/n");
@@ -91,8 +92,7 @@ namespace MingStar.SimUniversity.ConsoleController
                                           };
                     }
                 }
-                var viewer = new ConsoleViewer(game);
-                var controller = new GameController(viewer, game, false, players);
+                var controller = new GameController(new ConsoleViewer(), game, false, players);
                 controller.Game.Round = i;
                 int winnerIndex = controller.Run();
                 var stat = stats[players[winnerIndex].Name];

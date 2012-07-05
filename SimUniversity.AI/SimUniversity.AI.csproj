@@ -52,6 +52,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,9 +76,11 @@
     <Compile Include="Evaluation\SimplexLearnedScores.cs" />
     <Compile Include="Evaluation\ProductionGameScores.cs" />
     <Compile Include="HashedGameInfo.cs" />
+    <Compile Include="Learning\Learning.cs" />
     <Compile Include="Learning\NelderMeadSimplex.cs" />
     <Compile Include="Learning\RegressionResult.cs" />
     <Compile Include="Learning\SimplexConstant.cs" />
+    <Compile Include="Learning\TournamentPlayerStats.cs" />
     <Compile Include="Learning\Vector.cs" />
     <Compile Include="Player\ExpectiMaxN.cs" />
     <Compile Include="Player\ImprovedEMN.cs" />
@@ -120,6 +126,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

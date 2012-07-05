@@ -2,33 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
-using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
-using MingStar.SimUniversity.ConsoleController.View;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
 using MingStar.Utilities.Linq;
 using log4net;
 
-namespace MingStar.SimUniversity.ConsoleController
+namespace MingStar.SimUniversity.AI.Learning
 {
-    public static class Learning
+    public class Learning
     {
+        private IViewer _gameViewer;
+
         private const string FILE_NAME = "LearningResult.xml";
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
         private static bool IsFirstCall = true;
 
-        public static void Learn(int rounds)
+        public Learning(IViewer gameGameViewer)
+        {
+            _gameViewer = gameGameViewer;
+        }
+
+        public void Learn(int rounds)
         {
             _log.Info("Start to do simplex learning");
-            RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
+            var result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
             SaveResult(result);
             _log.Info("Finish to do simplex learning");
         }
 
-        private static void SaveResult(RegressionResult result)
+        private void SaveResult(RegressionResult result)
         {
             LogDoubleArray("Got result:", result.Constants);
             var s = new SimplexLearnedScores();
@@ -59,7 +64,7 @@ namespace MingStar.SimUniversity.ConsoleController
             return s.ToSimplexConstants();
         }
 
-        private static double RunTournament(double[] values)
+        private double RunTournament(double[] values)
         {
             if (IsFirstCall)
             {
@@ -69,22 +74,22 @@ namespace MingStar.SimUniversity.ConsoleController
             LogDoubleArray("Got parameters:", values);
             var learnedScores = new SimplexLearnedScores();
             learnedScores.FromResult(values);
-            DateTime _startTime = DateTime.Now;
             var stats = new Dictionary<string, TournamentPlayerStats>();
-            int numPlayers = 2;
+            const int numPlayers = 2;
             int round = 0;
             double totalScore = 0;
-            int maxTotalWinningRound = 7;
+            const int maxTotalWinningRound = 7;
             while (true)
             {
                 ++round;
+                string challengerName;
+                int challengerIndex = RandomGenerator.Next(numPlayers);
                 var game = new Game.Game((new SettlerBoardConstructor()).Board, numPlayers);
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(game, new GameScores());
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(game, learnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(_improvedEMM_AIPlayer_normal);
-                int challengerIndex = RandomGenerator.Next(numPlayers);
-                string challengerName = _improvedEMM_AIPlayer_expansion.Name;
+                challengerName = _improvedEMM_AIPlayer_expansion.Name;
                 players[challengerIndex] = _improvedEMM_AIPlayer_expansion;
                 for (int j = 0; j < numPlayers; ++j)
                 {
@@ -92,13 +97,12 @@ namespace MingStar.SimUniversity.ConsoleController
                     if (!stats.ContainsKey(name))
                     {
                         stats[name] = new TournamentPlayerStats
-                                          {
-                                              PlayerName = name
-                                          };
+                        {
+                            PlayerName = name
+                        };
                     }
                 }
-                var viewer = new ConsoleViewer(game);
-                var controller = new GameController(viewer, game, false, players);
+                var controller = new GameController(_gameViewer, game, false, players);
                 controller.Game.Round = round;
                 int winnerIndex = controller.Run();
                 TournamentPlayerStats stat = stats[players[winnerIndex].Name];
@@ -119,7 +123,6 @@ namespace MingStar.SimUniversity.ConsoleController
                     statForPrint.PrintToConsole();
                     totalRealWinCount += statForPrint.RealWinCount;
                 }
-                ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: " + (DateTime.Now - _startTime));
                 if (totalRealWinCount >= maxTotalWinningRound)
                 {
                     double winningRate = stats[challengerName].RealWinCount - (double) maxTotalWinningRound/numPlayers;
@@ -131,13 +134,14 @@ namespace MingStar.SimUniversity.ConsoleController
             return -totalScore; // return negative for function minimisation
         }
 
+
         private static double GetChallengerScore(Game.Game game, int challengerIndex)
         {
             double totalScore = 0.0;
             University challengerUni = game.Universities[challengerIndex];
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
-            foreach (University uni in game.Universities)
+            foreach (var uni in game.Universities)
             {
                 if (uni == challengerUni)
                 {

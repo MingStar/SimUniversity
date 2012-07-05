@@ -9,8 +9,8 @@ namespace MingStar.SimUniversity.ConsoleController.View
 {
     public class ConsoleViewer : IViewer
     {
-        private readonly Board.Board _board;
-        private readonly Game.Game _game;
+        private Board.Board _board;
+        private Game.Game _game;
         private int _maxXWithMaxY;
         private ConsolePixel[,] _printBuffer;
 
@@ -27,14 +27,6 @@ namespace MingStar.SimUniversity.ConsoleController.View
                      \ G /
                       T-*          
          */
-
-        public ConsoleViewer(Game.Game game)
-        {
-            _game = game;
-            _board = game.Board;
-            Debug.Assert(_board.IsLocked);
-            InitialiseBuffer();
-        }
 
         private void InitialiseBuffer()
         {
@@ -162,7 +154,7 @@ namespace MingStar.SimUniversity.ConsoleController.View
             Position pos = HexToConsole(hex.Position);
             ConsoleColor defaultForeColor = (hex.ProductionNumber == 0)
                                                 ? ConsolePixel.DefaultForeColor
-                                                : GameConsoleColor.Degree[hex.Degree];
+                                                : ConsoleViewerColor.Degree[hex.Degree];
             printNumber(hex.ProductionNumber, pos.Y - 1, pos.X, true, defaultForeColor);
             _printBuffer[pos.Y, pos.X] = new ConsolePixel(',')
                                              {
@@ -323,7 +315,7 @@ namespace MingStar.SimUniversity.ConsoleController.View
 
         public void PrintLegalMove(IPlayerMove move)
         {
-            ColorConsole.WriteLineIf(_game.HasHumanPlayer, GameConsoleColor.Move, move);
+            ColorConsole.WriteLineIf(_game.HasHumanPlayer, ConsoleViewerColor.Move, move);
         }
 
         public void PrintIllegalMove(IPlayerMove move)
@@ -332,6 +324,14 @@ namespace MingStar.SimUniversity.ConsoleController.View
                                    "Illegal Move '{0}' for university {1}",
                                    move,
                                    _game.CurrentUniversity);
+        }
+
+
+        public void SetGame(Game.Game game)
+        {
+            _game = game;
+            _board = game.Board;
+            InitialiseBuffer();
         }
     }
 }

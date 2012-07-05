@@ -1,7 +1,7 @@
 ﻿using System;
 using MingStar.Utilities;
 
-namespace MingStar.SimUniversity.ConsoleController
+namespace MingStar.SimUniversity.AI.Learning
 {
     public class TournamentPlayerStats
     {

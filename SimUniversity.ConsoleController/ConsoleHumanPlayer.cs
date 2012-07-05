@@ -9,7 +9,7 @@ using MingStar.Utilities;
 
 namespace MingStar.SimUniversity.ConsoleController
 {
-    public class HumanConsolePlayer : IPlayer
+    public class ConsoleHumanPlayer : IPlayer
     {
         private static readonly char[] s_spliters = new[] {' '};
         public GameController GameController { get; set; }

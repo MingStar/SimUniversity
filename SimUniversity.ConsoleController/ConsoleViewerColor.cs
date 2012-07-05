@@ -4,12 +4,12 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.ConsoleController.View
 {
-    public static class GameConsoleColor
+    public static class ConsoleViewerColor
     {
         public static Dictionary<DegreeType, ConsoleColor> Degree;
         public static ConsoleColor Move = ConsoleColor.Green;
 
-        static GameConsoleColor()
+        static ConsoleViewerColor()
         {
             Degree = new Dictionary<DegreeType, ConsoleColor>();
             Degree[DegreeType.Brick] = ConsoleColor.DarkYellow;

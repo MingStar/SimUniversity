@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Move;
@@ -15,6 +16,7 @@ namespace MingStar.SimUniversity.Game
         public GameController(IViewer viewer, Game game, bool hasHumanPlayer, params IPlayer[] players)
         {
             Viewer = viewer;
+            Viewer.SetGame(game);
             _players = players;
             Game = game;
             if (_players == null || _players.Length != Game.NumberOfUniversities)
@@ -22,6 +24,7 @@ namespace MingStar.SimUniversity.Game
                 throw new ArgumentException("Number of players does not match number of universities in the game");
             }
             Game.HasHumanPlayer = hasHumanPlayer;
+            Debug.Assert(Game.Board.IsLocked);
         }
 
         public int Run()
@@ -76,5 +79,7 @@ namespace MingStar.SimUniversity.Game
             Viewer.PrintFinalResult(DateTime.Now - _startTime);
             return Game.CurrentUniversityIndex;
         }
+
+
     }
 }

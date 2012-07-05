@@ -1,4 +1,5 @@
 ﻿using System;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game
 {
@@ -7,11 +8,9 @@ namespace MingStar.SimUniversity.Game
         void PrintGame();
         void PrintStats();
         void PrintFinalResult(TimeSpan timeTaken);
-
         void PrintTitle();
-
-        void PrintLegalMove(Contract.IPlayerMove move);
-
-        void PrintIllegalMove(Contract.IPlayerMove move);
+        void PrintLegalMove(IPlayerMove move);
+        void PrintIllegalMove(IPlayerMove move);
+        void SetGame(Game game);
     }
 }
