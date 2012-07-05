@@ -39,5 +39,15 @@ namespace MingStar.SimUniversity.Contract
             }
             return degrees;
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as DegreeCount;
+            if (other == null || this.Keys.Count != other.Keys.Count)
+            {
+                return false;
+            }
+            return Keys.All(key => other.ContainsKey(key) && this[key] == other[key]);
+        }
     }
 }

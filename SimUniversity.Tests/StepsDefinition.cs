@@ -132,18 +132,74 @@ namespace MingStar.SimUniversity.Tests
             StringAssert.AreEqualIgnoringCase(expected, _game.CurrentPhase.ToString());
         }
 
-        [Then(@"the player information should be the following:")]
-        public void ThenThePlayerInformationShouldBeTheFollowing(Table table)
+        [Then(@"the university information should be the following:")]
+        public void ThenTheUniversityInformationShouldBeTheFollowing(Table table)
         {
             foreach (var row in table.Rows)
             {
-                var player = _game.GetUniversityByColor((Color) Enum.Parse(typeof (Color), row["Player"]));
-                Assert.AreEqual(int.Parse(row["Score"]), _game.GetScore(player));
-                var expectedVertices = row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
-                CollectionAssert.AreEquivalent(player.Campuses, expectedVertices);
-                var expectedEdges = row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
-                CollectionAssert.AreEquivalent(player.InternetLinks, expectedEdges);
+                var university = _game.GetUniversityByColor(ParseColor(row["University"]));
+                if (row.ContainsKey("Score"))
+                {
+                    Assert.AreEqual(int.Parse(row["Score"]), _game.GetScore(university));
+                }
+                if (row.ContainsKey("Campuses"))
+                {
+                    var expectedVertices = row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
+                    CollectionAssert.AreEquivalent(university.Campuses, expectedVertices);
+                }
+                if (row.ContainsKey("Links"))
+                {
+                    var expectedEdges = row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
+                    CollectionAssert.AreEquivalent(university.InternetLinks, expectedEdges);
+                }
+                if (row.ContainsKey("Students"))
+                {
+                    var expectedStudents = ParseStudents(row["Students"]);
+                    Assert.AreEqual(expectedStudents, university.Students);
+                }
             }
+        }
+
+        private DegreeCount ParseStudents(string str)
+        {
+            var degrees = str.Split(',').Select(s => ParseStudent(s.Trim()));
+            var count = new DegreeCount();
+            foreach (var degree in degrees)
+            {
+                count[degree.Item1] += degree.Item2;
+            }
+            return count;
+        }
+
+        private Tuple<DegreeType, int> ParseStudent(string str)
+        {
+            DegreeType degree;
+            switch (str)
+            {
+                case "b":
+                    degree = DegreeType.Brick;
+                    break;
+                case "w":
+                    degree = DegreeType.Wood;
+                    break;
+                case "o":
+                    degree = DegreeType.Ore;
+                    break;
+                case "g":
+                    degree = DegreeType.Grain;                    
+                    break;
+                case "s":
+                    degree = DegreeType.Sheep;
+                    break;
+                default:
+                    return new Tuple<DegreeType, int>(DegreeType.None, 0);
+            }
+            return new Tuple<DegreeType, int>(degree, 1);
+        }
+
+        private static Color ParseColor(string color)
+        {
+            return (Color) Enum.Parse(typeof (Color), color);
         }
 
         private EdgePosition ParseEdgePosition(string str)
@@ -199,5 +255,12 @@ namespace MingStar.SimUniversity.Tests
                     throw new Exception("Unknown vertex orientation: " + str);
             }
         }
+
+        [Then(@"the current university of the turn should be '(.*)'")]
+        public void ThenTheCurrentUniversityOfTheTurnShouldBeRed(string expected)
+        {
+            Assert.AreEqual(ParseColor(expected), _game.CurrentUniversityColor);
+        }
+
     }
 }

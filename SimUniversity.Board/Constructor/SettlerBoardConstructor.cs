@@ -21,11 +21,11 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         public SettlerBoardConstructor()
         {
-            IEnumerable<DegreeType> degrees = GetDegrees();
+            var degrees = GetDegrees();
             bool isFirst = true;
-            IEnumerator<int> tokenEnumerator = GetTokens().GetEnumerator();
-            IEnumerator<EdgeOrientation> placeOrientationEnumberator = GetTokenPlaceOrders().GetEnumerator();
-            foreach (DegreeType degree in degrees)
+            var tokenEnumerator = GetTokens().GetEnumerator();
+            var placeOrientationEnumberator = GetTokenPlaceOrders().GetEnumerator();
+            foreach (var degree in degrees)
             {
                 int token;
                 DegreeType degreeToUse;
