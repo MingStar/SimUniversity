@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Move;
 using MingStar.Utilities;
 
@@ -86,10 +87,10 @@ namespace MingStar.SimUniversity.ConsoleController
                     break;
                 case "-":
                     game.UndoMove();
-                    GameController.ConsoleViewer.PrintGame();
+                    GameController.Viewer.PrintGame();
                     break;
                 case "p":
-                    GameController.ConsoleViewer.PrintStats();
+                    GameController.Viewer.PrintStats();
                     break;
                 case "/":
                     PrintMoves(ConsoleColor.Magenta, ImprovedEMN.Instance.MakeMoves(game));

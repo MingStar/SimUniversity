@@ -5,6 +5,7 @@ using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
+using MingStar.SimUniversity.ConsoleController.View;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
@@ -96,10 +97,10 @@ namespace MingStar.SimUniversity.ConsoleController
                                           };
                     }
                 }
-                var controller = new GameController(game, players);
+                var viewer = new ConsoleViewer(game);
+                var controller = new GameController(viewer, game, false, players);
                 controller.Game.Round = round;
                 int winnerIndex = controller.Run();
-                controller.PrintFinalResult();
                 TournamentPlayerStats stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",

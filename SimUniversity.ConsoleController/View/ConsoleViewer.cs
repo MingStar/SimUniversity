@@ -7,7 +7,7 @@ using MingStar.Utilities;
 
 namespace MingStar.SimUniversity.ConsoleController.View
 {
-    public class ConsoleViewer
+    public class ConsoleViewer : IViewer
     {
         private readonly Board.Board _board;
         private readonly Game.Game _game;
@@ -18,12 +18,12 @@ namespace MingStar.SimUniversity.ConsoleController.View
          * prints the board to console as something like:
          * 
                       .-.
-                     /   \
-                  .-. 12  .
-                 / 6 \   /
-                . 1,1 .-. 
+                     /12 \
+                  .-. 0,1 .
+                 / 6 \ S /
+                . 0,0 .-. 
                  \ S / 3 \
-                  .-. 0,0 .
+                  .-. 1,0 .
                      \ G /
                       T-*          
          */
@@ -301,6 +301,37 @@ namespace MingStar.SimUniversity.ConsoleController.View
                 }
                 Console.WriteLine();
             }
+        }
+
+
+        public void PrintFinalResult(TimeSpan timeTaken)
+        {
+            Console.Title = string.Format("Round {0}, Winner: {1}!", _game.Round, _game.CurrentUniversityColor);
+            PrintGame();
+            ColorConsole.WriteLine(ConsoleColor.Magenta, "Round {0}, turn {1}: the game has a winner!", _game.Round,
+                                   _game.CurrentTurn);
+            ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: {0}", timeTaken);
+            _game.GameStats.PrintDiceRolls();
+        }
+
+
+        public void PrintTitle()
+        {
+            Console.Title = string.Format("Round {0}, Turn: {1}", _game.Round, _game.CurrentTurn);
+        }
+
+
+        public void PrintLegalMove(IPlayerMove move)
+        {
+            ColorConsole.WriteLineIf(_game.HasHumanPlayer, GameConsoleColor.Move, move);
+        }
+
+        public void PrintIllegalMove(IPlayerMove move)
+        {
+            ColorConsole.WriteLine(ConsoleColor.Red,
+                                   "Illegal Move '{0}' for university {1}",
+                                   move,
+                                   _game.CurrentUniversity);
         }
     }
 }

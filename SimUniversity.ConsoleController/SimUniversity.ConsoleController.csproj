@@ -71,12 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameConsoleColor.cs" />
+    <Compile Include="View\GameConsoleColor.cs" />
     <Compile Include="Learning.cs" />
     <Compile Include="TournamentPlayerStats.cs" />
     <Compile Include="View\ConsolePixel.cs" />
-    <Compile Include="View\ConsoleView.cs" />
-    <Compile Include="GameController.cs" />
+    <Compile Include="View\ConsoleViewer.cs" />
     <Compile Include="HumanConsolePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

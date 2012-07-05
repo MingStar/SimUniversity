@@ -70,7 +70,9 @@
   <ItemGroup>
     <Compile Include="Game.cs" />
     <Compile Include="GameConstants.cs" />
+    <Compile Include="GameController.cs" />
     <Compile Include="GameStats.cs" />
+    <Compile Include="IViewer.cs" />
     <Compile Include="IZobristHashing.cs" />
     <Compile Include="MostInfo.cs" />
     <Compile Include="Move\PlayPhraseMoveGenerator.cs" />

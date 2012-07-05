@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
+using MingStar.SimUniversity.ConsoleController.View;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.Utilities;
@@ -53,8 +54,8 @@ namespace MingStar.SimUniversity.ConsoleController
                 var players = new IPlayer[4];
                 players.Fill(improvedEMM_AIPlayer);
                 players[RandomGenerator.Next(4)] = _humanConsolePlayer;
-                var controller =
-                    new GameController(game, players);
+                var consoleViewer = new ConsoleViewer(game);
+                var controller = new GameController(consoleViewer, game, true, players);
                 _humanConsolePlayer.GameController = controller;
                 controller.Run();
                 Console.WriteLine("Try again? y/n");
@@ -66,7 +67,6 @@ namespace MingStar.SimUniversity.ConsoleController
                 }
             }
         }
-
 
         public static void RunAITournament(int numPlayers, int round)
         {
@@ -91,18 +91,18 @@ namespace MingStar.SimUniversity.ConsoleController
                                           };
                     }
                 }
-                var controller = new GameController(game, players);
+                var viewer = new ConsoleViewer(game);
+                var controller = new GameController(viewer, game, false, players);
                 controller.Game.Round = i;
                 int winnerIndex = controller.Run();
-                controller.PrintFinalResult();
-                TournamentPlayerStats stat = stats[players[winnerIndex].Name];
+                var stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",
                                        controller.Game.Universities[winnerIndex].Color,
                                        stat.PlayerName
                     );
                 stat.HasWon(controller.Game.GameStats.AreDiceFair());
-                foreach (TournamentPlayerStats statForPrint in stats.Values)
+                foreach (var statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();
                 }
