@@ -1,10 +1,10 @@
 # SimUniversity
 
--- Variance of Settlers of Catan, with a University/Campus theme.
+*Variance of the board game Settlers of Catan, with a University/Campus theme.*
 
-Idea from assignment in UNSW CSE COMP1711 computing course in 2002, lecturer Richard Buckland.
+Idea from an assignment in the COMP1711 UNSW CSE computing course in 2002, lecturer Richard Buckland.
 
-### Difference from the original game:
+### Difference from the original Settlers of Catan game:
 * No player trading (yet)
 * No cards, instead players can found startup companies with a 20% success rate
 
@@ -13,10 +13,8 @@ Idea from assignment in UNSW CSE COMP1711 computing course in 2002, lecturer Ric
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
 
 ### TODO:
-* Extract the game controlling logic out from Game.ApplyMove
-* Enable mocking for the game controlling logic
 * Write tests for the game play
+* Enable deep copy of game state (so AI cannot break the actual game)
 
 ### Tidy up:
 * Remove game state hashing
-* Enable deep copy of game state
