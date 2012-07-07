@@ -1,5 +1,6 @@
 ﻿using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game.Move;
 
 namespace MingStar.SimUniversity.Game.Games
 {
@@ -50,7 +51,7 @@ namespace MingStar.SimUniversity.Game.Games
             //red
             BuildCampus(0, 2, VertexOrientation.Right, CampusType.Traditional);
             SetUpLink(0, 2, EdgeOrientation.TopRight);
-            NextTurn();
+            ApplyMove(new EndTurn());
         }
     }
 }

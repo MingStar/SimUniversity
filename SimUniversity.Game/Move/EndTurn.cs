@@ -44,7 +44,7 @@ namespace MingStar.SimUniversity.Game.Move
         {
             if (!IsDeterminated)
             {
-                SetDiceTotal(RandomGenerator.Next(6) + RandomGenerator.Next(6) + 2);
+                SetDiceTotal(Dice.GetDiceTotal());
             }
             _enrolmentInfo = game.EndTurn(DiceTotal);
         }

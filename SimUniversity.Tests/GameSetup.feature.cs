@@ -72,7 +72,9 @@ namespace MingStar.SimUniversity.Tests
 #line 3
 this.ScenarioSetup(scenarioInfo);
 #line 4
- testRunner.When("I set up the Catan beginner\'s game");
+ testRunner.When("the dice roll is predefined to 5");
+#line 5
+ testRunner.And("I set up the Catan beginner\'s game");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "University",
@@ -85,13 +87,13 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "(0, 3, bl); (0, 2, r)",
                         "(0, 3, bl); (0, 2, tr)",
-                        ""});
+                        "b"});
             table1.AddRow(new string[] {
                         "Blue",
                         "2",
                         "(0, 0, tl); (1, 0, r)",
                         "(0, 1, bl); (1, 0, br)",
-                        ""});
+                        "o"});
             table1.AddRow(new string[] {
                         "White",
                         "2",
@@ -104,46 +106,11 @@ this.ScenarioSetup(scenarioInfo);
                         "(2, 2, l); (1, 3, tl)",
                         "(2, 2, bl); (1, 3, tl)",
                         ""});
-#line 5
+#line 6
  testRunner.Then("the university information should be the following:", ((string)(null)), table1);
-#line 11
- testRunner.And("the current game phase should be \'Play\'");
 #line 12
- testRunner.And("the current university of the turn should be \'Red\'");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("020 Enrolment")]
-        [NUnit.Framework.IgnoreAttribute()]
-        public virtual void _020Enrolment()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("020 Enrolment", new string[] {
-                        "ignore"});
-#line 15
-this.ScenarioSetup(scenarioInfo);
-#line 16
- testRunner.When("the enrolment happens with dice roll 5");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "University",
-                        "Students"});
-            table2.AddRow(new string[] {
-                        "Red",
-                        "b"});
-            table2.AddRow(new string[] {
-                        "Blue",
-                        "o"});
-            table2.AddRow(new string[] {
-                        "White",
-                        ""});
-            table2.AddRow(new string[] {
-                        "Orange",
-                        ""});
-#line 17
- testRunner.Then("the university information should be the following:", ((string)(null)), table2);
-#line 23
+ testRunner.And("the current game phase should be \'Play\'");
+#line 13
  testRunner.And("the current university of the turn should be \'Red\'");
 #line hidden
             this.ScenarioCleanup();
@@ -156,9 +123,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("030 build a link", new string[] {
                         "ignore"});
-#line 26
+#line 17
 this.ScenarioSetup(scenarioInfo);
-#line 27
+#line 18
  testRunner.When("the university build an internet link at (");
 #line hidden
             this.ScenarioCleanup();

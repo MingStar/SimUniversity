@@ -6,6 +6,7 @@ using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Games;
+using MingStar.SimUniversity.Tests.Mocks;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
@@ -14,8 +15,16 @@ namespace MingStar.SimUniversity.Tests
     [Binding]
     public class StepsDefinition
     {
+        private static FakeDiceTotalGenerator _fakeDiceRoll;
         private static Game.Game _game;
         private Board.Board _board;
+
+        [BeforeTestRun]
+        public static void BeforeTestRun()
+        {
+            _fakeDiceRoll = new FakeDiceTotalGenerator();
+            Dice.DiceTotalGenerator = _fakeDiceRoll;
+        }
 
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
@@ -28,6 +37,13 @@ namespace MingStar.SimUniversity.Tests
         {
             _board = (new SettlerBoardConstructor()).Board;
         }
+
+        [When(@"the dice roll is predefined to (.*)")]
+        public void WhenTheDiceRollIsPredefinedTo(int number)
+        {
+            _fakeDiceRoll.SetNextRoll(number);
+        }
+
 
         [Then(@"there should be (.*) hexagons on the board")]
         public void ThenThereShouldBeHexagonsOnTheBoard(int expected)
