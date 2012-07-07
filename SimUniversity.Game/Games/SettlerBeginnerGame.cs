@@ -14,44 +14,36 @@ namespace MingStar.SimUniversity.Game.Games
         private void Setup()
         {
             // red
-            BuildCampus(0, 3, VertexOrientation.BottomLeft, CampusType.Traditional);
-            SetUpLink(0, 3, EdgeOrientation.BottomLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(0, 3, VertexOrientation.BottomLeft), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(0, 3, EdgeOrientation.BottomLeft)));
 
             //blue
-            BuildCampus(0, 0, VertexOrientation.TopLeft, CampusType.Traditional);
-            SetUpLink(0, 1, EdgeOrientation.BottomLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(1, 0, VertexOrientation.Right), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(1, 0, EdgeOrientation.BottomRight)));
 
             //white
-            BuildCampus(-1, 3, VertexOrientation.Left, CampusType.Traditional);
-            SetUpLink(-1, 3, EdgeOrientation.TopLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(-1, 3, VertexOrientation.Left), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(-1, 3, EdgeOrientation.TopLeft)));
 
             //orange
-            BuildCampus(2, 2, VertexOrientation.Left, CampusType.Traditional);
-            SetUpLink(2, 2, EdgeOrientation.BottomLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(1, 3, VertexOrientation.TopLeft), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(1, 3, EdgeOrientation.TopLeft)));
 
             //orange
-            BuildCampus(1, 3, VertexOrientation.TopLeft, CampusType.Traditional);
-            SetUpLink(1, 3, EdgeOrientation.TopLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(2, 2, VertexOrientation.Left), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(2, 2, EdgeOrientation.BottomLeft)));
 
             //white
-            BuildCampus(2, 0, VertexOrientation.TopLeft, CampusType.Traditional);
-            SetUpLink(2, 0, EdgeOrientation.TopLeft);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(2, 0, VertexOrientation.TopLeft), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(2, 0, EdgeOrientation.TopLeft)));
 
             //blue
-            BuildCampus(1, 0, VertexOrientation.Right, CampusType.Traditional);
-            SetUpLink(1, 0, EdgeOrientation.BottomRight);
-            NextTurn();
+            ApplyMove(new BuildCampusMove(new VertexPosition(0, 0, VertexOrientation.TopLeft), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(0, 1, EdgeOrientation.BottomLeft)));
 
             //red
-            BuildCampus(0, 2, VertexOrientation.Right, CampusType.Traditional);
-            SetUpLink(0, 2, EdgeOrientation.TopRight);
-            ApplyMove(new EndTurn());
+            ApplyMove(new BuildCampusMove(new VertexPosition(0, 2, VertexOrientation.Right), CampusType.Traditional));
+            ApplyMove(new BuildLinkMove(new EdgePosition(0, 2, EdgeOrientation.TopRight)));
         }
     }
 }

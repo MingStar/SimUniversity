@@ -42,11 +42,15 @@ namespace MingStar.SimUniversity.Game.Move
 
         public void ApplyTo(IGame game)
         {
-            if (!IsDeterminated)
+            game.NextTurn();
+            if (game.CurrentPhase == GamePhase.Play)
             {
-                SetDiceTotal(Dice.GetDiceTotal());
+                if (!IsDeterminated)
+                {
+                    SetDiceTotal(Dice.GetDiceTotal());
+                }
+                _enrolmentInfo = game.DiceRoll(DiceTotal);
             }
-            _enrolmentInfo = game.EndTurn(DiceTotal);
         }
 
         public void Undo(IGame game)

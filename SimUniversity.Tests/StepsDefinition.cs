@@ -174,7 +174,7 @@ namespace MingStar.SimUniversity.Tests
                 if (row.ContainsKey("Students"))
                 {
                     DegreeCount expectedStudents = ParseStudents(row["Students"]);
-                    Assert.AreEqual(expectedStudents, university.Students);
+                    Assert.AreEqual(expectedStudents, university.Students, "University '{0}' has different students then expected", university.Color);
                 }
             }
         }
@@ -202,6 +202,12 @@ namespace MingStar.SimUniversity.Tests
         private Tuple<DegreeType, int> ParseStudent(string str)
         {
             DegreeType degree;
+            int count = 1;
+            if (str.Length > 1)
+            {
+                count = int.Parse(str[0].ToString());
+                str = str[1].ToString();
+            }
             switch (str)
             {
                 case "b":
@@ -222,7 +228,7 @@ namespace MingStar.SimUniversity.Tests
                 default:
                     return new Tuple<DegreeType, int>(DegreeType.None, 0);
             }
-            return new Tuple<DegreeType, int>(degree, 1);
+            return new Tuple<DegreeType, int>(degree, count);
         }
 
         private static Color ParseColor(string color)

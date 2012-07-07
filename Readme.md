@@ -7,10 +7,10 @@ Idea from assignment in UNSW CSE COMP1711 computing course in 2002, lecturer Ric
 ### Difference from the original game:
 * No player trading (yet)
 * No cards, instead players can found startup companies with a 20% success rate
-* No initial resources from the setup phase
 
 ### Difference from the original COMP1711 SimUniversity game
 * Resource are Wood, Brick, Ore, Grain and Sheep (as student degrees too hard to remember)
+* Acquire students from the 2nd campus in the setup phase (same as Catan)
 
 ### TODO:
 * Extract the game controlling logic out from Game.ApplyMove

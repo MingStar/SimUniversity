@@ -221,23 +221,17 @@ namespace MingStar.SimUniversity.Game
 
         public void BuildCampus(VertexPosition whereAt, CampusType type)
         {
-            Vertex vertex = Board[whereAt];
+            var vertex = Board[whereAt];
             Board.BuildCampus(vertex, type, CurrentUniversity.Color);
             CurrentUniversity.AddCampus(vertex, type);
         }
 
         public void UndoBuildCampus(VertexPosition whereAt)
         {
-            Vertex vertex = Board[whereAt];
+            var vertex = Board[whereAt];
             CurrentUniversity.RemoveCampus(vertex);
             Board.UnBuildCampus(whereAt);
         }
-
-        //public void NextRound()
-        //{
-        //    Reset();
-        //    ++Round;
-        //}
 
         public void BuildLink(EdgePosition whereAt)
         {
@@ -282,19 +276,14 @@ namespace MingStar.SimUniversity.Game
             GameStats.UndoDiceRolled(diceTotal);
         }
 
-
-        public EnrolmentInfo EndTurn(int diceTotal)
+        public EnrolmentInfo DiceRoll(int diceTotal)
         {
-            NextTurn();
             if (CurrentPhase == GamePhase.Play)
             {
                 GameStats.DiceRolled(diceTotal);
                 return RollDice(diceTotal);
             }
-            else // setup phase
-            {
-                return null;
-            }
+            return null; // setup phase
         }
 
         public University GetUniversityByColor(Color color)
@@ -302,7 +291,7 @@ namespace MingStar.SimUniversity.Game
             return _color2University[color];
         }
 
-        public void BuildCampus(int x, int y, VertexOrientation vo, CampusType type)
+        protected void BuildCampus(int x, int y, VertexOrientation vo, CampusType type)
         {
             var whereAt = new VertexPosition(new Position(x, y), vo);
             BuildCampus(whereAt, type);
@@ -438,6 +427,10 @@ namespace MingStar.SimUniversity.Game
             if (CurrentPhase == GamePhase.Play)
             {
                 CurrentUniversity.ConsumeStudents(move);
+            }
+            if (CurrentPhase == GamePhase.Setup2 && move is BuildCampusMove)
+            {
+                CurrentUniversity.AcquireInitialStudents(((BuildCampusMove)move).WhereAt);
             }
             if (CurrentPhase != GamePhase.Play && !(move is EndTurn)) // setup phase
             {

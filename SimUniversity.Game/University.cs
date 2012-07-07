@@ -407,5 +407,17 @@ namespace MingStar.SimUniversity.Game
             Students[degree] += number;
             _game.Hashing.HashDegree(Color, degree, Students[degree]);
         }
+
+        internal void AcquireInitialStudents(VertexPosition vertexPosition)
+        {
+            var degrees = _game.Board[vertexPosition].Adjacent.Hexagons.Select(h => h.Degree);
+            foreach (var degree in degrees)
+            {
+                if (degree != DegreeType.None)
+                {
+                    Students[degree] += 1;
+                }
+            }
+        }
     }
 }

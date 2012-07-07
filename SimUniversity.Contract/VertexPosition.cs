@@ -2,6 +2,11 @@
 {
     public class VertexPosition
     {
+        public VertexPosition(int x, int y, VertexOrientation vo)
+            :this(new Position(x, y), vo)
+        {            
+        }
+
         public VertexPosition(Position position, VertexOrientation vo)
         {
             HexPosition = position;

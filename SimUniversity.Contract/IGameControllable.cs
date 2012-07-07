@@ -6,6 +6,7 @@
         bool HasWinner();
         bool IsLegalMove(IPlayerMove move);
         void ApplyMove(IPlayerMove move);
-        EnrolmentInfo EndTurn(int diceTotal);
+        EnrolmentInfo DiceRoll(int diceTotal);
+        void NextTurn();
     }
 }
