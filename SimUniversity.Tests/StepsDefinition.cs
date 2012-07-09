@@ -16,15 +16,15 @@ namespace MingStar.SimUniversity.Tests
     [Binding]
     public class StepsDefinition
     {
-        private static FakeDiceTotalGenerator _fakeDiceRoll;
+        private static FakeRandomEvent _fakeRandomEvent;
         private static Game.Game _game;
         private Board.Board _board;
 
         [BeforeTestRun]
         public static void BeforeTestRun()
         {
-            _fakeDiceRoll = new FakeDiceTotalGenerator();
-            Dice.DiceTotalGenerator = _fakeDiceRoll;
+            _fakeRandomEvent = new FakeRandomEvent();
+            Game.Game.RandomEventChance = _fakeRandomEvent;
         }
 
         [When(@"I set up the beginner board for Catan")]
@@ -42,7 +42,7 @@ namespace MingStar.SimUniversity.Tests
         [Given(@"the dice roll is predefined to (.*)")]
         public void GivenTheDiceRollIsPredefinedTo(int number)
         {
-            _fakeDiceRoll.SetNextRoll(number);
+            _fakeRandomEvent.SetNextRoll(number);
         }
 
 
@@ -175,7 +175,12 @@ namespace MingStar.SimUniversity.Tests
                 if (row.ContainsKey("Students"))
                 {
                     var expectedStudents = ParseStudents(row["Students"]);
-                    Assert.AreEqual(expectedStudents, university.Students, "University '{0}' has different students then expected", university.Color);
+                    Assert.AreEqual(expectedStudents, university.Students, 
+                        "University '{0}': expected: {1}, actual: {2}", university.Color, expectedStudents, university.Students);
+                }
+                if (row.ContainsKey("Failed Startups"))
+                {
+                    Assert.AreEqual(int.Parse(row["Failed Startups"]), university.NumberOfFailedCompanies);
                 }
             }
         }
@@ -327,5 +332,18 @@ namespace MingStar.SimUniversity.Tests
         {
             _game.ApplyMove(new EndTurn());
         }
+
+        [Given(@"the startup will fail")]
+        public void GivenTheStartupWillFail()
+        {
+            _fakeRandomEvent.SetNextStartUpSuccessful(false);
+        }
+
+        [When(@"the player found a startup company")]
+        public void WhenThePlayerFoundAStartupCompany()
+        {
+            _game.ApplyMove(new TryStartUpMove());
+        }
+
     }
 }

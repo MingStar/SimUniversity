@@ -40,7 +40,7 @@ namespace MingStar.SimUniversity.Game.Move
         {
             if (!IsDeterminated)
             {
-                _isSuccessful = (RandomGenerator.Next(5) == 0);
+                _isSuccessful = Game.RandomEventChance.IsNextStartUpSuccessful();
                 IsDeterminated = true;
             }
             game.TryStartUp(_isSuccessful);

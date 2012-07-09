@@ -6,6 +6,7 @@ using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
+using MingStar.SimUniversity.Game.Random;
 using MingStar.Utilities;
 using MingStar.Utilities.Linq;
 using log4net;
@@ -25,6 +26,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         private static void Main()
         {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
+            Game.Game.RandomEventChance = new RandomEvent();
             ConsoleKey key = Console.ReadKey().Key;
             switch (key)
             {

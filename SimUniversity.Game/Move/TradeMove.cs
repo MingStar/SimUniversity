@@ -1,4 +1,5 @@
 ﻿using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.Game.Move
 {

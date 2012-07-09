@@ -57,7 +57,10 @@ namespace MingStar.SimUniversity.Contract
             builder.Append("[");
             foreach (var degree in Constants.RealDegrees)
             {
-                builder.AppendFormat("{0} x {1}, ", degree, this[degree]);
+                if (this[degree] > 0)
+                {
+                    builder.AppendFormat("{0} x {1}, ", degree, this[degree]);
+                }
             }
             builder.Append("]");
             return builder.ToString();

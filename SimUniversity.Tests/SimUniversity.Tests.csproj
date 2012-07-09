@@ -58,7 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GameSetup.feature</DependentUpon>
     </Compile>
-    <Compile Include="Mocks\FakeDiceTotalGenerator.cs" />
+    <Compile Include="Mocks\FakeRandomEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BoardSetup.feature.cs">
       <AutoGen>True</AutoGen>

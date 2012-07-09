@@ -69,12 +69,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dice.cs" />
+    <Compile Include="Random\RandomEvent.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameConstants.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="GameStats.cs" />
-    <Compile Include="IDiceTotalRoll.cs" />
+    <Compile Include="Random\IRandomEvent.cs" />
     <Compile Include="IViewer.cs" />
     <Compile Include="IZobristHashing.cs" />
     <Compile Include="MostInfo.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Move\TradeMove.cs" />
     <Compile Include="Move\TryStartUpMove.cs" />
     <Compile Include="NullHashing.cs" />
-    <Compile Include="RandomGenerator.cs" />
+    <Compile Include="Random\RandomGenerator.cs" />
     <Compile Include="Games\SettlerBeginnerGame.cs" />
     <Compile Include="Rules\NormalRules.cs" />
     <Compile Include="Rules\HigherScoreRules.cs" />

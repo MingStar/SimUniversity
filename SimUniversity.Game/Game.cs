@@ -5,6 +5,7 @@ using System.Linq;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Move;
+using MingStar.SimUniversity.Game.Random;
 using MingStar.SimUniversity.Game.Rules;
 using MingStar.Utilities;
 
@@ -30,7 +31,7 @@ namespace MingStar.SimUniversity.Game
 
         public int Round { get; set; }
         public bool HasHumanPlayer { get; set; }
-
+        public static IRandomEvent RandomEventChance { get; set; }
         #endregion
 
         #region Public Queriable Properties

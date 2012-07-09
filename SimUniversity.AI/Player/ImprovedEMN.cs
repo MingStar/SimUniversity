@@ -2,6 +2,7 @@
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
+using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.AI.Player
 {
@@ -78,7 +79,7 @@ namespace MingStar.SimUniversity.AI.Player
                         expectedScores[i] /= totalProbability;
                     }
                     // trust it with probability
-                    if (RandomGenerator.Random.NextDouble() < totalProbability)
+                    if (RandomGenerator.NextDouble() < totalProbability)
                     {
                         bestMoves.TakeIfBetter(expectedScores, game.CurrentUniversityIndex, move);
                     }

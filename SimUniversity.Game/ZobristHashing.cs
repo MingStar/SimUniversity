@@ -12,7 +12,7 @@ namespace MingStar.SimUniversity.Game
 
         private readonly Game _game;
         private readonly HashSet<UInt64> _hashes = new HashSet<UInt64>();
-        private readonly Random _random = new Random(2009);
+        private readonly System.Random _random = new System.Random(2009);
 
         public ZobristHashing(Game game)
         {
