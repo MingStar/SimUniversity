@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MingStar.SimUniversity.Contract
 {
@@ -48,6 +49,18 @@ namespace MingStar.SimUniversity.Contract
                 return false;
             }
             return Keys.All(key => other.ContainsKey(key) && this[key] == other[key]);
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.Append("[");
+            foreach (var degree in Constants.RealDegrees)
+            {
+                builder.AppendFormat("{0} x {1}, ", degree, this[degree]);
+            }
+            builder.Append("]");
+            return builder.ToString();
         }
     }
 }

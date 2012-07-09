@@ -6,6 +6,7 @@ using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Games;
+using MingStar.SimUniversity.Game.Move;
 using MingStar.SimUniversity.Tests.Mocks;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -38,8 +39,8 @@ namespace MingStar.SimUniversity.Tests
             _board = (new SettlerBoardConstructor()).Board;
         }
 
-        [When(@"the dice roll is predefined to (.*)")]
-        public void WhenTheDiceRollIsPredefinedTo(int number)
+        [Given(@"the dice roll is predefined to (.*)")]
+        public void GivenTheDiceRollIsPredefinedTo(int number)
         {
             _fakeDiceRoll.SetNextRoll(number);
         }
@@ -167,13 +168,13 @@ namespace MingStar.SimUniversity.Tests
                 }
                 if (row.ContainsKey("Links"))
                 {
-                    IEnumerable<Edge> expectedEdges =
+                    var expectedEdges =
                         row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
                     CollectionAssert.AreEquivalent(university.InternetLinks, expectedEdges);
                 }
                 if (row.ContainsKey("Students"))
                 {
-                    DegreeCount expectedStudents = ParseStudents(row["Students"]);
+                    var expectedStudents = ParseStudents(row["Students"]);
                     Assert.AreEqual(expectedStudents, university.Students, "University '{0}' has different students then expected", university.Color);
                 }
             }
@@ -233,7 +234,18 @@ namespace MingStar.SimUniversity.Tests
 
         private static Color ParseColor(string color)
         {
-            return (Color) Enum.Parse(typeof (Color), color);
+            return (Color)Enum.Parse(typeof(Color), UppercaseFirst(color));
+        }
+
+        static string UppercaseFirst(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            char[] a = s.ToCharArray();
+            a[0] = char.ToUpper(a[0]);
+            return new string(a);
         }
 
         private EdgePosition ParseEdgePosition(string str)
@@ -295,6 +307,25 @@ namespace MingStar.SimUniversity.Tests
         public void ThenTheCurrentUniversityOfTheTurnShouldBeRed(string expected)
         {
             Assert.AreEqual(ParseColor(expected), _game.CurrentUniversityColor);
+        }
+
+        [When(@"the university build an internet link at (.*)")]
+        public void WhenTheUniversityBuildAnInternetLinkAt(string location)
+        {
+            _game.ApplyMove(new BuildLinkMove(ParseEdgePosition(location)));
+        }
+
+        [Then(@"a (.*) internet link should be at (.*)")]
+        public void ThenAInternetLinkShouldBeAt(string university, string location)
+        {
+            var edge = _game.Board[ParseEdgePosition(location)];
+            Assert.AreEqual(ParseColor(university), edge.Color);
+        }
+
+        [When(@"the turn is ended")]
+        public void WhenTheTurnIsEnded()
+        {
+            _game.ApplyMove(new EndTurn());
         }
     }
 }

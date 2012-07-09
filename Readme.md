@@ -14,6 +14,7 @@ Idea from an assignment in the COMP1711 UNSW CSE computing course in 2002, lectu
 
 ### TODO:
 * Write tests for the game play
+* Fix AI player selecting bad location in set up phase
 * Enable deep copy of game state (so AI cannot break the actual game)
 
 ### Tidy up:
