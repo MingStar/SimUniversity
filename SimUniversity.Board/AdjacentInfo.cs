@@ -10,6 +10,7 @@ namespace MingStar.SimUniversity.Board
         private readonly HashSet<IEdge> _edges = new HashSet<IEdge>();
         private readonly HashSet<IHexagon> _hexagons = new HashSet<IHexagon>();
         private readonly HashSet<IVertex> _vertices = new HashSet<IVertex>();
+
         public IEnumerable<IHexagon> Hexagons { get { return _hexagons; } }
         public IEnumerable<IEdge> Edges { get { return _edges; } }
         public IEnumerable<IVertex> Vertices { get { return _vertices; } }
