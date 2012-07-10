@@ -5,7 +5,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Edge : Place, IEdge
+    public class Edge : Place, IEdge, IEdgeForUpdate
     {
         public EdgePosition Position { get; private set; }
         private readonly EdgeCache _cache;
@@ -22,7 +22,7 @@ namespace MingStar.SimUniversity.Board
             _cache = new EdgeCache(this);
         }
 
-        public Color? Color { get; set; }
+        public Color? Color { get; private set; }
 
         public override string ToString()
         {
@@ -35,7 +35,7 @@ namespace MingStar.SimUniversity.Board
             Color = null;
         }
 
-        public void FindAllAdjacents(IBoard board)
+        public void FindAllAdjacents(Board board)
         {
             // from the original hex
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
@@ -83,5 +83,11 @@ namespace MingStar.SimUniversity.Board
                                                 GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));
             return count == 2;
         }
+
+        public void SetColor(Color color)
+        {
+            Color = color;
+        }
+
     }
 }

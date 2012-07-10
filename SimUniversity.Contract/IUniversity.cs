@@ -17,8 +17,5 @@ namespace MingStar.SimUniversity.Contract
         DegreeCount Students { get; }
         bool HasStudentsFor(DegreeType outDegree, int count);
         bool HasStudentsFor(params StudentGroup[] studentGroup);
-
-        void AddCampus(IVertex vertex, CampusType type);
-        void RemoveCampus(IVertex vertex);
     }
 }

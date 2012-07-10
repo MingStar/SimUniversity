@@ -53,7 +53,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             }
         }
 
-        internal void AddAdjacent(Hexagon hex, EdgeOrientation eo, IHexagon otherHex)
+        internal void AddAdjacent(Hexagon hex, EdgeOrientation eo, Hexagon otherHex)
         {
             hex.AdjacentForUpdate.Add(otherHex);
         }

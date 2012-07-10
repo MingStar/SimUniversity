@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Vertex : Place, IVertex
+    public class Vertex : Place, IVertex, IVertextForUpdate
     {
         #region Public Read-Only Properties
 

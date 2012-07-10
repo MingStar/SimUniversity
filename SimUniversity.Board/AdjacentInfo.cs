@@ -5,17 +5,17 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class AdjacentInfo : IAdjacentInfo, IAdjacentInfoForUpdate
+    public class AdjacentInfo : IAdjacentInfoForUpdate, IAdjacentInfo
     {
-        private readonly HashSet<IEdge> _edges = new HashSet<IEdge>();
-        private readonly HashSet<IHexagon> _hexagons = new HashSet<IHexagon>();
-        private readonly HashSet<IVertex> _vertices = new HashSet<IVertex>();
+        private readonly HashSet<Edge> _edges = new HashSet<Edge>();
+        private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
+        private readonly HashSet<Vertex> _vertices = new HashSet<Vertex>();
 
-        public IEnumerable<IHexagon> Hexagons { get { return _hexagons; } }
-        public IEnumerable<IEdge> Edges { get { return _edges; } }
-        public IEnumerable<IVertex> Vertices { get { return _vertices; } }
+        public IEnumerable<Hexagon> Hexagons { get { return _hexagons; } }
+        public IEnumerable<Edge> Edges { get { return _edges; } }
+        public IEnumerable<Vertex> Vertices { get { return _vertices; } }
 
-        public void Add(IHexagon hex)
+        public void Add(Hexagon hex)
         {
             if (hex == null)
             {
@@ -31,7 +31,7 @@ namespace MingStar.SimUniversity.Board
         }
 
 
-        public void Add(IEdge edge)
+        public void Add(Edge edge)
         {
             if (edge == null)
             {
@@ -40,12 +40,12 @@ namespace MingStar.SimUniversity.Board
             _edges.Add(edge);
         }
 
-        public void Add(IEnumerable<IEdge> edges)
+        public void Add(IEnumerable<Edge> edges)
         {
             _edges.UnionWith(edges);
         }
 
-        public void Add(IVertex vertex)
+        public void Add(Vertex vertex)
         {
             if (vertex == null)
             {
@@ -54,9 +54,24 @@ namespace MingStar.SimUniversity.Board
             _vertices.Add(vertex);
         }
 
-        public void Add(IEnumerable<IVertex> vertices)
+        public void Add(IEnumerable<Vertex> vertices)
         {
             _vertices.UnionWith(vertices);
+        }
+
+        IEnumerable<IHexagon> IAdjacentInfo.Hexagons
+        {
+            get { return _hexagons; }
+        }
+
+        IEnumerable<IEdge> IAdjacentInfo.Edges
+        {
+            get { return _edges; }
+        }
+
+        IEnumerable<IVertex> IAdjacentInfo.Vertices
+        {
+            get { return _vertices; }
         }
     }
 }
