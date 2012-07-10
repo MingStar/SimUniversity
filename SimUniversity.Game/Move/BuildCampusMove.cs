@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class BuildCampusMove : IPlayerMoveForUpdate
+    public class BuildCampusMove : IPlayerMoveForUpdate, IBuildCampusMove
     {
         public static readonly StudentGroup[] StudentsNeededForTraditionalCampus =
             StudentGroup.FromDegrees(DegreeType.Wood, DegreeType.Brick, DegreeType.Grain, DegreeType.Sheep);

@@ -2,7 +2,6 @@
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game.Move;
 
 namespace MingStar.SimUniversity.AI.Player
 {
@@ -30,12 +29,11 @@ namespace MingStar.SimUniversity.AI.Player
             {
                 return SetupPlayer.MakeMoves(game);
             }
-            var theGame = (Game.Game) game;
-            bool hasHuman = theGame.HasHumanPlayer;
-            theGame.HasHumanPlayer = false;
-            GameState scoredMoves = SearchBestMoves(theGame);
+            bool hasHuman = game.HasHumanPlayer;
+            game.HasHumanPlayer = false;
+            GameState scoredMoves = SearchBestMoves(game);
             List<IPlayerMove> moves = scoredMoves.GetMoveList();
-            theGame.HasHumanPlayer = hasHuman;
+            game.HasHumanPlayer = hasHuman;
             return moves;
         }
 
@@ -71,7 +69,7 @@ namespace MingStar.SimUniversity.AI.Player
             int currentUniversityIndex = game.CurrentUniversityIndex;
             foreach (IPlayerMove move in allMoves)
             {
-                if (move is BuildCampusMove || move is BuildLinkMove || move is TradingMove)
+                if (move is IBuildCampusMove || move is IBuildLinkMove || move is ITradingMove)
                 {
                     game.ApplyMove(move);
                     GameState nextScoredMoves = SearchBestMoves(game, depth - 1);

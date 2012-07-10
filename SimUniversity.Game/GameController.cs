@@ -11,7 +11,7 @@ namespace MingStar.SimUniversity.Game
         private readonly IPlayer[] _players;
         private DateTime _startTime;
 
-        public GameController(IViewer viewer, Game game, bool hasHumanPlayer, params IPlayer[] players)
+        public GameController(IGameViewer viewer, Game game, bool hasHumanPlayer, params IPlayer[] players)
         {
             Viewer = viewer;
             Viewer.SetGame(game);
@@ -25,7 +25,7 @@ namespace MingStar.SimUniversity.Game
             Debug.Assert(Game.Board.IsLocked);
         }
 
-        public IViewer Viewer { get; private set; }
+        public IGameViewer Viewer { get; private set; }
         public Game Game { get; private set; }
 
         public int Run()

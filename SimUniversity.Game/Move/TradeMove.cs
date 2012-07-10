@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class TradingMove : IPlayerMoveForUpdate
+    public class TradingMove : IPlayerMoveForUpdate, ITradingMove
     {
         private readonly StudentGroup[] _needed;
 

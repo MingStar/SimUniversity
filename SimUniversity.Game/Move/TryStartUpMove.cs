@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class TryStartUpMove : IProbabilityPlayerMove, IPlayerMoveForUpdate
+    public class TryStartUpMove : IProbabilityPlayerMove, IPlayerMoveForUpdate, ITryStartUpMove
     {
         #region Constructors
 

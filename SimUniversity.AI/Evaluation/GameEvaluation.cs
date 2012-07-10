@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game;
 
 namespace MingStar.SimUniversity.AI.Evaluation
 {

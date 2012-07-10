@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class BuildLinkMove : IPlayerMoveForUpdate
+    public class BuildLinkMove : IPlayerMoveForUpdate, IBuildLinkMove
     {
         public static readonly StudentGroup[] NeededStudents =
             StudentGroup.FromDegrees(DegreeType.Wood, DegreeType.Brick);

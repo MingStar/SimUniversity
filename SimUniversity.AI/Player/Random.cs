@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game.Move;
 
 namespace MingStar.SimUniversity.AI.Player
 {
@@ -10,7 +9,7 @@ namespace MingStar.SimUniversity.AI.Player
 
         public List<IPlayerMove> MakeMoves(IGame game)
         {
-            return new List<IPlayerMove> {new RandomMove()};
+            return new List<IPlayerMove> { game.RandomMove };
         }
 
         public string Name

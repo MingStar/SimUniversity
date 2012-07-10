@@ -6,7 +6,7 @@ using MingStar.Utilities;
 
 namespace MingStar.SimUniversity.ConsoleUI
 {
-    public class ConsoleViewer : IViewer
+    public class ConsoleViewer : IGameViewer
     {
         private Board.Board _board;
         private Game.Game _game;
@@ -35,11 +35,11 @@ namespace MingStar.SimUniversity.ConsoleUI
             }
             foreach (University uni in _game.Universities)
             {
-                ConsoleColor uniColor = (uni == _game.CurrentUniversity)
+                ConsoleColor uniColor = (uni == _game.CurrentIUniversity)
                                             ? ConsoleColor.DarkYellow
                                             : ConsoleColor.DarkCyan;
                 ColorConsole.Write(uniColor, "Production: {0}Uni {1} [",
-                                   (uni == _game.CurrentUniversity) ? "CURRENT " : "",
+                                   (uni == _game.CurrentIUniversity) ? "CURRENT " : "",
                                    uni.Color
                     );
                 int total = 0;

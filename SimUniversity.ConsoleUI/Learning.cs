@@ -18,9 +18,9 @@ namespace MingStar.SimUniversity.AI.Learning
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
         private static bool IsFirstCall = true;
         private readonly IPredefinedBoardConstructor _boardConstructor;
-        private readonly IViewer _gameViewer;
+        private readonly IGameViewer _gameViewer;
 
-        public Learning(IViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
+        public Learning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
             _gameViewer = gameGameViewer;
             _boardConstructor = boardConstructor;
@@ -134,13 +134,13 @@ namespace MingStar.SimUniversity.AI.Learning
         }
 
 
-        private static double GetChallengerScore(Game.Game game, int challengerIndex)
+        private static double GetChallengerScore(IGame game, int challengerIndex)
         {
             double totalScore = 0.0;
             IUniversity challengerUni = game.Universities[challengerIndex];
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
-            foreach (University uni in game.Universities)
+            foreach (var uni in game.Universities)
             {
                 if (uni == challengerUni)
                 {

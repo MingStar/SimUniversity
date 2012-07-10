@@ -8,10 +8,5 @@
         {
             return _random.Next(maxValue);
         }
-
-        public static double NextDouble()
-        {
-            return _random.NextDouble();
-        }
     }
 }

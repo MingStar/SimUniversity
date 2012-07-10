@@ -77,7 +77,6 @@
     <Compile Include="Evaluation\SimplexLearnedScores.cs" />
     <Compile Include="Evaluation\ProductionGameScores.cs" />
     <Compile Include="HashedGameInfo.cs" />
-    <Compile Include="Learning\Learning.cs" />
     <Compile Include="Learning\NelderMeadSimplex.cs" />
     <Compile Include="Learning\RegressionResult.cs" />
     <Compile Include="Learning\SimplexConstant.cs" />
@@ -101,10 +100,6 @@
     <ProjectReference Include="..\SimUniversity.Contract\SimUniversity.Contract.csproj">
       <Project>{13B70D36-3E82-4304-8DF6-E85C77A2B304}</Project>
       <Name>SimUniversity.Contract</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimUniversity.Game\SimUniversity.Game.csproj">
-      <Project>{37F4C174-81C4-4D7A-9BDD-9EDFB2240A98}</Project>
-      <Name>SimUniversity.Game</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

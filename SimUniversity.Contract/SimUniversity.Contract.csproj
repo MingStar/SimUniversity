@@ -71,8 +71,11 @@
     <Compile Include="Constants.cs" />
     <Compile Include="EnrolmentInfo.cs" />
     <Compile Include="EnumDefs.cs" />
+    <Compile Include="GameConstants.cs" />
     <Compile Include="IAdjacentInfo.cs" />
     <Compile Include="IBoard.cs" />
+    <Compile Include="IBuildCampusMove.cs" />
+    <Compile Include="IBuildLinkMove.cs" />
     <Compile Include="IPredefinedBoardConstructor.cs" />
     <Compile Include="IEdge.cs" />
     <Compile Include="IGame.cs" />
@@ -85,7 +88,9 @@
     <Compile Include="IPlace.cs" />
     <Compile Include="IProbabilityPlayerMove.cs" />
     <Compile Include="ISpecialTradingSite.cs" />
+    <Compile Include="ITradingMove.cs" />
     <Compile Include="ITradingSite.cs" />
+    <Compile Include="ITryStartUpMove.cs" />
     <Compile Include="IUniversity.cs" />
     <Compile Include="HexagonOffset.cs" />
     <Compile Include="IPlayer.cs" />

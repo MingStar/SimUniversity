@@ -76,6 +76,7 @@
     <Compile Include="ConsolePixel.cs" />
     <Compile Include="ConsoleViewer.cs" />
     <Compile Include="ConsoleHumanPlayer.cs" />
+    <Compile Include="Learning.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

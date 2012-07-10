@@ -2,8 +2,6 @@
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game;
-using MingStar.SimUniversity.Game.Move;
 using MingStar.Utilities.Linq;
 
 namespace MingStar.SimUniversity.AI.Player
@@ -37,15 +35,14 @@ namespace MingStar.SimUniversity.AI.Player
 
         #endregion
 
-        private ScoredMove ScoreMove(IGame igame, IPlayerMove move)
+        private ScoredMove ScoreMove(IGame game, IPlayerMove move)
         {
-            var game = (Game.Game) igame;
-            var buildLinkMove = move as BuildLinkMove;
+            var buildLinkMove = move as IBuildLinkMove;
             if (buildLinkMove != null)
             {
                 return GetBuildLinkMoveScore(game, buildLinkMove);
             }
-            var buildCampus = move as BuildCampusMove;
+            var buildCampus = move as IBuildCampusMove;
             return buildCampus == null
                        ? new ScoredMove(move, 100)
                        : new ScoredMove(move, GetVertexScore(game, game.IBoard[buildCampus.WhereAt]));
@@ -116,7 +113,7 @@ namespace MingStar.SimUniversity.AI.Player
         }
 
 
-        private ScoredMove GetBuildLinkMoveScore(IGame game, BuildLinkMove buildLinkMove)
+        private ScoredMove GetBuildLinkMoveScore(IGame game, IBuildLinkMove buildLinkMove)
         {
             int remainingSetupTurn = game.NumberOfUniversities*GameConstants.NumberOfInitialSetups - game.CurrentTurn;
             if (remainingSetupTurn < 0)

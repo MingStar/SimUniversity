@@ -6,7 +6,6 @@ namespace MingStar.SimUniversity.Contract
     public interface IGame : IGameControllable
     {
         Color CurrentUniversityColor { get; }
-        bool HasHumanPlayer { get; }
         int CurrentUniversityIndex { get; }
         int NumberOfUniversities { get; }
         IUniversity CurrentIUniversity { get; }
@@ -20,6 +19,7 @@ namespace MingStar.SimUniversity.Contract
         int CurrentTurn { get; }
         Dictionary<DegreeType, double> Scarcity { get; }
         GamePhase CurrentPhase { get; }
+        IPlayerMove RandomMove { get; }
 
         bool HasWinner();
         IEnumerable<IPlayerMove> GenerateAllMoves();

@@ -73,11 +73,10 @@
     <Compile Include="IPlayerMoveForUpdate.cs" />
     <Compile Include="Random\RandomEvent.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="GameConstants.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="GameStats.cs" />
     <Compile Include="Random\IRandomEvent.cs" />
-    <Compile Include="IViewer.cs" />
+    <Compile Include="IGameViewer.cs" />
     <Compile Include="IZobristHashing.cs" />
     <Compile Include="MostInfo.cs" />
     <Compile Include="Move\PlayPhraseMoveGenerator.cs" />

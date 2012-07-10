@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game
 {
-    public interface IViewer
+    public interface IGameViewer
     {
         void PrintGame();
         void PrintStats();

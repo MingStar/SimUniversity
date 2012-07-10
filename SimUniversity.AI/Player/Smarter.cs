@@ -2,7 +2,6 @@
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game.Move;
 using MingStar.Utilities.Linq;
 
 namespace MingStar.SimUniversity.AI.Player
@@ -37,25 +36,25 @@ namespace MingStar.SimUniversity.AI.Player
         private ScoredMove ScoreMove(IGame game, IPlayerMove move)
         {
             double score = 0;
-            if (move is BuildCampusMove)
+            if (move is IBuildCampusMove)
             {
-                var bMove = (BuildCampusMove) move;
+                var bMove = (IBuildCampusMove) move;
                 score = bMove.CampusType == CampusType.Super ? 30 : 20;
             }
-            else if (move is BuildLinkMove)
+            else if (move is IBuildLinkMove)
             {
                 score = 15;
-                var bMove = (BuildLinkMove) move;
+                var bMove = (IBuildLinkMove) move;
                 if (game.IBoard[bMove.WhereAt].Adjacent.Vertices.Any(vertex => vertex.IsFreeToBuildCampus()))
                 {
                     score += 1;
                 }
             }
-            else if (move is TradingMove)
+            else if (move is ITradingMove)
             {
                 score = 10;
             }
-            else if (move is TryStartUpMove)
+            else if (move is ITryStartUpMove)
             {
                 if (game.CurrentIUniversity.Students.Values.Sum() > 5)
                 {

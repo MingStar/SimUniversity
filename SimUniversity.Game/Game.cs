@@ -552,5 +552,11 @@ namespace MingStar.SimUniversity.Game
                     : _setupMoveGenerator.GenerateAllMoves(this).AsReadOnly();
             return AllMoves;
         }
+
+
+        public IPlayerMove RandomMove
+        {
+            get { return new RandomMove(); }
+        }
     }
 }

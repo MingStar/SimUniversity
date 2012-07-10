@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.AI.Player
 {
     public class ImprovedEMN : ExpectiMaxN
     {
         private static ImprovedEMN _instance;
+        private static readonly System.Random _random = new System.Random();
 
         private readonly TranspositionTable _transTable;
 
@@ -69,7 +68,7 @@ namespace MingStar.SimUniversity.AI.Player
                         expectedScores[i] /= totalProbability;
                     }
                     // trust it with probability
-                    if (RandomGenerator.NextDouble() < totalProbability)
+                    if (_random.NextDouble() < totalProbability)
                     {
                         bestMoves.TakeIfBetter(expectedScores, game.CurrentUniversityIndex, move);
                     }
