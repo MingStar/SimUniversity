@@ -77,9 +77,14 @@ namespace MingStar.SimUniversity.Game
             get { return _universities[CurrentUniversityIndex]; }
         }
 
-        public ReadOnlyCollection<IUniversity> Universities
+        public IEnumerable<IUniversity> Universities
         {
-            get { return _universities.ToList<IUniversity>().AsReadOnly(); }
+            get { return _universities; }
+        }
+
+        public IUniversity GetUniversityByIndex(int index)
+        {
+            return _universities[index];
         }
 
         public ulong Hash

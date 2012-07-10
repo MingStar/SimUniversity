@@ -9,7 +9,7 @@ namespace MingStar.SimUniversity.Contract
         int CurrentUniversityIndex { get; }
         int NumberOfUniversities { get; }
         IUniversity CurrentIUniversity { get; }
-        ReadOnlyCollection<IUniversity> Universities { get; }
+        IEnumerable<IUniversity> Universities { get; }
         IMostInfo MostFailedStartUps { get; }
         IMostInfo LongestInternetLink { get; }
         double ProbabilityWithNoCut { get; }
@@ -22,6 +22,7 @@ namespace MingStar.SimUniversity.Contract
         IPlayerMove RandomMove { get; }
 
         bool HasWinner();
+        IUniversity GetUniversityByIndex(int index);
         IEnumerable<IPlayerMove> GenerateAllMoves();
         int GetScore(IUniversity uni);
         int GetVertexProductionChance(IVertex vertex);

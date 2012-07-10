@@ -114,7 +114,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 TournamentPlayerStats stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",
-                                       controller.Game.Universities[winnerIndex].Color,
+                                       controller.Game.GetUniversityByIndex(winnerIndex).Color,
                                        stat.PlayerName
                     );
                 stat.HasWon(controller.Game.GameStats.AreDiceFair());

@@ -107,7 +107,7 @@ namespace MingStar.SimUniversity.AI.Learning
                 var stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",
-                                       controller.Game.Universities[winnerIndex].Color,
+                                       controller.Game.GetUniversityByIndex(winnerIndex).Color,
                                        stat.PlayerName
                     );
                 bool areDiceFair = controller.Game.GameStats.AreDiceFair();
@@ -125,7 +125,7 @@ namespace MingStar.SimUniversity.AI.Learning
                 if (totalRealWinCount >= maxTotalWinningRound)
                 {
                     double winningRate = stats[challengerName].RealWinCount - (double) maxTotalWinningRound/numPlayers;
-                    totalScore += winningRate*200.0;
+                    totalScore += winningRate * 200.0;
                     break;
                 }
             }
@@ -137,7 +137,7 @@ namespace MingStar.SimUniversity.AI.Learning
         private static double GetChallengerScore(IGame game, int challengerIndex)
         {
             double totalScore = 0.0;
-            IUniversity challengerUni = game.Universities[challengerIndex];
+            IUniversity challengerUni = game.GetUniversityByIndex(challengerIndex);
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
             foreach (var uni in game.Universities)

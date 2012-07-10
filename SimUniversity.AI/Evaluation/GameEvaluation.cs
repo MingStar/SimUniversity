@@ -50,18 +50,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
                       where edge.Color != uni.Color
                       select Scores.TakenOtherPlayerCampus).Sum();
             // check for free vertex
-            var checkedV = new HashSet<IVertex>();
-            foreach (IEdge link in uni.InternetLinks)
-            {
-                foreach (IVertex vertex in link.Adjacent.Vertices)
-                {
-                    if (!checkedV.Contains(vertex) && vertex.IsFreeToBuildCampus())
-                    {
-                        score += game.GetVertexProductionChance(vertex)*Scores.FutureCampus;
-                    }
-                    checkedV.Add(vertex);
-                }
-            }
+            score += uni.InternetLinks.SelectMany(l => l.Adjacent.Vertices).Distinct()
+                .Where(v => v.IsFreeToBuildCampus())
+                .Sum(v => game.GetVertexProductionChance(v) * Scores.FutureCampus);
             // try to maintain the lead
             if (game.MostFailedStartUps.University == uni)
             {
