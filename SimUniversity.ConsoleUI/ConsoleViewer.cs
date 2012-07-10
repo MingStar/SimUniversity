@@ -43,7 +43,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                                    uni.Color
                     );
                 int total = 0;
-                foreach (DegreeType degree in Constants.RealDegrees)
+                foreach (var degree in GameConstants.RealDegrees)
                 {
                     int degreeChance = uni.ProductionChances[degree];
                     if (degreeChance > 0)
@@ -161,7 +161,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         {
             const ConsoleColor color = ConsoleColor.DarkGreen;
             ColorConsole.Write(color, "Degree Scarcity: ");
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (DegreeType degree in GameConstants.RealDegrees)
             {
                 ColorConsole.Write(color, "{0}: {1:#.##} ", degree, _game.Scarcity[degree]);
             }
@@ -170,15 +170,15 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer()
         {
-            foreach (Hexagon hex in _board.GetHexagons())
+            foreach (var hex in _board.GetHexagons())
             {
                 UpdateBuffer(hex);
             }
-            foreach (Vertex vertex in _board.GetVertices())
+            foreach (var vertex in _board.GetVertices())
             {
                 UpdateBuffer(vertex);
             }
-            foreach (Edge edge in _board.GetEdges())
+            foreach (var edge in _board.GetEdges())
             {
                 UpdateBuffer(edge);
             }
@@ -186,8 +186,8 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer(Hexagon hex)
         {
-            Position pos = HexToConsole(hex.Position);
-            ConsoleColor defaultForeColor = (hex.ProductionNumber == 0)
+            var pos = HexToConsole(hex.Position);
+            var defaultForeColor = (hex.ProductionNumber == 0)
                                                 ? ConsolePixel.DefaultForeColor
                                                 : ConsoleViewerColor.Degree[hex.Degree];
             PrintNumber(hex.ProductionNumber, pos.Y - 1, pos.X, true, defaultForeColor);
@@ -249,7 +249,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer(Edge edge)
         {
-            Position pos = HexToConsole(edge.Position.HexPosition);
+            var pos = HexToConsole(edge.Position.HexPosition);
             char value = ' ';
             switch (edge.Position.Orientation)
             {
@@ -315,8 +315,8 @@ namespace MingStar.SimUniversity.ConsoleUI
                 for (int x = 0; x < _printBuffer.GetLength(1); ++x)
                 {
                     ConsolePixel pixel = _printBuffer[y, x] ?? ConsolePixel.EmptyPixel;
-                    ConsoleColor previousForeColor = Console.ForegroundColor;
-                    ConsoleColor previousBackColor = Console.BackgroundColor;
+                    var previousForeColor = Console.ForegroundColor;
+                    var previousBackColor = Console.BackgroundColor;
                     Console.ForegroundColor = pixel.ForeColor;
                     Console.BackgroundColor = pixel.BackColor;
                     Console.Write(pixel.Char);

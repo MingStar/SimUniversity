@@ -29,6 +29,16 @@ namespace MingStar.SimUniversity.Contract
             HexID2Chance[12] = 1;
         }
 
+        public static readonly DegreeType[] RealDegrees = 
+            new[]
+            {
+                DegreeType.Wood, 
+                DegreeType.Brick, 
+                DegreeType.Ore,
+                DegreeType.Grain, 
+                DegreeType.Sheep
+            };
+
         #region Nested type: Chance
 
         public static class Chance

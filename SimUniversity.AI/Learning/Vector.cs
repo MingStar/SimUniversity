@@ -101,7 +101,7 @@ namespace MingStar.SimUniversity.AI.Learning
         public override string ToString()
         {
             var components = new string[_components.Length];
-            for (int i = 0; i < components.Length; i++)
+            for (var i = 0; i < components.Length; i++)
             {
                 components[i] = _components[i].ToString();
             }

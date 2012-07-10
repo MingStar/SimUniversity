@@ -75,11 +75,11 @@ namespace MingStar.SimUniversity.Tests
         {
             foreach (TableRow row in table.Rows)
             {
-                Hexagon hex = _board[new Position(int.Parse(row["X"]), int.Parse(row["Y"]))];
+                var hex = _board[new Position(int.Parse(row["X"]), int.Parse(row["Y"]))];
                 Assert.IsNotNull(hex);
                 Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ProductionNumber);
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
-                IAdjacentInfo adj = hex.Adjacent;
+                var adj = hex.Adjacent;
                 Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count());
             }
         }
@@ -108,9 +108,9 @@ namespace MingStar.SimUniversity.Tests
 
         private void AssertAdjacentInfo(IEnumerable<IPlace> places, TableRow row)
         {
-            foreach (IPlace place in places)
+            foreach (var place in places)
             {
-                IAdjacentInfo adjacentInfo = place.Adjacent;
+                var adjacentInfo = place.Adjacent;
                 Assert.GreaterOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Min# of vertices"]));
                 Assert.LessOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Max# of vertices"]));
                 Assert.GreaterOrEqual(adjacentInfo.Edges.Count(), int.Parse(row["Min# of edges"]));
@@ -124,8 +124,8 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"the resource count should be the following:")]
         public void ThenTheResourceCountShouldBeTheFollowing(Table table)
         {
-            Hexagon[] hexes = _board.GetHexagons();
-            foreach (TableRow row in table.Rows)
+            var hexes = _board.GetHexagons();
+            foreach (var row in table.Rows)
             {
                 var type = (DegreeType) Enum.Parse(typeof (DegreeType), row["Resource"]);
                 Assert.AreEqual(int.Parse(row["Count"]), hexes.Count(h => h.Degree == type));
@@ -267,7 +267,7 @@ namespace MingStar.SimUniversity.Tests
         private EdgePosition ParseEdgePosition(string str)
         {
             string[] items = str.Trim('(', ')', ' ').Split(',').Select(s => s.Trim()).ToArray();
-            return new EdgePosition(new Position(int.Parse(items[0]), int.Parse(items[1])), GetEdgeOrientation(items[2]));
+            return new EdgePosition(int.Parse(items[0]), int.Parse(items[1]), GetEdgeOrientation(items[2]));
         }
 
         private VertexPosition ParseVertexPosition(string str)
@@ -341,7 +341,7 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"a (.*) internet link should be at (.*)")]
         public void ThenAInternetLinkShouldBeAt(string university, string location)
         {
-            Edge edge = _game.Board[ParseEdgePosition(location)];
+            var edge = _game.Board[ParseEdgePosition(location)];
             Assert.AreEqual(ParseColor(university), edge.Color);
         }
 

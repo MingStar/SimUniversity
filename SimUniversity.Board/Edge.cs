@@ -70,10 +70,10 @@ namespace MingStar.SimUniversity.Board
                 }
             }
             // query 3 other hexes, to add edges
-            foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
+            foreach (var edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
-                Position hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
-                Hexagon hex = board[hexPos];
+                var hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
+                var hex = board[hexPos];
                 if (hex != null)
                 {
                     AdjacentForUpdate.Add(hex[edgeOffset.Orientation]);

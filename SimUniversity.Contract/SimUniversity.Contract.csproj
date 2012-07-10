@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Campus.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="EnrolmentInfo.cs" />
     <Compile Include="EnumDefs.cs" />
     <Compile Include="GameConstants.cs" />

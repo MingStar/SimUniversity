@@ -16,7 +16,7 @@ namespace MingStar.SimUniversity.Game.Move
             {
                 while (true)
                 {
-                    TradeIn = (DegreeType) (RandomGenerator.Next(Constants.RealDegrees.Length) + 1);
+                    TradeIn = (DegreeType) (RandomGenerator.Next(GameConstants.RealDegrees.Length) + 1);
                     if (TradeIn != TradeOut)
                     {
                         break;

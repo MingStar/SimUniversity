@@ -29,7 +29,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
             // check for production chances
             DegreeCount productionChances = uni.ProductionChances;
             if (productionChances.Values.Count(v => v != 0)
-                == Constants.RealDegrees.Length)
+                == GameConstants.RealDegrees.Length)
             {
                 score += Scores.HasAllDegrees;
             }

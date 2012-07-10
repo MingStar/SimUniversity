@@ -13,7 +13,6 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
 
 ### TODO:
-* Fix AI player selecting bad location in set up phase
 * Write tests for the game play
 * Enable deep copy of game state (so AI cannot break the actual game)
 

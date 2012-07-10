@@ -5,12 +5,6 @@ namespace MingStar.SimUniversity.Contract
 {
     public class StudentGroup
     {
-        public StudentGroup(DegreeType degree)
-        {
-            Degree = degree;
-            Quantity = 1;
-        }
-
         public StudentGroup(DegreeType degree, int quantity)
         {
             Degree = degree;
@@ -22,9 +16,8 @@ namespace MingStar.SimUniversity.Contract
 
         public static StudentGroup[] FromDegrees(params DegreeType[] degrees)
         {
-            IEnumerable<StudentGroup> result = from degree in degrees
-                                               select new StudentGroup(degree);
-            return result.ToArray();
+            return (from degree in degrees
+                    select new StudentGroup(degree, 1)).ToArray();
         }
     }
 }

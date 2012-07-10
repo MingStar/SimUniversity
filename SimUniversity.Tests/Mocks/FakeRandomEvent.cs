@@ -14,7 +14,7 @@ namespace MingStar.SimUniversity.Tests.Mocks
         {
             if (_nextRoll.HasValue)
             {
-                int tmp = _nextRoll.Value;
+                var tmp = _nextRoll.Value;
                 _nextRoll = null;
                 return tmp;
             }

@@ -77,8 +77,8 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         public static ConsolePixel GetEdgePixel(Edge edge, char value)
         {
-            ConsoleColor backColor = DefaultBackColor;
-            ConsoleColor foreColor = DefaultForeColor;
+            var backColor = DefaultBackColor;
+            var foreColor = DefaultForeColor;
             if (edge.Color.HasValue)
             {
                 backColor = Transform(edge.Color, true);

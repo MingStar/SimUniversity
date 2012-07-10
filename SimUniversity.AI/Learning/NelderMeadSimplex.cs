@@ -139,7 +139,7 @@ namespace MingStar.SimUniversity.AI.Learning
 
             for (int index = 0; index < errorValues.Length; index++)
             {
-                double errorValue = errorValues[index];
+                var errorValue = errorValues[index];
                 if (errorValue <= errorValues[errorProfile.LowestIndex])
                 {
                     errorProfile.LowestIndex = index;
@@ -203,16 +203,16 @@ namespace MingStar.SimUniversity.AI.Learning
                                                  double[] errorValues, ObjectiveFunctionDelegate objectiveFunction)
         {
             // find the centroid through which we will reflect
-            Vector centroid = _computeCentroid(vertices, errorProfile);
+            var centroid = _computeCentroid(vertices, errorProfile);
 
             // define the vector from the centroid to the high point
-            Vector centroidToHighPoint = vertices[errorProfile.HighestIndex].Subtract(centroid);
+            var centroidToHighPoint = vertices[errorProfile.HighestIndex].Subtract(centroid);
 
             // scale and position the vector to determine the new trial point
-            Vector newPoint = centroidToHighPoint.Multiply(scaleFactor).Add(centroid);
+            var newPoint = centroidToHighPoint.Multiply(scaleFactor).Add(centroid);
 
             // evaluate the new point
-            double newErrorValue = objectiveFunction(newPoint.Components);
+            var newErrorValue = objectiveFunction(newPoint.Components);
 
             // if it's better, replace the old high point
             if (newErrorValue < errorValues[errorProfile.HighestIndex])
@@ -234,7 +234,7 @@ namespace MingStar.SimUniversity.AI.Learning
         private static void _shrinkSimplex(ErrorProfile errorProfile, Vector[] vertices, double[] errorValues,
                                            ObjectiveFunctionDelegate objectiveFunction)
         {
-            Vector lowestVertex = vertices[errorProfile.LowestIndex];
+            var lowestVertex = vertices[errorProfile.LowestIndex];
             for (int i = 0; i < vertices.Length; i++)
             {
                 if (i != errorProfile.LowestIndex)

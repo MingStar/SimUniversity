@@ -25,19 +25,19 @@ namespace MingStar.SimUniversity.Game
                     _coloredHashing[uni.Color] = new ColoredHashing();
                 }
                 ColoredHashing coloredHash = _coloredHashing[uni.Color];
-                foreach (DegreeType degree in Constants.RealDegrees)
+                foreach (DegreeType degree in GameConstants.RealDegrees)
                 {
                     for (int i = 1; i <= 20; ++i)
                     {
                         coloredHash.DegreeHash[degree][i] = NextNewInt64();
                     }
                 }
-                foreach (Vertex vertex in board.GetVertices())
+                foreach (var vertex in board.GetVertices())
                 {
                     coloredHash.CampusHash[CampusType.Traditional][vertex] = NextNewInt64();
                     coloredHash.CampusHash[CampusType.Super][vertex] = NextNewInt64();
                 }
-                foreach (Edge edge in board.GetEdges())
+                foreach (var edge in board.GetEdges())
                 {
                     coloredHash.LinkHash[edge] = NextNewInt64();
                 }
@@ -144,7 +144,7 @@ namespace MingStar.SimUniversity.Game
             public ColoredHashing()
             {
                 DegreeHash = new Dictionary<DegreeType, Dictionary<int, ulong>>();
-                foreach (DegreeType degree in Constants.RealDegrees)
+                foreach (DegreeType degree in GameConstants.RealDegrees)
                 {
                     DegreeHash[degree] = new Dictionary<int, ulong>();
                 }

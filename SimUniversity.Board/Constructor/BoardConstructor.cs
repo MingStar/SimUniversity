@@ -18,22 +18,22 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         protected void PlaceFirstHexagon(int id, DegreeType degreeType)
         {
-            Hexagon hex = Board.CreateHexagon(id, degreeType, new Position(0, 0));
+            var hex = Board.CreateHexagon(id, degreeType, new Position(0, 0));
             _lastPlacedHexagon = hex;
         }
 
         protected void PlaceNextHexagon(int id, DegreeType degreeType, EdgeOrientation eo)
         {
-            Position pos = _lastPlacedHexagon.GetPositionNextTo(eo);
+            var pos = _lastPlacedHexagon.GetPositionNextTo(eo);
             Board.GetLimits(pos);
-            Hexagon hex = Board.CreateHexagon(id, degreeType, pos);
+            var hex = Board.CreateHexagon(id, degreeType, pos);
             _lastPlacedHexagon = hex;
         }
 
         protected void PlaceHexagonsEnd()
         {
             _lastPlacedHexagon = null;
-            foreach (Hexagon hex in Board.GetHexagons())
+            foreach (var hex in Board.GetHexagons())
             {
                 (new HexagonConstructor(hex)).PlaceEnd(Board);
             }
@@ -41,7 +41,7 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         public void SetNormalSites(int x, int y, VertexOrientation vo, VertexOrientation vo2)
         {
-            Hexagon hex = Board[x, y];
+            var hex = Board[x, y];
             if (hex == null)
                 return;
             hex[vo].MakeMultiSite();
@@ -51,7 +51,7 @@ namespace MingStar.SimUniversity.Board.Constructor
         public void SetSpecializedSites(int x, int y,
                                         VertexOrientation vo, VertexOrientation vo2, DegreeType degree)
         {
-            Hexagon hex = Board[x, y];
+            var hex = Board[x, y];
             if (hex != null)
             {
                 hex[vo].MakeSpecialSite(degree);
@@ -68,10 +68,10 @@ namespace MingStar.SimUniversity.Board.Constructor
         private void FindAllAdjacents()
         {
             // for all vertices
-            foreach (Vertex vertex in Board.GetVertices())
+            foreach (var vertex in Board.GetVertices())
             {
                 // for all adjacent hexagons
-                foreach (Hexagon hex in vertex.Adjacent.Hexagons)
+                foreach (var hex in vertex.AdjacentForUpdate.Hexagons)
                 {
                     // for all vertices on the hexagon
                     for (int i = 0; i < BoardConstants.VertexOrentationCount; ++i)

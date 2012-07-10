@@ -24,6 +24,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private static void Main()
         {
+            RunMain();
             try
             {
                 RunMain();

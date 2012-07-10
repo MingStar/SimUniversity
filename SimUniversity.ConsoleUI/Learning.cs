@@ -91,9 +91,9 @@ namespace MingStar.SimUniversity.AI.Learning
                 players.Fill(_improvedEMM_AIPlayer_normal);
                 string challengerName = _improvedEMM_AIPlayer_expansion.Name;
                 players[challengerIndex] = _improvedEMM_AIPlayer_expansion;
-                for (int j = 0; j < numPlayers; ++j)
+                for (var j = 0; j < numPlayers; ++j)
                 {
-                    string name = players[j].Name;
+                    var name = players[j].Name;
                     if (!stats.ContainsKey(name))
                     {
                         stats[name] = new TournamentPlayerStats
@@ -103,8 +103,8 @@ namespace MingStar.SimUniversity.AI.Learning
                     }
                 }
                 var controller = new GameController(_gameViewer, game, false, players);
-                int winnerIndex = controller.Run();
-                TournamentPlayerStats stat = stats[players[winnerIndex].Name];
+                var winnerIndex = controller.Run();
+                var stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
                                        ">>> University {0}, AI player '{1}' has won. <<<",
                                        controller.Game.Universities[winnerIndex].Color,

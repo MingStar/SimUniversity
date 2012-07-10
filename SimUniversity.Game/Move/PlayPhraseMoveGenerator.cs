@@ -48,7 +48,7 @@ namespace MingStar.SimUniversity.Game.Move
                     AddTradingMoves(moves, specialSite.TradeOutDegree, SpecialTradingSite.TradeOutStudentQuantity);
                 }
             }
-            foreach (DegreeType outDegree in Constants.RealDegrees)
+            foreach (DegreeType outDegree in GameConstants.RealDegrees)
             {
                 if (checkedD.Contains(outDegree))
                 {
@@ -70,7 +70,7 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static void AddTradingMoves(List<IPlayerMoveForUpdate> moves, DegreeType outDegree, int quantity)
         {
-            moves.AddRange((from degree in Constants.RealDegrees
+            moves.AddRange((from degree in GameConstants.RealDegrees
                             where degree != outDegree
                             select new TradingMove(outDegree, quantity, degree)));
         }
@@ -107,9 +107,9 @@ namespace MingStar.SimUniversity.Game.Move
             var moves = new List<IPlayerMoveForUpdate>();
             if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForTraditionalCampus))
             {
-                foreach (IEdge link in currentUni.InternetLinks)
+                foreach (var link in currentUni.InternetLinks)
                 {
-                    foreach (IVertex vertex in link.Adjacent.Vertices)
+                    foreach (var vertex in link.Adjacent.Vertices)
                     {
                         if (!checkedV.Contains(vertex)
                             && vertex.IsFreeToBuildCampus())

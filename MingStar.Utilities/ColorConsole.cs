@@ -6,7 +6,7 @@ namespace MingStar.Utilities
     {
         public static void WriteLine(ConsoleColor color, string format, params object[] objects)
         {
-            ConsoleColor previousColor = Console.ForegroundColor;
+            var previousColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
             if (objects == null)
             {

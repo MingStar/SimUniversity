@@ -185,13 +185,13 @@ namespace MingStar.SimUniversity.Game
         {
             var array = new DegreeCount[NumberOfUniversities];
             int index, number;
-            foreach (Hexagon hex in Board[hexID])
+            foreach (var hex in Board[hexID])
             {
-                foreach (Vertex vertex in hex.Adjacent.Vertices)
+                foreach (var vertex in hex.Adjacent.Vertices)
                 {
                     if (vertex.Campus != null)
                     {
-                        University uni = _color2University[vertex.Campus.Color];
+                        var uni = _color2University[vertex.Campus.Color];
                         index = uni.PlayerIndex;
                         number = (vertex.Campus.Type == CampusType.Traditional) ? 1 : 2;
                         if (array[index] == null)
@@ -210,7 +210,7 @@ namespace MingStar.SimUniversity.Game
         private DegreeType[][] CutStudents()
         {
             var dict = new DegreeType[NumberOfUniversities][];
-            for (int i = 0; i < NumberOfUniversities; ++i)
+            for (var i = 0; i < NumberOfUniversities; ++i)
             {
                 dict[i] = _universities[i].CutStudents();
             }
@@ -223,21 +223,21 @@ namespace MingStar.SimUniversity.Game
 
         public void BuildCampus(VertexPosition whereAt, CampusType type)
         {
-            Vertex vertex = Board[whereAt];
+            var vertex = Board[whereAt];
             Board.BuildCampus(vertex, type, CurrentUniversity.Color);
             CurrentUniversity.AddCampus(vertex, type);
         }
 
         public void UndoBuildCampus(VertexPosition whereAt)
         {
-            Vertex vertex = Board[whereAt];
+            var vertex = Board[whereAt];
             CurrentUniversity.RemoveCampus(vertex);
             Board.UnBuildCampus(whereAt);
         }
 
         public void BuildLink(EdgePosition whereAt)
         {
-            Edge edge = Board[whereAt];
+            var edge = Board[whereAt];
             Board.BuildLink(edge, CurrentUniversity.Color);
             CurrentUniversity.AddLink(edge);
             Hashing.HashEdge(CurrentUniversityColor, edge.Position);
@@ -388,16 +388,16 @@ namespace MingStar.SimUniversity.Game
                     _scarcity = new Dictionary<DegreeType, double>();
                     var hexCount = new DegreeCount();
                     var productionChance = new DegreeCount();
-                    foreach (Hexagon hex in Board.GetHexagons())
+                    foreach (var hex in Board.GetHexagons())
                     {
                         productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                         hexCount[hex.Degree] += 1;
                     }
-                    foreach (DegreeType degree in productionChance.Keys)
+                    foreach (var degree in productionChance.Keys)
                     {
                         _scarcity[degree] = GameConstants.Chance.SingleHexagonMax
-                                            *hexCount[degree]
-                                            /(double) productionChance[degree];
+                                            * hexCount[degree]
+                                            / (double) productionChance[degree];
                     }
                 }
                 return _scarcity;

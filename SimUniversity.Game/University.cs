@@ -74,7 +74,7 @@ namespace MingStar.SimUniversity.Game
 
         private void ResetStudentCounts()
         {
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (DegreeType degree in GameConstants.RealDegrees)
             {
                 Students[degree] = 0;
             }
@@ -223,10 +223,9 @@ namespace MingStar.SimUniversity.Game
         /// <param name="vertex"></param>
         private void AddProductionChances(IVertex vertex)
         {
-            foreach (IHexagon hex in vertex.Adjacent.Hexagons)
+            foreach (var hex in vertex.Adjacent.Hexagons)
             {
                 ProductionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
-                //DiceRollProductionChances[hex.ID] += GameConstants.HexID2Chance[hex.ID];
             }
         }
 
@@ -282,9 +281,9 @@ namespace MingStar.SimUniversity.Game
         private void FullSearchLongestLink()
         {
             LengthOfLongestLink = 0;
-            foreach (IEdge edge in InternetLinks)
+            foreach (var edge in InternetLinks)
             {
-                foreach (IVertex vertex in edge.Adjacent.Vertices)
+                foreach (var vertex in edge.Adjacent.Vertices)
                 {
                     CompareLongestLink(GetLongestLink(edge, vertex, new HashSet<IEdge>()));
                 }
@@ -327,9 +326,9 @@ namespace MingStar.SimUniversity.Game
                 return null;
             }
             HashAllDegrees();
-            IEnumerable<DegreeType> suffled = Students.ToList().Shuffle();
+            var suffled = Students.ToList().Shuffle();
             ResetStudentCounts();
-            foreach (DegreeType degree in suffled.Take(GameConstants.MaxNumberOfStudents))
+            foreach (var degree in suffled.Take(GameConstants.MaxNumberOfStudents))
             {
                 ++Students[degree];
             }
@@ -339,7 +338,7 @@ namespace MingStar.SimUniversity.Game
 
         private void HashAllDegrees()
         {
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (DegreeType degree in GameConstants.RealDegrees)
             {
                 _game.Hashing.HashDegree(Color, degree, Students[degree]);
             }
@@ -389,7 +388,7 @@ namespace MingStar.SimUniversity.Game
         internal void AddBackStudents(DegreeType[] degreeType)
         {
             if (degreeType == null) return;
-            foreach (DegreeType degree in degreeType)
+            foreach (var degree in degreeType)
             {
                 Students[degree] += 1;
             }

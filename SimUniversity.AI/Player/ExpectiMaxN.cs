@@ -67,7 +67,7 @@ namespace MingStar.SimUniversity.AI.Player
             }
             var bestMoves = new GameState(game.NumberOfUniversities, double.MinValue);
             int currentUniversityIndex = game.CurrentUniversityIndex;
-            foreach (IPlayerMove move in allMoves)
+            foreach (var move in allMoves)
             {
                 if (move is IBuildCampusMove || move is IBuildLinkMove || move is ITradingMove)
                 {

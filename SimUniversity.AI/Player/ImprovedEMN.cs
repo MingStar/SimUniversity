@@ -51,7 +51,7 @@ namespace MingStar.SimUniversity.AI.Player
                     double totalProbability = 0.0;
                     foreach (var possibleMove in ((IProbabilityPlayerMove) move).AllProbabilityMoves)
                     {
-                        double thisProbability = possibleMove.Probability.Value;
+                        var thisProbability = possibleMove.Probability.Value;
                         if (thisProbability < 0.06)
                         {
                             continue; // skip 2, 12, 3, 11 for end turn

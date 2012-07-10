@@ -9,9 +9,28 @@ namespace MingStar.SimUniversity.Contract
     {
         public DegreeCount()
         {
-            foreach (DegreeType degree in Enum.GetValues(typeof (DegreeType)))
+            foreach (var degree in GameConstants.RealDegrees)
             {
                 base[degree] = 0;
+            }
+        }
+        
+        public int this[DegreeType degree]
+        {
+            get 
+            {
+                if (degree == DegreeType.None)
+                {
+                    return 0;
+                }
+                return base[degree]; 
+            }
+            set
+            {
+                if (degree != DegreeType.None)
+                {
+                    base[degree] = value;
+                }
             }
         }
 
@@ -55,7 +74,7 @@ namespace MingStar.SimUniversity.Contract
         {
             var builder = new StringBuilder();
             builder.Append("[");
-            foreach (DegreeType degree in Constants.RealDegrees)
+            foreach (var degree in GameConstants.RealDegrees)
             {
                 if (this[degree] > 0)
                 {

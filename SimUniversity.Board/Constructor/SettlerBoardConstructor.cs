@@ -16,7 +16,6 @@ namespace MingStar.SimUniversity.Board.Constructor
             _originalList[DegreeType.Brick] = 3;
             _originalList[DegreeType.Ore] = 3;
             _originalList[DegreeType.Sheep] = 4;
-            _originalList[DegreeType.None] = 1;
         }
 
         #region IPredefinedBoardConstructor Members
@@ -24,11 +23,11 @@ namespace MingStar.SimUniversity.Board.Constructor
         public IBoard ConstructBoard()
         {
             Board = new Board();
-            IEnumerable<DegreeType> degrees = GetDegrees();
+            var degrees = GetDegrees();
             bool isFirst = true;
-            IEnumerator<int> tokenEnumerator = GetTokens().GetEnumerator();
-            IEnumerator<EdgeOrientation> placeOrientationEnumberator = GetTokenPlaceOrders().GetEnumerator();
-            foreach (DegreeType degree in degrees)
+            var tokenEnumerator = GetTokens().GetEnumerator();
+            var placeOrientationEnumberator = GetTokenPlaceOrders().GetEnumerator();
+            foreach (var degree in degrees)
             {
                 int token;
                 DegreeType degreeToUse;
@@ -62,7 +61,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             SetNormalSites(1, 3, VertexOrientation.TopLeft, VertexOrientation.TopRight);
             SetNormalSites(2, 2, VertexOrientation.TopRight, VertexOrientation.Right);
 
-            IEnumerator<DegreeType> siteDegreeEnumerator = GetSpecialSiteDegrees().GetEnumerator();
+            var siteDegreeEnumerator = GetSpecialSiteDegrees().GetEnumerator();
             siteDegreeEnumerator.MoveNext();
             SetSpecializedSites(-1, 1, VertexOrientation.Left, VertexOrientation.BottomLeft,
                                 siteDegreeEnumerator.Current);
@@ -86,12 +85,14 @@ namespace MingStar.SimUniversity.Board.Constructor
 
         public virtual IEnumerable<DegreeType> GetDegrees()
         {
-            return _originalList.ToList().Shuffle();
+            var list = _originalList.ToList();
+            list.Add(DegreeType.None);
+            return list.Shuffle();
         }
 
         public virtual IEnumerable<DegreeType> GetSpecialSiteDegrees()
         {
-            return Constants.RealDegrees.Shuffle();
+            return GameConstants.RealDegrees.Shuffle();
         }
 
         public virtual IEnumerable<int> GetTokens()

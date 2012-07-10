@@ -24,7 +24,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 Console.WriteLine("Please type instruction:");
                 Console.WriteLine("(i=InternetLink, c=Campus, u=Upgrade, x=eXchange, t=TryStartUp, Enter=end turn)");
                 Console.WriteLine("(s=Save, l=Load, -=Undo, p=stats, /=suggest, .=use suggest, m=moves)");
-                string instruction = Console.ReadLine();
+                var instruction = Console.ReadLine();
                 try
                 {
                     List<IPlayerMove> moves = GetMoves(game, instruction);
