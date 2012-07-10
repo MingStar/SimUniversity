@@ -77,51 +77,26 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildLinkMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             if (!currentUni.HasStudentsFor(BuildLinkMove.NeededStudents))
             {
                 return EmptyMoves;
             }
-            var checkedE = new HashSet<IEdge>();
-            var moves = new List<IPlayerMoveForUpdate>();
-            foreach (IEdge link in currentUni.InternetLinks)
-            {
-                foreach (IEdge edge in link.Adjacent.Edges)
-                {
-                    if (edge.Color == null &&
-                        !checkedE.Contains(edge))
-                    {
-                        // we can build link
-                        moves.Add(new BuildLinkMove(edge.Position));
-                    }
-                    checkedE.Add(edge);
-                }
-            }
-            return moves;
+            return currentUni.InternetLinks.SelectMany(l => l.Adjacent.Edges).Distinct()
+                .Where(e => !e.Color.HasValue)
+                .Select(e => new BuildLinkMove(e.Position));
         }
 
         private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildTradiationCampusMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
-            var checkedV = new HashSet<IVertex>();
-            var moves = new List<IPlayerMoveForUpdate>();
-            if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForTraditionalCampus))
+            var currentUni = game.CurrentUniversity;
+            if (!currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForTraditionalCampus))
             {
-                foreach (var link in currentUni.InternetLinks)
-                {
-                    foreach (var vertex in link.Adjacent.Vertices)
-                    {
-                        if (!checkedV.Contains(vertex)
-                            && vertex.IsFreeToBuildCampus())
-                        {
-                            // we can build on this vertex
-                            moves.Add(new BuildCampusMove(vertex.Position, CampusType.Traditional));
-                        }
-                        checkedV.Add(vertex);
-                    }
-                }
+                return EmptyMoves;
             }
-            return moves;
+            return currentUni.InternetLinks.SelectMany(l => l.Adjacent.Vertices).Distinct()
+                .Where(v => v.IsFreeToBuildCampus())
+                .Select(v => new BuildCampusMove(v.Position, CampusType.Traditional));
         }
 
         private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildSuperCampusMoves(Game game)
