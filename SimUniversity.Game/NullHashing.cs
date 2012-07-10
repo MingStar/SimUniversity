@@ -4,10 +4,6 @@ namespace MingStar.SimUniversity.Game
 {
     internal class NullHashing : IZobristHashing
     {
-        public NullHashing(Game game)
-        {
-        }
-
         #region IZobristHashing Members
 
         public ulong Hash

@@ -9,7 +9,7 @@ namespace MingStar.SimUniversity.AI
 
         internal GameState GetBestScoredMoves(ulong hash, int minDepth)
         {
-            HashedGameInfo info = null;
+            HashedGameInfo info;
             _hashLookUp.TryGetValue(hash, out info);
             if (info != null && info.Depth >= minDepth)
             {

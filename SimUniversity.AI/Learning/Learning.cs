@@ -14,11 +14,11 @@ namespace MingStar.SimUniversity.AI.Learning
 {
     public class Learning
     {
-        private const string FILE_NAME = "LearningResult.xml";
+        private const string FileName = "LearningResult.xml";
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
         private static bool IsFirstCall = true;
-        private readonly IViewer _gameViewer;
         private readonly IPredefinedBoardConstructor _boardConstructor;
+        private readonly IViewer _gameViewer;
 
         public Learning(IViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
@@ -39,10 +39,10 @@ namespace MingStar.SimUniversity.AI.Learning
             LogDoubleArray("Got result:", result.Constants);
             var s = new SimplexLearnedScores();
             s.FromResult(result.Constants);
-            s.Save(FILE_NAME);
+            s.Save(FileName);
         }
 
-        private static void LogDoubleArray(string prefix, double[] array)
+        private static void LogDoubleArray(string prefix, IEnumerable<double> array)
         {
             _log.InfoFormat("{0} [{1}]",
                             prefix,
@@ -56,7 +56,7 @@ namespace MingStar.SimUniversity.AI.Learning
             SimplexLearnedScores s;
             try
             {
-                s = SimplexLearnedScores.Load(FILE_NAME);
+                s = SimplexLearnedScores.Load(FileName);
             }
             catch
             {
@@ -83,14 +83,13 @@ namespace MingStar.SimUniversity.AI.Learning
             while (true)
             {
                 ++round;
-                string challengerName;
                 int challengerIndex = RandomGenerator.Next(numPlayers);
-                var game = new Game.Game(_boardConstructor.ConstructBoard(), numPlayers);
+                var game = new Game.Game(_boardConstructor.ConstructBoard(), numPlayers) {Round = round};
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(new GameScores());
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(learnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(_improvedEMM_AIPlayer_normal);
-                challengerName = _improvedEMM_AIPlayer_expansion.Name;
+                string challengerName = _improvedEMM_AIPlayer_expansion.Name;
                 players[challengerIndex] = _improvedEMM_AIPlayer_expansion;
                 for (int j = 0; j < numPlayers; ++j)
                 {
@@ -104,7 +103,6 @@ namespace MingStar.SimUniversity.AI.Learning
                     }
                 }
                 var controller = new GameController(_gameViewer, game, false, players);
-                controller.Game.Round = round;
                 int winnerIndex = controller.Run();
                 TournamentPlayerStats stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
@@ -139,7 +137,7 @@ namespace MingStar.SimUniversity.AI.Learning
         private static double GetChallengerScore(Game.Game game, int challengerIndex)
         {
             double totalScore = 0.0;
-            var challengerUni = game.Universities[challengerIndex];
+            IUniversity challengerUni = game.Universities[challengerIndex];
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
             foreach (University uni in game.Universities)

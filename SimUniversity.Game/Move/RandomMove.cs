@@ -4,29 +4,29 @@ using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class RandomMove : IPlayerMove
+    public class RandomMove : IPlayerMoveForUpdate
     {
-        public IPlayerMove _actualMove;
+        public IPlayerMoveForUpdate _actualMove;
 
-        #region IPlayerMove Members
+        #region IPlayerMoveForUpdate Members
 
         public StudentGroup[] StudentsNeeded
         {
             get { return _actualMove.StudentsNeeded; }
         }
 
-        public void ApplyTo(IGame game)
+        public void ApplyTo(Game game)
         {
             GenerateMove(game);
             _actualMove.ApplyTo(game);
         }
 
-        public void Undo(IGame game)
+        public void Undo(Game game)
         {
             _actualMove.Undo(game);
         }
 
-        public bool IsLegalToApply(IGame game)
+        public bool IsLegalToApply(Game game)
         {
             return _actualMove.IsLegalToApply(game);
         }
@@ -43,9 +43,9 @@ namespace MingStar.SimUniversity.Game.Move
             return str;
         }
 
-        public void GenerateMove(IGame game)
+        private void GenerateMove(Game game)
         {
-            ReadOnlyCollection<IPlayerMove> moves = game.GenerateAllMoves();
+            ReadOnlyCollection<IPlayerMoveForUpdate> moves = game.GenerateAllMoves();
             int index = RandomGenerator.Next(moves.Count);
             _actualMove = moves[index];
         }

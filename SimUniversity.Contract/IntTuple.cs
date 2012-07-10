@@ -2,7 +2,7 @@
 {
     public abstract class IntTuple
     {
-        public IntTuple(int x, int y)
+        protected IntTuple(int x, int y)
         {
             X = x;
             Y = y;

@@ -35,25 +35,25 @@ namespace MingStar.SimUniversity.AI.Evaluation
             SetupDegreeModifier[DegreeType.Grain] = result[i];
             ++i;
 
-            PLAYER_SCORE_BASE = result[i];
+            PlayerScoreBase = result[i];
             ++i;
-            PRODUCTION_BASE = result[i];
+            ProductionBase = result[i];
             ++i;
-            STUDENT_NUMBER = result[i];
+            StudentNumber = result[i];
             ++i;
-            FUTURE_CAMPUS = result[i];
+            FutureCampus = result[i];
             ++i;
-            SPECIAL_SITE_MULTIPLIER = result[i];
+            SpecialSiteMultiplier = result[i];
             ++i;
-            NORMAL_SITE = result[i];
+            NormalSite = result[i];
             ++i;
-            INTERNET_LINK_MULTIPLIER = result[i];
+            InternetLinkMultiplier = result[i];
             ++i;
-            HAS_ALL_DEGREES = result[i];
+            HasAllDegrees = result[i];
             ++i;
-            TAKEN_OTHER_PLAYER_CAMPUS = result[i];
+            TakenOtherPlayerCampus = result[i];
             ++i;
-            LEAD_MOST_SCORE = result[i];
+            LeadMostScore = result[i];
         }
 
         public SimplexConstant[] ToSimplexConstants()
@@ -70,16 +70,16 @@ namespace MingStar.SimUniversity.AI.Evaluation
                     SetupDegreeModifier[DegreeType.Wood],
                     SetupDegreeModifier[DegreeType.Sheep],
                     SetupDegreeModifier[DegreeType.Grain],
-                    PLAYER_SCORE_BASE, // 9
-                    PRODUCTION_BASE,
-                    STUDENT_NUMBER,
-                    FUTURE_CAMPUS,
-                    SPECIAL_SITE_MULTIPLIER,
-                    NORMAL_SITE, // 14
-                    INTERNET_LINK_MULTIPLIER,
-                    HAS_ALL_DEGREES,
-                    TAKEN_OTHER_PLAYER_CAMPUS,
-                    LEAD_MOST_SCORE,
+                    PlayerScoreBase, // 9
+                    ProductionBase,
+                    StudentNumber,
+                    FutureCampus,
+                    SpecialSiteMultiplier,
+                    NormalSite, // 14
+                    InternetLinkMultiplier,
+                    HasAllDegrees,
+                    TakenOtherPlayerCampus,
+                    LeadMostScore
                 };
             return (from value in values
                     select new SimplexConstant(value, GetRandomPerturbation(value))

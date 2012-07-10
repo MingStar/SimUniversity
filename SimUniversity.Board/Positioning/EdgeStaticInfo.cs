@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.Board
+namespace MingStar.SimUniversity.Board.Positioning
 {
     public class EdgeStaticInfo
     {
@@ -22,7 +22,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(0, 1, EdgeOrientation.BottomLeft),
                                                       new EdgePosition(-1, 1, EdgeOrientation.TopRight),
                                                       new EdgePosition(-1, 1, EdgeOrientation.Bottom),
-                                                      new EdgePosition(-1, 0, EdgeOrientation.Top),
+                                                      new EdgePosition(-1, 0, EdgeOrientation.Top)
                                                   },
                     };
             _staticInfoDict[EdgeOrientation.BottomLeft] =
@@ -37,7 +37,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(-1, 1, EdgeOrientation.Bottom),
                                                       new EdgePosition(-1, 0, EdgeOrientation.Top),
                                                       new EdgePosition(-1, 0, EdgeOrientation.BottomRight),
-                                                      new EdgePosition(0, -1, EdgeOrientation.TopLeft),
+                                                      new EdgePosition(0, -1, EdgeOrientation.TopLeft)
                                                   },
                     };
             _staticInfoDict[EdgeOrientation.Bottom] =
@@ -52,7 +52,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(-1, 0, EdgeOrientation.BottomRight),
                                                       new EdgePosition(0, -1, EdgeOrientation.TopLeft),
                                                       new EdgePosition(0, -1, EdgeOrientation.TopRight),
-                                                      new EdgePosition(1, -1, EdgeOrientation.BottomLeft),
+                                                      new EdgePosition(1, -1, EdgeOrientation.BottomLeft)
                                                   },
                     };
             _staticInfoDict[EdgeOrientation.BottomRight] =
@@ -67,7 +67,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(0, -1, EdgeOrientation.TopRight),
                                                       new EdgePosition(1, -1, EdgeOrientation.BottomLeft),
                                                       new EdgePosition(1, -1, EdgeOrientation.Top),
-                                                      new EdgePosition(1, 0, EdgeOrientation.Bottom),
+                                                      new EdgePosition(1, 0, EdgeOrientation.Bottom)
                                                   },
                     };
             _staticInfoDict[EdgeOrientation.TopRight] =
@@ -82,7 +82,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(1, -1, EdgeOrientation.Top),
                                                       new EdgePosition(1, 0, EdgeOrientation.Bottom),
                                                       new EdgePosition(1, 0, EdgeOrientation.TopLeft),
-                                                      new EdgePosition(0, 1, EdgeOrientation.BottomRight),
+                                                      new EdgePosition(0, 1, EdgeOrientation.BottomRight)
                                                   },
                     };
             _staticInfoDict[EdgeOrientation.Top] =
@@ -97,7 +97,7 @@ namespace MingStar.SimUniversity.Board
                                                       new EdgePosition(1, 0, EdgeOrientation.TopLeft),
                                                       new EdgePosition(0, 1, EdgeOrientation.BottomRight),
                                                       new EdgePosition(0, 1, EdgeOrientation.BottomLeft),
-                                                      new EdgePosition(-1, 1, EdgeOrientation.TopRight),
+                                                      new EdgePosition(-1, 1, EdgeOrientation.TopRight)
                                                   },
                     };
         }

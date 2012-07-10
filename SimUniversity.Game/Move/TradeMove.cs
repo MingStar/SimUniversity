@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class TradingMove : IPlayerMove
+    public class TradingMove : IPlayerMoveForUpdate
     {
         private readonly StudentGroup[] _needed;
 
@@ -33,24 +33,24 @@ namespace MingStar.SimUniversity.Game.Move
         public int OutQuantity { get; private set; }
         public DegreeType TradeIn { get; private set; }
 
-        #region IPlayerMove Members
+        #region IPlayerMoveForUpdate Members
 
         public StudentGroup[] StudentsNeeded
         {
             get { return _needed; }
         }
 
-        public void ApplyTo(IGame game)
+        public void ApplyTo(Game game)
         {
             game.TradeInStudent(TradeIn);
         }
 
-        public void Undo(IGame game)
+        public void Undo(Game game)
         {
             game.UnTradeInStudent(TradeIn);
         }
 
-        public bool IsLegalToApply(IGame game)
+        public bool IsLegalToApply(Game game)
         {
             return true;
         }
@@ -63,10 +63,7 @@ namespace MingStar.SimUniversity.Game.Move
             {
                 return string.Format("Exchange {0} {1} students for any 1 student", OutQuantity, TradeOut);
             }
-            else
-            {
-                return string.Format("Exchange {0} {1} students for 1 {2} student", OutQuantity, TradeOut, TradeIn);
-            }
+            return string.Format("Exchange {0} {1} students for 1 {2} student", OutQuantity, TradeOut, TradeIn);
         }
     }
 }

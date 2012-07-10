@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.Board
+namespace MingStar.SimUniversity.Board.Positioning
 {
     public class VertexStaticInfo
     {
-        private static readonly Dictionary<VertexOrientation, VertexStaticInfo> s_lookUp;
+        private static readonly Dictionary<VertexOrientation, VertexStaticInfo> _lookUp;
 
         static VertexStaticInfo()
         {
-            s_lookUp = new Dictionary<VertexOrientation, VertexStaticInfo>();
-            s_lookUp[VertexOrientation.TopLeft] =
+            _lookUp = new Dictionary<VertexOrientation, VertexStaticInfo>();
+            _lookUp[VertexOrientation.TopLeft] =
                 new VertexStaticInfo
                     {
                         AdjacentVertexOrientations =
@@ -43,7 +43,7 @@ namespace MingStar.SimUniversity.Board
                                                         }
                                                 },
                     };
-            s_lookUp[VertexOrientation.Left] =
+            _lookUp[VertexOrientation.Left] =
                 new VertexStaticInfo
                     {
                         AdjacentVertexOrientations =
@@ -77,7 +77,7 @@ namespace MingStar.SimUniversity.Board
                                                         }
                                                 }
                     };
-            s_lookUp[VertexOrientation.BottomLeft] =
+            _lookUp[VertexOrientation.BottomLeft] =
                 new VertexStaticInfo
                     {
                         AdjacentVertexOrientations =
@@ -117,7 +117,7 @@ namespace MingStar.SimUniversity.Board
                                                         }
                                                 }
                     };
-            s_lookUp[VertexOrientation.BottomRight] = new VertexStaticInfo
+            _lookUp[VertexOrientation.BottomRight] = new VertexStaticInfo
                                                           {
                                                               AdjacentVertexOrientations =
                                                                   new[]
@@ -157,7 +157,7 @@ namespace MingStar.SimUniversity.Board
                                                                                               }
                                                                                       }
                                                           };
-            s_lookUp[VertexOrientation.Right] = new VertexStaticInfo
+            _lookUp[VertexOrientation.Right] = new VertexStaticInfo
                                                     {
                                                         AdjacentVertexOrientations =
                                                             new[]
@@ -194,7 +194,7 @@ namespace MingStar.SimUniversity.Board
                                                                                         }
                                                                                 }
                                                     };
-            s_lookUp[VertexOrientation.TopRight] = new VertexStaticInfo
+            _lookUp[VertexOrientation.TopRight] = new VertexStaticInfo
                                                        {
                                                            AdjacentVertexOrientations =
                                                                new[]
@@ -231,19 +231,19 @@ namespace MingStar.SimUniversity.Board
 
         public EdgeOrientation[] AdjacentEdgeOrientations { get; private set; }
         public VertexOrientation[] AdjacentVertexOrientations { get; private set; }
-        public RelativePosition[] RelativePositions { get; private set; }
+        internal RelativePosition[] RelativePositions { get; private set; }
 
         public static VertexStaticInfo Get(VertexOrientation vo)
         {
-            return s_lookUp[vo];
+            return _lookUp[vo];
         }
 
         #region Nested type: RelativePosition
 
-        public class RelativePosition
+        internal struct RelativePosition
         {
-            internal HexagonOffset Offset;
-            internal VertexOrientation Orientation;
+            public HexagonOffset Offset;
+            public VertexOrientation Orientation;
         }
 
         #endregion

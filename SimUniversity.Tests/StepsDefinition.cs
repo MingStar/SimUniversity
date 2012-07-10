@@ -75,11 +75,11 @@ namespace MingStar.SimUniversity.Tests
         {
             foreach (TableRow row in table.Rows)
             {
-                var hex = _board[new Position(int.Parse(row["X"]), int.Parse(row["Y"]))];
+                Hexagon hex = _board[new Position(int.Parse(row["X"]), int.Parse(row["Y"]))];
                 Assert.IsNotNull(hex);
                 Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ProductionNumber);
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
-                var adj = hex.Adjacent;
+                IAdjacentInfo adj = hex.Adjacent;
                 Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count());
             }
         }
@@ -108,9 +108,9 @@ namespace MingStar.SimUniversity.Tests
 
         private void AssertAdjacentInfo(IEnumerable<IPlace> places, TableRow row)
         {
-            foreach (var place in places)
+            foreach (IPlace place in places)
             {
-                var adjacentInfo = place.Adjacent;
+                IAdjacentInfo adjacentInfo = place.Adjacent;
                 Assert.GreaterOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Min# of vertices"]));
                 Assert.LessOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Max# of vertices"]));
                 Assert.GreaterOrEqual(adjacentInfo.Edges.Count(), int.Parse(row["Min# of edges"]));
@@ -180,21 +180,22 @@ namespace MingStar.SimUniversity.Tests
                 }
                 if (row.ContainsKey("Campuses"))
                 {
-                    var expectedVertices =
+                    IEnumerable<Vertex> expectedVertices =
                         row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
                     CollectionAssert.AreEquivalent(university.Campuses, expectedVertices);
                 }
                 if (row.ContainsKey("Links"))
                 {
-                    var expectedEdges =
+                    IEnumerable<Edge> expectedEdges =
                         row["Links"].Split(';').Select(l => _game.Board[ParseEdgePosition(l)]);
                     CollectionAssert.AreEquivalent(university.InternetLinks, expectedEdges);
                 }
                 if (row.ContainsKey("Students"))
                 {
-                    var expectedStudents = ParseStudents(row["Students"]);
-                    Assert.AreEqual(expectedStudents, university.Students, 
-                        "University '{0}': expected: {1}, actual: {2}", university.Color, expectedStudents, university.Students);
+                    DegreeCount expectedStudents = ParseStudents(row["Students"]);
+                    Assert.AreEqual(expectedStudents, university.Students,
+                                    "University '{0}': expected: {1}, actual: {2}", university.Color, expectedStudents,
+                                    university.Students);
                 }
                 if (row.ContainsKey("Failed Startups"))
                 {
@@ -249,10 +250,10 @@ namespace MingStar.SimUniversity.Tests
 
         private static Color ParseColor(string color)
         {
-            return (Color)Enum.Parse(typeof(Color), UppercaseFirst(color));
+            return (Color) Enum.Parse(typeof (Color), UppercaseFirst(color));
         }
 
-        static string UppercaseFirst(string s)
+        private static string UppercaseFirst(string s)
         {
             if (string.IsNullOrEmpty(s))
             {
@@ -325,7 +326,6 @@ namespace MingStar.SimUniversity.Tests
         }
 
 
-
         private void CheckAndApply(IPlayerMove move)
         {
             if (_game.IsLegalMove(move))
@@ -341,7 +341,7 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"a (.*) internet link should be at (.*)")]
         public void ThenAInternetLinkShouldBeAt(string university, string location)
         {
-            var edge = _game.Board[ParseEdgePosition(location)];
+            Edge edge = _game.Board[ParseEdgePosition(location)];
             Assert.AreEqual(ParseColor(university), edge.Color);
         }
 
@@ -356,7 +356,5 @@ namespace MingStar.SimUniversity.Tests
         {
             //CheckAndApply(new TradingMove(ParseStudent()));
         }
-
-
     }
 }

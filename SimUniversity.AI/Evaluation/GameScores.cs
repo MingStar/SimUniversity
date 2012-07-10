@@ -7,32 +7,32 @@ namespace MingStar.SimUniversity.AI.Evaluation
     [Serializable]
     public class GameScores
     {
-        public XmlSerializableDictionary<DegreeType, double> DegreeModifier;
-        public double FUTURE_CAMPUS;
-        public double HAS_ALL_DEGREES;
-        public double INTERNET_LINK_MULTIPLIER;
-        public double LEAD_MOST_SCORE;
-        public double NORMAL_SITE;
+        public XmlSerializableDictionary<DegreeType, double> DegreeModifier { get; protected set; }
+        public double FutureCampus { get; protected set; }
+        public double HasAllDegrees { get; protected set; }
+        public double InternetLinkMultiplier { get; protected set; }
+        public double LeadMostScore { get; protected set; }
+        public double NormalSite { get; protected set; }
 
-        public double PLAYER_SCORE_BASE;
-        public double PRODUCTION_BASE;
-        public double SPECIAL_SITE_MULTIPLIER;
-        public double STUDENT_NUMBER;
-        public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier;
-        public double TAKEN_OTHER_PLAYER_CAMPUS;
+        public double PlayerScoreBase { get; protected set; }
+        public double ProductionBase { get; protected set; }
+        public double SpecialSiteMultiplier { get; protected set; }
+        public double StudentNumber { get; protected set; }
+        public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier { get; protected set; }
+        public double TakenOtherPlayerCampus { get; protected set; }
 
         public GameScores()
         {
-            PLAYER_SCORE_BASE = 80.0;
-            PRODUCTION_BASE = 100.0;
-            STUDENT_NUMBER = 16.0; // 3.0;
-            FUTURE_CAMPUS = 30.0;
-            SPECIAL_SITE_MULTIPLIER = 10.0;
-            NORMAL_SITE = 200.0;
-            INTERNET_LINK_MULTIPLIER = 10.0;
-            HAS_ALL_DEGREES = 100.0;
-            TAKEN_OTHER_PLAYER_CAMPUS = 100.0;
-            LEAD_MOST_SCORE = 100.0;
+            PlayerScoreBase = 80.0;
+            ProductionBase = 100.0;
+            StudentNumber = 16.0; // 3.0;
+            FutureCampus = 30.0;
+            SpecialSiteMultiplier = 10.0;
+            NormalSite = 200.0;
+            InternetLinkMultiplier = 10.0;
+            HasAllDegrees = 100.0;
+            TakenOtherPlayerCampus = 100.0;
+            LeadMostScore = 100.0;
 
             DegreeModifier = new XmlSerializableDictionary<DegreeType, double>();
             DegreeModifier[DegreeType.Ore] = 1.4;

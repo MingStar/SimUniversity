@@ -134,12 +134,6 @@ namespace MingStar.SimUniversity.ConsoleUI
             _printBuffer = new ConsolePixel[maxY,maxX];
         }
 
-
-        private static bool IsEven(int n)
-        {
-            return n%2 == 0;
-        }
-
         private Position HexToConsole(Position hexPos)
         {
             int x = (hexPos.X - _board.MinX)*4 + 3;
@@ -165,7 +159,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void PrintScarcity()
         {
-            ConsoleColor color = ConsoleColor.DarkGreen;
+            const ConsoleColor color = ConsoleColor.DarkGreen;
             ColorConsole.Write(color, "Degree Scarcity: ");
             foreach (DegreeType degree in Constants.RealDegrees)
             {
@@ -196,18 +190,18 @@ namespace MingStar.SimUniversity.ConsoleUI
             ConsoleColor defaultForeColor = (hex.ProductionNumber == 0)
                                                 ? ConsolePixel.DefaultForeColor
                                                 : ConsoleViewerColor.Degree[hex.Degree];
-            printNumber(hex.ProductionNumber, pos.Y - 1, pos.X, true, defaultForeColor);
+            PrintNumber(hex.ProductionNumber, pos.Y - 1, pos.X, true, defaultForeColor);
             _printBuffer[pos.Y, pos.X] = new ConsolePixel(',')
                                              {
                                                  ForeColor = defaultForeColor,
                                              };
             printNumberNegRed(hex.Position.X, pos.Y, pos.X - 1, true, defaultForeColor);
             printNumberNegRed(hex.Position.Y, pos.Y, pos.X + 1, false, defaultForeColor);
-            printNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true,
+            PrintNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true,
                         ConsoleColor.DarkMagenta);
         }
 
-        private void printNumber(int number, int bufferY, int bufferX, bool rightAligned, ConsoleColor foreColor)
+        private void PrintNumber(int number, int bufferY, int bufferX, bool rightAligned, ConsoleColor foreColor)
         {
             bool negative = number < 0;
             number = Math.Abs(number);
@@ -320,11 +314,7 @@ namespace MingStar.SimUniversity.ConsoleUI
             {
                 for (int x = 0; x < _printBuffer.GetLength(1); ++x)
                 {
-                    ConsolePixel pixel = _printBuffer[y, x];
-                    if (pixel == null)
-                    {
-                        pixel = ConsolePixel.EmptyPixel;
-                    }
+                    ConsolePixel pixel = _printBuffer[y, x] ?? ConsolePixel.EmptyPixel;
                     ConsoleColor previousForeColor = Console.ForegroundColor;
                     ConsoleColor previousBackColor = Console.BackgroundColor;
                     Console.ForegroundColor = pixel.ForeColor;

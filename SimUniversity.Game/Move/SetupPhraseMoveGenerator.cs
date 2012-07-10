@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
@@ -19,54 +18,27 @@ namespace MingStar.SimUniversity.Game.Move
             ShouldBuildCampus = !ShouldBuildCampus;
         }
 
-        public List<IPlayerMove> GenerateAllMoves(Game game)
+        public List<IPlayerMoveForUpdate> GenerateAllMoves(Game game)
         {
-            var possibleMoves = new List<IPlayerMove>();
-            if (ShouldBuildCampus)
-            {
-                // build campuses
-                possibleMoves.AddRange(GenerateBuildTradiationCampusMoves(game));
-            }
-            else
-            {
-                // build links
-                possibleMoves.AddRange(GenerateBuildLinkMoves(game));
-            }
-            return possibleMoves;
+            return (ShouldBuildCampus
+                        ? GenerateBuildTradiationCampusMoves(game)
+                        : GenerateBuildLinkMoves(game)).ToList();
         }
 
-        private static List<IPlayerMove> GenerateBuildLinkMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildLinkMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
-            var moves = new List<IPlayerMove>();
-            foreach (IVertex campus in currentUni.Campuses)
-            {
-                if (campus.Adjacent.Edges.Any(e => e.Color != null))
-                {
-                    continue;
-                }
-                foreach (IEdge edge in campus.Adjacent.Edges)
-                {
-                    // we can build link
-                    moves.Add(new BuildLinkMove(edge.Position));
-                }
-            }
-            return moves;
+            University currentUni = game.CurrentUniversity;
+            return (from campus in currentUni.Campuses
+                    where campus.Adjacent.Edges.All(e => e.Color == null)
+                    from edge in campus.Adjacent.Edges
+                    select new BuildLinkMove(edge.Position));
         }
 
-        private static List<IPlayerMove> GenerateBuildTradiationCampusMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildTradiationCampusMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
-            var checkedV = new HashSet<Vertex>();
-            var moves = new List<IPlayerMove>();
-            foreach (var vertex in game.Board.GetVertices())
-            {
-                if (vertex.IsFreeToBuildCampus())
-                {
-                    moves.Add(new BuildCampusMove(vertex.Position, CampusType.Traditional));
-                }
-            }
-            return moves;
+            return (from vertex in game.Board.GetVertices()
+                    where vertex.IsFreeToBuildCampus()
+                    select new BuildCampusMove(vertex.Position, CampusType.Traditional));
         }
     }
 }

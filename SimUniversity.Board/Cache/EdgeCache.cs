@@ -17,10 +17,10 @@ namespace MingStar.SimUniversity.Board.Cache
 
         public void Cache()
         {
-            foreach (var vertex in _edge.Adjacent.Vertices)
+            foreach (IVertex vertex in _edge.Adjacent.Vertices)
             {
                 _edgesSharingVertex[vertex] = new List<IEdge>();
-                foreach (var edge in _edge.Adjacent.Edges)
+                foreach (IEdge edge in _edge.Adjacent.Edges)
                 {
                     if (edge.Adjacent.Vertices.Contains(vertex))
                     {

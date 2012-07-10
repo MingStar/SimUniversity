@@ -19,45 +19,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             _originalList[DegreeType.None] = 1;
         }
 
-        public virtual IEnumerable<DegreeType> GetDegrees()
-        {
-            return _originalList.ToList().Shuffle();
-        }
-
-        public virtual IEnumerable<DegreeType> GetSpecialSiteDegrees()
-        {
-            return Constants.RealDegrees.Shuffle();
-        }
-
-        public virtual IEnumerable<int> GetTokens()
-        {
-            return new[] {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
-        }
-
-        public virtual IEnumerable<EdgeOrientation> GetTokenPlaceOrders()
-        {
-            return new[]
-                       {
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.BottomRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.TopRight
-                       };
-        }
+        #region IPredefinedBoardConstructor Members
 
         public IBoard ConstructBoard()
         {
@@ -118,6 +80,48 @@ namespace MingStar.SimUniversity.Board.Constructor
                                 siteDegreeEnumerator.Current);
             Lock();
             return Board;
+        }
+
+        #endregion
+
+        public virtual IEnumerable<DegreeType> GetDegrees()
+        {
+            return _originalList.ToList().Shuffle();
+        }
+
+        public virtual IEnumerable<DegreeType> GetSpecialSiteDegrees()
+        {
+            return Constants.RealDegrees.Shuffle();
+        }
+
+        public virtual IEnumerable<int> GetTokens()
+        {
+            return new[] {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
+        }
+
+        public virtual IEnumerable<EdgeOrientation> GetTokenPlaceOrders()
+        {
+            return new[]
+                       {
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.BottomRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.TopRight
+                       };
         }
     }
 }

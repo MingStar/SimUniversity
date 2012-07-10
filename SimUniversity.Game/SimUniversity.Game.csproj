@@ -69,6 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGameForUpdate.cs" />
+    <Compile Include="IPlayerMoveForUpdate.cs" />
     <Compile Include="Random\RandomEvent.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameConstants.cs" />

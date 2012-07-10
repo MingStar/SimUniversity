@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Random;
@@ -21,18 +22,11 @@ namespace MingStar.SimUniversity.AI.Player
 
         public static ImprovedEMN Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new ImprovedEMN();
-                }
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new ImprovedEMN()); }
         }
 
 
-        public override GameState SearchBestMoves(Game.Game game)
+        public override GameState SearchBestMoves(IGame game)
         {
             return SearchBestMoves(game, 4, game.CurrentUniversityIndex);
         }
@@ -44,10 +38,10 @@ namespace MingStar.SimUniversity.AI.Player
             {
                 return new GameState(Evaluate(game));
             }
-            ReadOnlyCollection<IPlayerMove> allMoves = game.GenerateAllMoves();
-            if (allMoves.Count == 1 && playerIndex == game.CurrentUniversityIndex)
+            var allMoves = game.GenerateAllMoves();
+            if (allMoves.Count() == 1 && playerIndex == game.CurrentUniversityIndex)
             {
-                return new GameState(allMoves[0], Evaluate(game));
+                return new GameState(allMoves.First(), Evaluate(game));
             }
             var bestMoves = new GameState(game.NumberOfUniversities, double.MinValue);
             foreach (IPlayerMove move in allMoves)
@@ -56,7 +50,7 @@ namespace MingStar.SimUniversity.AI.Player
                 {
                     var expectedScores = new GameState(game.NumberOfUniversities, 0);
                     double totalProbability = 0.0;
-                    foreach (IProbabilityPlayerMove possibleMove in ((IProbabilityPlayerMove) move).AllProbabilityMoves)
+                    foreach (var possibleMove in ((IProbabilityPlayerMove) move).AllProbabilityMoves)
                     {
                         double thisProbability = possibleMove.Probability.Value;
                         if (thisProbability < 0.06)

@@ -1,8 +1,9 @@
-﻿using MingStar.SimUniversity.Contract;
+﻿using System.Collections.Generic;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class EndTurn : IProbabilityPlayerMove
+    public class EndTurn : IProbabilityPlayerMove, IPlayerMoveForUpdate
     {
         private EnrolmentInfo _enrolmentInfo;
         public int DiceTotal { get; private set; }
@@ -30,17 +31,9 @@ namespace MingStar.SimUniversity.Game.Move
 
         #endregion
 
-        #region IProbabilityPlayerMove Members
+        #region IPlayerMoveForUpdate Members
 
-        public bool IsDeterminated { get; set; }
-        public double? Probability { get; private set; }
-
-        public StudentGroup[] StudentsNeeded
-        {
-            get { return null; }
-        }
-
-        public void ApplyTo(IGame game)
+        public void ApplyTo(Game game)
         {
             game.NextTurn();
             if (game.CurrentPhase == GamePhase.Play)
@@ -53,18 +46,30 @@ namespace MingStar.SimUniversity.Game.Move
             }
         }
 
-        public void Undo(IGame game)
+        public void Undo(Game game)
         {
             game.UndoEndTurn(DiceTotal, _enrolmentInfo);
         }
 
 
-        public bool IsLegalToApply(IGame game)
+        public bool IsLegalToApply(Game game)
         {
             return game.CurrentPhase == GamePhase.Play;
         }
 
-        public IProbabilityPlayerMove[] AllProbabilityMoves
+        #endregion
+
+        #region IProbabilityPlayerMove Members
+
+        public bool IsDeterminated { get; set; }
+        public double? Probability { get; private set; }
+
+        public StudentGroup[] StudentsNeeded
+        {
+            get { return null; }
+        }
+
+        public IEnumerable<IProbabilityPlayerMove> AllProbabilityMoves
         {
             get
             {
@@ -80,7 +85,7 @@ namespace MingStar.SimUniversity.Game.Move
                                new EndTurn(9),
                                new EndTurn(10),
                                new EndTurn(11),
-                               new EndTurn(12),
+                               new EndTurn(12)
                            };
             }
         }

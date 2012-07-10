@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.Board.Cache;
+using MingStar.SimUniversity.Board.Positioning;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
     public class Edge : Place, IEdge, IEdgeForUpdate
     {
-        public EdgePosition Position { get; private set; }
         private readonly EdgeCache _cache;
 
         private readonly Hexagon _originalHexagon;
@@ -22,13 +22,27 @@ namespace MingStar.SimUniversity.Board
             _cache = new EdgeCache(this);
         }
 
+        #region IEdge Members
+
+        public EdgePosition Position { get; private set; }
+
         public Color? Color { get; private set; }
 
-        public override string ToString()
+        public IEnumerable<IEdge> GetAdjacentEdgesSharedWith(IVertex vertex)
         {
-            return string.Format("Edge [{0}, {1}, {2}]",
-                                 _originalHexagon.Position, _originalOrientation, Color);
+            return _cache.GetAdjacentEdgesSharedWith(vertex);
         }
+
+        public bool ConnectsBothEndWithSameColorEdges()
+        {
+            int count = Adjacent.Vertices.Count(vertex =>
+                                                GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));
+            return count == 2;
+        }
+
+        #endregion
+
+        #region IEdgeForUpdate Members
 
         public override void Reset()
         {
@@ -59,7 +73,7 @@ namespace MingStar.SimUniversity.Board
             foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
                 Position hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
-                var hex = board[hexPos];
+                Hexagon hex = board[hexPos];
                 if (hex != null)
                 {
                     AdjacentForUpdate.Add(hex[edgeOffset.Orientation]);
@@ -72,22 +86,17 @@ namespace MingStar.SimUniversity.Board
             _cache.Cache();
         }
 
-        public IEnumerable<IEdge> GetAdjacentEdgesSharedWith(IVertex vertex)
-        {
-            return _cache.GetAdjacentEdgesSharedWith(vertex);
-        }
-
-        public bool ConnectsBothEndWithSameColorEdges()
-        {
-            int count = Adjacent.Vertices.Count(vertex =>
-                                                GetAdjacentEdgesSharedWith(vertex).Any(e => e.Color == Color));
-            return count == 2;
-        }
-
         public void SetColor(Color color)
         {
             Color = color;
         }
 
+        #endregion
+
+        public override string ToString()
+        {
+            return string.Format("Edge [{0}, {1}, {2}]",
+                                 _originalHexagon.Position, _originalOrientation, Color);
+        }
     }
 }

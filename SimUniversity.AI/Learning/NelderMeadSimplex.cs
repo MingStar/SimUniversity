@@ -7,7 +7,7 @@ namespace MingStar.SimUniversity.AI.Learning
 
     public sealed class NelderMeadSimplex
     {
-        private static readonly double JITTER = 1e-10d; // a small value used to protect against floating point noise
+        private const double JITTER = 1e-10d; // a small value used to protect against floating point noise
 
         public static RegressionResult Regress(SimplexConstant[] simplexConstants, double convergenceTolerance,
                                                int maxEvaluations,
@@ -24,13 +24,12 @@ namespace MingStar.SimUniversity.AI.Learning
             int numDimensions = simplexConstants.Length;
             int numVertices = numDimensions + 1;
             Vector[] vertices = _initializeVertices(simplexConstants);
-            var errorValues = new double[numVertices];
 
             int evaluationCount = 0;
-            TerminationReason terminationReason = TerminationReason.Unspecified;
+            TerminationReason terminationReason;
             ErrorProfile errorProfile;
 
-            errorValues = _initializeErrorValues(vertices, objectiveFunction);
+            double[] errorValues = _initializeErrorValues(vertices, objectiveFunction);
 
             // iterate until we converge, or complete our permitted number of iterations
             while (true)
@@ -91,7 +90,8 @@ namespace MingStar.SimUniversity.AI.Learning
         /// list of error values for each vertex
         /// </summary>
         /// <param name="vertices"></param>
-        /// <returns></returns>
+        /// <param name="objectiveFunction"></param>
+        /// <returns></returns>        
         private static double[] _initializeErrorValues(Vector[] vertices, ObjectiveFunctionDelegate objectiveFunction)
         {
             var errorValues = new double[vertices.Length];
@@ -106,6 +106,7 @@ namespace MingStar.SimUniversity.AI.Learning
         /// Check whether the points in the error profile have so little range that we
         /// consider ourselves to have converged
         /// </summary>
+        /// <param name="convergenceTolerance"></param>
         /// <param name="errorProfile"></param>
         /// <param name="errorValues"></param>
         /// <returns></returns>
@@ -114,15 +115,7 @@ namespace MingStar.SimUniversity.AI.Learning
             double range = 2*Math.Abs(errorValues[errorProfile.HighestIndex] - errorValues[errorProfile.LowestIndex])/
                            (Math.Abs(errorValues[errorProfile.HighestIndex]) +
                             Math.Abs(errorValues[errorProfile.LowestIndex]) + JITTER);
-
-            if (range < convergenceTolerance)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return range < convergenceTolerance;
         }
 
         /// <summary>
@@ -204,6 +197,7 @@ namespace MingStar.SimUniversity.AI.Learning
         /// <param name="errorProfile"></param>
         /// <param name="vertices"></param>
         /// <param name="errorValues"></param>
+        /// <param name="objectiveFunction"></param>
         /// <returns></returns>
         private static double _tryToScaleSimplex(double scaleFactor, ref ErrorProfile errorProfile, Vector[] vertices,
                                                  double[] errorValues, ObjectiveFunctionDelegate objectiveFunction)
@@ -236,6 +230,7 @@ namespace MingStar.SimUniversity.AI.Learning
         /// <param name="errorProfile"></param>
         /// <param name="vertices"></param>
         /// <param name="errorValues"></param>
+        /// <param name="objectiveFunction"></param>
         private static void _shrinkSimplex(ErrorProfile errorProfile, Vector[] vertices, double[] errorValues,
                                            ObjectiveFunctionDelegate objectiveFunction)
         {

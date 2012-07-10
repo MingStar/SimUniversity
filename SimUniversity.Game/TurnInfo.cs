@@ -5,19 +5,19 @@ namespace MingStar.SimUniversity.Game
 {
     public class TurnInfo
     {
-        public ReadOnlyCollection<IPlayerMove> AllMoves;
-        public int CurrentUnversityLongestLink;
-        public ulong Hash;
-        public IMostInfo MostFailedStartUps;
-        public IMostInfo MostInternetLinks;
-        public IPlayerMove Move;
+        public ReadOnlyCollection<IPlayerMoveForUpdate> AllMoves { get; private set; }
+        public int CurrentUnversityLongestLink { get; private set; }
+        public ulong Hash { get; private set; }
+        public IMostInfo MostFailedStartUps { get; private set; }
+        public IMostInfo MostInternetLinks { get; private set; }
+        public IPlayerMoveForUpdate Move { get; private set; }
 
-        internal static TurnInfo Create(Game game, IPlayerMove move)
+        internal static TurnInfo Create(Game game, IPlayerMoveForUpdate move)
         {
             return new TurnInfo
                        {
                            Move = move,
-                           AllMoves = game.AllMoves,
+                           AllMoves = game.GenerateAllMoves(),
                            MostFailedStartUps = game.MostFailedStartUps,
                            MostInternetLinks = game.LongestInternetLink,
                            Hash = game.Hash,

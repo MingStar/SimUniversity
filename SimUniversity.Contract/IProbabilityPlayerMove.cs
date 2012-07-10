@@ -1,8 +1,10 @@
-﻿namespace MingStar.SimUniversity.Contract
+﻿using System.Collections.Generic;
+
+namespace MingStar.SimUniversity.Contract
 {
     public interface IProbabilityPlayerMove : IPlayerMove
     {
-        IProbabilityPlayerMove[] AllProbabilityMoves { get; }
+        IEnumerable<IProbabilityPlayerMove> AllProbabilityMoves { get; }
         bool IsDeterminated { get; set; }
         double? Probability { get; }
     }

@@ -25,51 +25,40 @@ namespace MingStar.SimUniversity.AI.Evaluation
             }
 
             score +=
-                currentScore*Scores.PLAYER_SCORE_BASE +
-                uni.InternetLinks.Count*Scores.INTERNET_LINK_MULTIPLIER;
+                currentScore*Scores.PlayerScoreBase +
+                uni.InternetLinks.Count*Scores.InternetLinkMultiplier;
             // check for production chances
             DegreeCount productionChances = uni.ProductionChances;
             if (productionChances.Values.Count(v => v != 0)
                 == Constants.RealDegrees.Length)
             {
-                score += Scores.HAS_ALL_DEGREES;
+                score += Scores.HasAllDegrees;
             }
-            foreach (DegreeType degree in productionChances.Keys)
-            {
-                score += productionChances[degree]*Scores.PRODUCTION_BASE*Scores.DegreeModifier[degree];
-            }
+            score += productionChances.Keys.Sum(degree =>
+                                                productionChances[degree]*Scores.ProductionBase*
+                                                Scores.DegreeModifier[degree]);
             // evaluation special sites and normalsites
             if (uni.HasNormalTradingSite)
             {
-                score += Scores.NORMAL_SITE;
+                score += Scores.NormalSite;
             }
-            foreach (var specialSite in uni.SpecialSites)
-            {
-                if (productionChances.ContainsKey(specialSite.TradeOutDegree))
-                {
-                    score += productionChances[specialSite.TradeOutDegree]*Scores.SPECIAL_SITE_MULTIPLIER;
-                }
-            }
+            score += uni.SpecialSites
+                .Where(specialSite => productionChances.ContainsKey(specialSite.TradeOutDegree))
+                .Sum(specialSite => productionChances[specialSite.TradeOutDegree]*Scores.SpecialSiteMultiplier);
             // take opponent's chance
-            foreach (var campus in uni.Campuses)
-            {
-                foreach (var edge in campus.Adjacent.Edges)
-                {
-                    if (edge.Color != uni.Color)
-                    {
-                        score += Scores.TAKEN_OTHER_PLAYER_CAMPUS;
-                    }
-                }
-            }
+            score += (from campus in uni.Campuses
+                      from edge in campus.Adjacent.Edges
+                      where edge.Color != uni.Color
+                      select Scores.TakenOtherPlayerCampus).Sum();
             // check for free vertex
             var checkedV = new HashSet<IVertex>();
-            foreach (var link in uni.InternetLinks)
+            foreach (IEdge link in uni.InternetLinks)
             {
-                foreach (var vertex in link.Adjacent.Vertices)
+                foreach (IVertex vertex in link.Adjacent.Vertices)
                 {
                     if (!checkedV.Contains(vertex) && vertex.IsFreeToBuildCampus())
                     {
-                        score += game.GetVertexProductionChance(vertex)*Scores.FUTURE_CAMPUS;
+                        score += game.GetVertexProductionChance(vertex)*Scores.FutureCampus;
                     }
                     checkedV.Add(vertex);
                 }
@@ -80,7 +69,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 if (! game.Universities.Any(other => other != uni &&
                                                      other.NumberOfFailedCompanies == uni.NumberOfFailedCompanies))
                 {
-                    score += Scores.LEAD_MOST_SCORE;
+                    score += Scores.LeadMostScore;
                 }
             }
             if (game.LongestInternetLink.University == uni)
@@ -88,7 +77,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 if (! game.Universities.Any(other => other != uni &&
                                                      other.LengthOfLongestLink == uni.LengthOfLongestLink))
                 {
-                    score += Scores.LEAD_MOST_SCORE;
+                    score += Scores.LeadMostScore;
                 }
             }
 
@@ -100,7 +89,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 expectedStudents = expectedStudents*game.ProbabilityWithNoCut +
                                    (expectedStudents/2)*(1 - game.ProbabilityWithNoCut);
             }
-            score += expectedStudents*Scores.STUDENT_NUMBER;
+            score += expectedStudents*Scores.StudentNumber;
 
             // check for student types
             foreach (DegreeType degree in uni.Students.Keys)

@@ -1,4 +1,5 @@
-﻿using MingStar.SimUniversity.Contract;
+﻿using MingStar.SimUniversity.Board.Positioning;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Constructor
 {

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
@@ -11,9 +9,41 @@ namespace MingStar.SimUniversity.Board
         private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
         private readonly HashSet<Vertex> _vertices = new HashSet<Vertex>();
 
-        public IEnumerable<Hexagon> Hexagons { get { return _hexagons; } }
-        public IEnumerable<Edge> Edges { get { return _edges; } }
-        public IEnumerable<Vertex> Vertices { get { return _vertices; } }
+        #region IAdjacentInfo Members
+
+        IEnumerable<IHexagon> IAdjacentInfo.Hexagons
+        {
+            get { return _hexagons; }
+        }
+
+        IEnumerable<IEdge> IAdjacentInfo.Edges
+        {
+            get { return _edges; }
+        }
+
+        IEnumerable<IVertex> IAdjacentInfo.Vertices
+        {
+            get { return _vertices; }
+        }
+
+        #endregion
+
+        #region IAdjacentInfoForUpdate Members
+
+        public IEnumerable<Hexagon> Hexagons
+        {
+            get { return _hexagons; }
+        }
+
+        public IEnumerable<Edge> Edges
+        {
+            get { return _edges; }
+        }
+
+        public IEnumerable<Vertex> Vertices
+        {
+            get { return _vertices; }
+        }
 
         public void Add(Hexagon hex)
         {
@@ -22,12 +52,6 @@ namespace MingStar.SimUniversity.Board
                 return;
             }
             _hexagons.Add(hex);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("Adjacent: [hex: {0}, ver: {1}, edge: {2}]",
-                                 _hexagons.Count, _vertices.Count, _edges.Count);
         }
 
 
@@ -59,19 +83,12 @@ namespace MingStar.SimUniversity.Board
             _vertices.UnionWith(vertices);
         }
 
-        IEnumerable<IHexagon> IAdjacentInfo.Hexagons
-        {
-            get { return _hexagons; }
-        }
+        #endregion
 
-        IEnumerable<IEdge> IAdjacentInfo.Edges
+        public override string ToString()
         {
-            get { return _edges; }
-        }
-
-        IEnumerable<IVertex> IAdjacentInfo.Vertices
-        {
-            get { return _vertices; }
+            return string.Format("Adjacent: [hex: {0}, ver: {1}, edge: {2}]",
+                                 _hexagons.Count, _vertices.Count, _edges.Count);
         }
     }
 }

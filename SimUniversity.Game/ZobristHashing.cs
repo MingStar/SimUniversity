@@ -17,14 +17,14 @@ namespace MingStar.SimUniversity.Game
         public ZobristHashing(Game game)
         {
             _game = game;
-            var board = game.Board;
-            foreach (var uni in game.Universities)
+            Board.Board board = game.Board;
+            foreach (IUniversity uni in game.Universities)
             {
                 if (!_coloredHashing.ContainsKey(uni.Color))
                 {
                     _coloredHashing[uni.Color] = new ColoredHashing();
                 }
-                var coloredHash = _coloredHashing[uni.Color];
+                ColoredHashing coloredHash = _coloredHashing[uni.Color];
                 foreach (DegreeType degree in Constants.RealDegrees)
                 {
                     for (int i = 1; i <= 20; ++i)
@@ -32,12 +32,12 @@ namespace MingStar.SimUniversity.Game
                         coloredHash.DegreeHash[degree][i] = NextNewInt64();
                     }
                 }
-                foreach (var vertex in board.GetVertices())
+                foreach (Vertex vertex in board.GetVertices())
                 {
                     coloredHash.CampusHash[CampusType.Traditional][vertex] = NextNewInt64();
                     coloredHash.CampusHash[CampusType.Super][vertex] = NextNewInt64();
                 }
-                foreach (var edge in board.GetEdges())
+                foreach (Edge edge in board.GetEdges())
                 {
                     coloredHash.LinkHash[edge] = NextNewInt64();
                 }
@@ -81,13 +81,13 @@ namespace MingStar.SimUniversity.Game
 
         public void HashVertex(Color color, VertexPosition vPos, CampusType type)
         {
-            var vertex = _game.Board[vPos];
+            Vertex vertex = _game.Board[vPos];
             Hash ^= _coloredHashing[color].CampusHash[type][vertex];
         }
 
         public void HashEdge(Color color, EdgePosition ePos)
         {
-            var edge = _game.Board[ePos];
+            Edge edge = _game.Board[ePos];
             Hash ^= _coloredHashing[color].LinkHash[edge];
         }
 

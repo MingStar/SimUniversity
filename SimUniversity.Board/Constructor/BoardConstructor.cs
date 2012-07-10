@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MingStar.SimUniversity.Board.Positioning;
 using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Constructor
@@ -78,7 +79,7 @@ namespace MingStar.SimUniversity.Board.Constructor
                         var thisOritentation = (VertexOrientation) i;
                         if (hex[thisOritentation] == vertex)
                         {
-                            VertexStaticInfo staticInfo = VertexStaticInfo.Get(thisOritentation);
+                            var staticInfo = VertexStaticInfo.Get(thisOritentation);
                             // add edges
                             vertex.AdjacentForUpdate.Add(
                                 staticInfo.AdjacentEdgeOrientations.Select(adjEo => hex[adjEo])
@@ -91,16 +92,15 @@ namespace MingStar.SimUniversity.Board.Constructor
                     }
                 }
             }
-            var allEdges = Board.GetEdges();
-            foreach (var edge in allEdges)
+            IEnumerable<Edge> allEdges = Board.GetEdges();
+            foreach (Edge edge in allEdges)
             {
                 edge.FindAllAdjacents(Board);
             }
-            foreach (var edge in allEdges)
+            foreach (Edge edge in allEdges)
             {
                 edge.Cache();
             }
         }
-
     }
 }

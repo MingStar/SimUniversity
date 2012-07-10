@@ -19,28 +19,11 @@ namespace MingStar.SimUniversity.Contract
         IGameRules Rules { get; }
         int CurrentTurn { get; }
         Dictionary<DegreeType, double> Scarcity { get; }
+        GamePhase CurrentPhase { get; }
 
-        bool IsLegalToBuildLink(EdgePosition pos);
-        bool IsLegalToBuildCampus(VertexPosition whereAt, CampusType type);
-        ReadOnlyCollection<IPlayerMove> GenerateAllMoves();
+        bool HasWinner();
+        IEnumerable<IPlayerMove> GenerateAllMoves();
         int GetScore(IUniversity uni);
         int GetVertexProductionChance(IVertex vertex);
-
-        #region Commands
-        void BuildLink(EdgePosition whereAt);
-        void BuildCampus(VertexPosition whereAt, CampusType campusType);
-        void TradeInStudent(DegreeType tradedIn);
-        void TryStartUp(bool isSuccessful);
-
-        #region Undo Moves
-        void UndoMove();
-        void UndoBuildLink(EdgePosition whereAt);
-        void UndoBuildCampus(VertexPosition whereAt);
-        void UnTradeInStudent(DegreeType tradedIn);
-        void UndoTryStartUp(bool isSuccessful);
-        void UndoEndTurn(int diceTotal, EnrolmentInfo enrolmentInfo);
-        #endregion
-
-        #endregion
     }
 }

@@ -1,8 +1,9 @@
-﻿using MingStar.SimUniversity.Contract;
+﻿using System.Collections.Generic;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class TryStartUpMove : IProbabilityPlayerMove
+    public class TryStartUpMove : IProbabilityPlayerMove, IPlayerMoveForUpdate
     {
         #region Constructors
 
@@ -26,6 +27,30 @@ namespace MingStar.SimUniversity.Game.Move
 
         private bool _isSuccessful;
 
+        #region IPlayerMoveForUpdate Members
+
+        public void ApplyTo(Game game)
+        {
+            if (!IsDeterminated)
+            {
+                _isSuccessful = Game.RandomEventChance.IsNextStartUpSuccessful();
+                IsDeterminated = true;
+            }
+            game.TryStartUp(_isSuccessful);
+        }
+
+        public void Undo(Game game)
+        {
+            game.UndoTryStartUp(_isSuccessful);
+        }
+
+        public bool IsLegalToApply(Game game)
+        {
+            return true;
+        }
+
+        #endregion
+
         #region IProbabilityPlayerMove Members
 
         public bool IsDeterminated { get; set; }
@@ -36,34 +61,14 @@ namespace MingStar.SimUniversity.Game.Move
             get { return NeededStudents; }
         }
 
-        public void ApplyTo(IGame game)
-        {
-            if (!IsDeterminated)
-            {
-                _isSuccessful = Game.RandomEventChance.IsNextStartUpSuccessful();
-                IsDeterminated = true;
-            }
-            game.TryStartUp(_isSuccessful);
-        }
-
-        public void Undo(IGame game)
-        {
-            game.UndoTryStartUp(_isSuccessful);
-        }
-
-        public bool IsLegalToApply(IGame game)
-        {
-            return true;
-        }
-
-        public IProbabilityPlayerMove[] AllProbabilityMoves
+        public IEnumerable<IProbabilityPlayerMove> AllProbabilityMoves
         {
             get
             {
                 return new IProbabilityPlayerMove[]
                            {
                                new TryStartUpMove(true),
-                               new TryStartUpMove(false),
+                               new TryStartUpMove(false)
                            };
             }
         }

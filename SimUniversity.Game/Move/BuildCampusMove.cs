@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class BuildCampusMove : IPlayerMove
+    public class BuildCampusMove : IPlayerMoveForUpdate
     {
         public static readonly StudentGroup[] StudentsNeededForTraditionalCampus =
             StudentGroup.FromDegrees(DegreeType.Wood, DegreeType.Brick, DegreeType.Grain, DegreeType.Sheep);
@@ -24,7 +24,7 @@ namespace MingStar.SimUniversity.Game.Move
         public VertexPosition WhereAt { get; private set; }
         public CampusType CampusType { get; private set; }
 
-        #region IPlayerMove Members
+        #region IPlayerMoveForUpdate Members
 
         public StudentGroup[] StudentsNeeded
         {
@@ -34,24 +34,21 @@ namespace MingStar.SimUniversity.Game.Move
                 {
                     return StudentsNeededForTraditionalCampus;
                 }
-                else // Super
-                {
-                    return StudentsNeededForSuperCampus;
-                }
+                return StudentsNeededForSuperCampus;
             }
         }
 
-        public void ApplyTo(IGame game)
+        public void ApplyTo(Game game)
         {
             game.BuildCampus(WhereAt, CampusType);
         }
 
-        public void Undo(IGame game)
+        public void Undo(Game game)
         {
             game.UndoBuildCampus(WhereAt);
         }
 
-        public bool IsLegalToApply(IGame game)
+        public bool IsLegalToApply(Game game)
         {
             return game.IsLegalToBuildCampus(WhereAt, CampusType);
         }

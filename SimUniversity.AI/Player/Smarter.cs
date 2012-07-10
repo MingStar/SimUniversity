@@ -40,26 +40,15 @@ namespace MingStar.SimUniversity.AI.Player
             if (move is BuildCampusMove)
             {
                 var bMove = (BuildCampusMove) move;
-                if (bMove.CampusType == CampusType.Super)
-                {
-                    score = 30;
-                }
-                else
-                {
-                    score = 20;
-                }
+                score = bMove.CampusType == CampusType.Super ? 30 : 20;
             }
             else if (move is BuildLinkMove)
             {
                 score = 15;
                 var bMove = (BuildLinkMove) move;
-                foreach (var vertex in game.IBoard[bMove.WhereAt].Adjacent.Vertices)
+                if (game.IBoard[bMove.WhereAt].Adjacent.Vertices.Any(vertex => vertex.IsFreeToBuildCampus()))
                 {
-                    if (vertex.IsFreeToBuildCampus())
-                    {
-                        score += 1;
-                        break;
-                    }
+                    score += 1;
                 }
             }
             else if (move is TradingMove)

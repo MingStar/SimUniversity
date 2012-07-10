@@ -31,7 +31,7 @@ namespace MingStar.SimUniversity.Board
 
         private Hexagon GetHexagonOrNull(Position position)
         {
-            Hexagon hex = null;
+            Hexagon hex;
             _hexgonPositions.TryGetValue(position, out hex);
             return hex;
         }
@@ -63,22 +63,6 @@ namespace MingStar.SimUniversity.Board
             get { return GetHexagonOrNull(new Position(x, y)); }
         }
 
-        public Hexagon this[Position pos]
-        {
-            get { return GetHexagonOrNull(pos); }
-        }
-
-
-        IHexagon IBoard.this[Position pos]
-        {
-            get { return GetHexagonOrNull(pos); }
-        }
-
-        IEdge IBoard.this[EdgePosition pos]
-        {
-            get { return this[pos]; }
-        }
-
         public Edge this[EdgePosition pos]
         {
             get
@@ -86,11 +70,6 @@ namespace MingStar.SimUniversity.Board
                 Hexagon hex = GetHexagonOrNull(pos.HexPosition);
                 return hex != null ? hex[pos.Orientation] : null;
             }
-        }
-
-        IVertex IBoard.this[VertexPosition pos]
-        {
-            get { return this[pos]; }
         }
 
         public Vertex this[VertexPosition pos]
@@ -102,14 +81,42 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        public Hexagon[] GetHexagons()
+        #region IBoard Members
+
+        IHexagon IBoard.this[Position pos]
         {
-            return _hexagons.ToArray();
+            get { return GetHexagonOrNull(pos); }
+        }
+
+        IEdge IBoard.this[EdgePosition pos]
+        {
+            get { return this[pos]; }
+        }
+
+        IVertex IBoard.this[VertexPosition pos]
+        {
+            get { return this[pos]; }
         }
 
         IEnumerable<IVertex> IBoard.GetVertices()
         {
             return GetVertices();
+        }
+
+        #endregion
+
+        #region IBoardForUpdate Members
+
+        public Hexagon this[Position pos]
+        {
+            get { return GetHexagonOrNull(pos); }
+        }
+
+        #endregion
+
+        public Hexagon[] GetHexagons()
+        {
+            return _hexagons.ToArray();
         }
 
         public IEnumerable<Vertex> GetVertices()
@@ -134,9 +141,9 @@ namespace MingStar.SimUniversity.Board
             if (_edges == null)
             {
                 var edges = new HashSet<Edge>();
-                foreach (var hex in _hexagons)
+                foreach (Hexagon hex in _hexagons)
                 {
-                    foreach (var e in hex.AdjacentForUpdate.Edges)
+                    foreach (Edge e in hex.AdjacentForUpdate.Edges)
                     {
                         edges.Add(e);
                     }
@@ -148,11 +155,11 @@ namespace MingStar.SimUniversity.Board
 
         public void Clear()
         {
-            foreach (var vertex in GetVertices())
+            foreach (Vertex vertex in GetVertices())
             {
                 vertex.Reset();
             }
-            foreach (var edge in GetEdges())
+            foreach (Edge edge in GetEdges())
             {
                 edge.Reset();
             }
@@ -177,9 +184,5 @@ namespace MingStar.SimUniversity.Board
         {
             this[whereAt].Reset();
         }
-
-
-
-
     }
 }

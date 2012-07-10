@@ -7,6 +7,6 @@ namespace MingStar.SimUniversity.Board
         void SetColor(Color color);
         void Reset();
         void FindAllAdjacents(Board Board);
-        void Cache();         
+        void Cache();
     }
 }

@@ -9,7 +9,6 @@ namespace MingStar.SimUniversity.Game
 {
     public class University : IUniversity
     {
-        public Color Color { get; private set; }
         public readonly int PlayerIndex;
         private readonly Game _game;
 
@@ -21,12 +20,22 @@ namespace MingStar.SimUniversity.Game
             Reset();
         }
 
+        public HashSet<IVertex> NormalSiteLocations { get; private set; }
+
+        public string Name
+        {
+            get { return "University " + Color; }
+        }
+
+        #region IUniversity Members
+
+        public Color Color { get; private set; }
+
         public HashSet<IEdge> InternetLinks { get; private set; }
         public HashSet<IVertex> Campuses { get; private set; }
         public HashSet<IVertex> SuperCampuses { get; private set; }
 
         public HashSet<ISpecialTradingSite> SpecialSites { get; private set; }
-        public HashSet<IVertex> NormalSiteLocations { get; private set; }
         public DegreeCount Students { get; private set; }
         public int NumberOfSuccessfulCompanies { get; internal set; }
         public int NumberOfFailedCompanies { get; internal set; }
@@ -37,13 +46,6 @@ namespace MingStar.SimUniversity.Game
         {
             get { return NormalSiteLocations.Count > 0; }
         }
-
-        public string Name
-        {
-            get { return "University " + Color; }
-        }
-
-        #region IUniversity Members
 
         public bool HasStudentsFor(params StudentGroup[] studentGroups)
         {
@@ -72,7 +74,7 @@ namespace MingStar.SimUniversity.Game
 
         private void ResetStudentCounts()
         {
-            foreach (var degree in Constants.RealDegrees)
+            foreach (DegreeType degree in Constants.RealDegrees)
             {
                 Students[degree] = 0;
             }
@@ -85,7 +87,7 @@ namespace MingStar.SimUniversity.Game
             sb.Append(" Score: " + _game.GetScore(this));
             sb.Append(" [");
             bool isFirst = true;
-            foreach (var degree in Students.Keys)
+            foreach (DegreeType degree in Students.Keys)
             {
                 if (Students[degree] != 0)
                 {
@@ -188,7 +190,7 @@ namespace MingStar.SimUniversity.Game
         private void CheckLongestLinkForOtherUniversities(IVertex vertex)
         {
             var colorCount = new Dictionary<Color, int>();
-            foreach (var edge in vertex.Adjacent.Edges)
+            foreach (IEdge edge in vertex.Adjacent.Edges)
             {
                 if (edge.Color != null)
                 {
@@ -221,7 +223,7 @@ namespace MingStar.SimUniversity.Game
         /// <param name="vertex"></param>
         private void AddProductionChances(IVertex vertex)
         {
-            foreach (var hex in vertex.Adjacent.Hexagons)
+            foreach (IHexagon hex in vertex.Adjacent.Hexagons)
             {
                 ProductionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                 //DiceRollProductionChances[hex.ID] += GameConstants.HexID2Chance[hex.ID];
@@ -234,7 +236,7 @@ namespace MingStar.SimUniversity.Game
         /// <param name="vertex"></param>
         private void RemoveProductionChances(IVertex vertex)
         {
-            foreach (var hex in vertex.Adjacent.Hexagons)
+            foreach (IHexagon hex in vertex.Adjacent.Hexagons)
             {
                 ProductionChances[hex.Degree] -= GameConstants.HexID2Chance[hex.ProductionNumber];
             }
@@ -262,10 +264,7 @@ namespace MingStar.SimUniversity.Game
             }
             else // only connects on one side, but do not know which side
             {
-                foreach (Vertex vertex in edge.Adjacent.Vertices)
-                {
-                    total += GetLongestLink(edge, vertex, visitedEdges);
-                }
+                total += edge.Adjacent.Vertices.Sum(vertex => GetLongestLink(edge, vertex, visitedEdges));
                 total -= 1; // the current edge is counted twice
                 CompareLongestLink(total);
             }
@@ -283,9 +282,9 @@ namespace MingStar.SimUniversity.Game
         private void FullSearchLongestLink()
         {
             LengthOfLongestLink = 0;
-            foreach (var edge in InternetLinks)
+            foreach (IEdge edge in InternetLinks)
             {
-                foreach (var vertex in edge.Adjacent.Vertices)
+                foreach (IVertex vertex in edge.Adjacent.Vertices)
                 {
                     CompareLongestLink(GetLongestLink(edge, vertex, new HashSet<IEdge>()));
                 }
@@ -304,18 +303,17 @@ namespace MingStar.SimUniversity.Game
             }
             visitedEdges.Add(currentEdge);
             int max = 0;
-            foreach (var edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
+            foreach (IEdge edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
             {
-                if (edge.Color == Color)
+                if (edge.Color != Color)
+                    continue;
+                // use the vertex on the other side of the edge
+                int path = GetLongestLink(edge,
+                                          edge.Adjacent.Vertices.First(v => v != useVertex),
+                                          visitedEdges);
+                if (max < path)
                 {
-                    // use the vertex on the other side of the edge
-                    int path = GetLongestLink(edge,
-                                              edge.Adjacent.Vertices.First(v => v != useVertex),
-                                              visitedEdges);
-                    if (max < path)
-                    {
-                        max = path;
-                    }
+                    max = path;
                 }
             }
             visitedEdges.Remove(currentEdge);
@@ -347,18 +345,13 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        public bool HasStudentsFor(DegreeType degree, int quantity)
-        {
-            return Students[degree] >= quantity;
-        }
-
         internal void ConsumeStudents(IPlayerMove move)
         {
             if (move.StudentsNeeded == null)
             {
                 return;
             }
-            foreach (var group in move.StudentsNeeded)
+            foreach (StudentGroup group in move.StudentsNeeded)
             {
                 _game.Hashing.HashDegree(Color, group.Degree, Students[group.Degree]);
                 Students[group.Degree] -= group.Quantity;
@@ -372,7 +365,7 @@ namespace MingStar.SimUniversity.Game
             {
                 return;
             }
-            foreach (var group in move.StudentsNeeded)
+            foreach (StudentGroup group in move.StudentsNeeded)
             {
                 Students[group.Degree] += group.Quantity;
             }
@@ -381,7 +374,7 @@ namespace MingStar.SimUniversity.Game
         internal void RemoveExtraStudents(DegreeCount roll)
         {
             if (roll == null) return;
-            foreach (var degree in roll.Keys)
+            foreach (DegreeType degree in roll.Keys)
             {
                 Students[degree] -= roll[degree];
             }
@@ -396,7 +389,7 @@ namespace MingStar.SimUniversity.Game
         internal void AddBackStudents(DegreeType[] degreeType)
         {
             if (degreeType == null) return;
-            foreach (var degree in degreeType)
+            foreach (DegreeType degree in degreeType)
             {
                 Students[degree] += 1;
             }
@@ -411,8 +404,8 @@ namespace MingStar.SimUniversity.Game
 
         internal void AcquireInitialStudents(VertexPosition vertexPosition)
         {
-            var degrees = _game.Board[vertexPosition].Adjacent.Hexagons.Select(h => h.Degree);
-            foreach (var degree in degrees)
+            IEnumerable<DegreeType> degrees = _game.Board[vertexPosition].Adjacent.Hexagons.Select(h => h.Degree);
+            foreach (DegreeType degree in degrees)
             {
                 if (degree != DegreeType.None)
                 {

@@ -1,26 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.Tests.Mocks
 {
     public class FakeRandomEvent : IRandomEvent
     {
-        private int? _nextRoll = null;
-        private bool? _isNextStartUpSuccessful = null;
+        private bool? _isNextStartUpSuccessful;
+        private int? _nextRoll;
 
-        public void SetNextRoll(int number)
-        {
-            _nextRoll = number;
-        }
-
-        public void SetNextStartUpSuccessful(bool yes)
-        {
-            _isNextStartUpSuccessful = yes;
-        }
+        #region IRandomEvent Members
 
         public int GetNextDiceTotal()
         {
@@ -44,9 +32,21 @@ namespace MingStar.SimUniversity.Tests.Mocks
             throw Exception("Start up success chance is not defined!");
         }
 
+        #endregion
+
+        public void SetNextRoll(int number)
+        {
+            _nextRoll = number;
+        }
+
+        public void SetNextStartUpSuccessful(bool yes)
+        {
+            _isNextStartUpSuccessful = yes;
+        }
+
         private static Exception Exception(string message)
         {
-            return new Exception(string.Format("{0}: {1}", typeof(FakeRandomEvent).Name, message));
+            return new Exception(string.Format("{0}: {1}", typeof (FakeRandomEvent).Name, message));
         }
     }
 }

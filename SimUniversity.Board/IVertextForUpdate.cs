@@ -8,6 +8,6 @@ namespace MingStar.SimUniversity.Board
         void MakeSpecialSite(DegreeType degree);
         void DowngradeCampus();
         void BuildCampus(CampusType type, Color color);
-        void Reset();         
+        void Reset();
     }
 }

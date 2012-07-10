@@ -6,10 +6,10 @@ namespace MingStar.SimUniversity.Board
     {
         #region Public Read-Only Properties
 
+        public int NumberOfNeighbourCampuses { get; private set; }
         public VertexPosition Position { get; private set; }
         public Campus Campus { get; private set; }
         public ITradingSite TradingSite { get; private set; }
-        public int NumberOfNeighbourCampuses { get; private set; }
 
         #endregion
 
@@ -43,15 +43,21 @@ namespace MingStar.SimUniversity.Board
 
         #endregion
 
-        public override void Reset()
-        {
-            Campus = null;
-            NumberOfNeighbourCampuses = 0;
-        }
+        #region IVertex Members
 
         public bool IsFreeToBuildCampus()
         {
             return Campus == null && NumberOfNeighbourCampuses == 0;
+        }
+
+        #endregion
+
+        #region IVertextForUpdate Members
+
+        public override void Reset()
+        {
+            Campus = null;
+            NumberOfNeighbourCampuses = 0;
         }
 
         public void BuildCampus(CampusType type, Color color)
@@ -95,5 +101,7 @@ namespace MingStar.SimUniversity.Board
                 }
             }
         }
+
+        #endregion
     }
 }

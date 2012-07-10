@@ -14,9 +14,19 @@ namespace MingStar.SimUniversity.Board
             _adjacentInfo = new AdjacentInfo();
         }
 
-        public IAdjacentInfo Adjacent { get { return _adjacentInfo;  } }
+        internal IAdjacentInfoForUpdate AdjacentForUpdate
+        {
+            get { return _adjacentInfo; }
+        }
 
-        internal IAdjacentInfoForUpdate AdjacentForUpdate { get { return _adjacentInfo; } }
+        #region IPlace Members
+
+        public IAdjacentInfo Adjacent
+        {
+            get { return _adjacentInfo; }
+        }
+
+        #endregion
 
         public abstract void Reset();
     }

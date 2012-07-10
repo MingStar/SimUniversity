@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
@@ -55,8 +55,8 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private static void PrintAllMoves(IGame game)
         {
-            ReadOnlyCollection<IPlayerMove> allMoves = game.GenerateAllMoves();
-            if (game.CurrentPhase == GamePhase.Play || allMoves.Count < 10)
+            IEnumerable<IPlayerMove> allMoves = game.GenerateAllMoves();
+            if (game.CurrentPhase == GamePhase.Play || allMoves.Count() < 10)
             {
                 PrintMoves(ConsoleColor.Yellow, allMoves);
             }
@@ -163,86 +163,58 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private DegreeType ToDegreeType(string s)
         {
-            string str = s.ToLower();
-            if (str == "b")
+            switch (s.ToLower())
             {
-                return DegreeType.Brick;
-            }
-            else if (str == "g")
-            {
-                return DegreeType.Grain;
-            }
-            else if (str == "o")
-            {
-                return DegreeType.Ore;
-            }
-            else if (str == "s")
-            {
-                return DegreeType.Sheep;
-            }
-            else if (str == "w")
-            {
-                return DegreeType.Wood;
+                case "b":
+                    return DegreeType.Brick;
+                case "g":
+                    return DegreeType.Grain;
+                case "o":
+                    return DegreeType.Ore;
+                case "s":
+                    return DegreeType.Sheep;
+                case "w":
+                    return DegreeType.Wood;
             }
             throw new ArgumentException("Unknown Degree Type: " + s);
         }
 
         private VertexOrientation ToVertexOrientation(string s)
         {
-            string str = s.ToLower();
-            if (str == "tl")
+            switch (s.ToLower())
             {
-                return VertexOrientation.TopLeft;
-            }
-            else if (str == "l")
-            {
-                return VertexOrientation.Left;
-            }
-            else if (str == "bl")
-            {
-                return VertexOrientation.BottomLeft;
-            }
-            else if (str == "tr")
-            {
-                return VertexOrientation.TopRight;
-            }
-            else if (str == "br")
-            {
-                return VertexOrientation.BottomRight;
-            }
-            else if (str == "r")
-            {
-                return VertexOrientation.Right;
+                case "tl":
+                    return VertexOrientation.TopLeft;
+                case "l":
+                    return VertexOrientation.Left;
+                case "bl":
+                    return VertexOrientation.BottomLeft;
+                case "tr":
+                    return VertexOrientation.TopRight;
+                case "br":
+                    return VertexOrientation.BottomRight;
+                case "r":
+                    return VertexOrientation.Right;
             }
             throw new ArgumentException("Unknown Vertex Orientation: " + s);
         }
 
         private EdgeOrientation ToEdgeOrientation(string s)
         {
-            string str = s.ToLower();
-            if (str == "t")
+            switch (s.ToLower())
             {
-                return EdgeOrientation.Top;
-            }
-            else if (str == "tl")
-            {
-                return EdgeOrientation.TopLeft;
-            }
-            else if (str == "bl")
-            {
-                return EdgeOrientation.BottomLeft;
-            }
-            else if (str == "b")
-            {
-                return EdgeOrientation.Bottom;
-            }
-            else if (str == "br")
-            {
-                return EdgeOrientation.BottomRight;
-            }
-            else if (str == "tr")
-            {
-                return EdgeOrientation.TopRight;
+                case "t":
+                    return EdgeOrientation.Top;
+                case "tl":
+                    return EdgeOrientation.TopLeft;
+                case "bl":
+                    return EdgeOrientation.BottomLeft;
+                case "b":
+                    return EdgeOrientation.Bottom;
+                case "br":
+                    return EdgeOrientation.BottomRight;
+                case "tr":
+                    return EdgeOrientation.TopRight;
             }
             throw new ArgumentException("Unknown Edge Orientation: " + s);
         }

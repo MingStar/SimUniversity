@@ -14,14 +14,7 @@ namespace MingStar.SimUniversity.Board
 
         public static TradingSite Instance
         {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new TradingSite();
-                }
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new TradingSite()); }
         }
 
         public override string ToString()

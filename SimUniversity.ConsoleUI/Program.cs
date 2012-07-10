@@ -10,7 +10,6 @@ using MingStar.SimUniversity.Game.Random;
 using MingStar.Utilities;
 using MingStar.Utilities.Linq;
 using log4net;
-using Random = MingStar.SimUniversity.AI.Player.Random;
 
 namespace MingStar.SimUniversity.ConsoleUI
 {
@@ -18,10 +17,10 @@ namespace MingStar.SimUniversity.ConsoleUI
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof (Program));
 
-        private static IPlayer _randomAIPlayer = new Random();
-        private static IPlayer _smarterAIPlayer = new Smarter();
+        //private static IPlayer _randomAIPlayer = new Random();
+        //private static IPlayer _smarterAIPlayer = new Smarter();
         private static readonly ConsoleHumanPlayer _humanConsolePlayer = new ConsoleHumanPlayer();
-        private static IPlayer _expetiMiniMaxAIPlayer = new ExpectiMaxN();
+        //private static IPlayer _expetiMiniMaxAIPlayer = new ExpectiMaxN();
 
         private static void Main()
         {
@@ -36,7 +35,7 @@ namespace MingStar.SimUniversity.ConsoleUI
             finally
             {
                 Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();                
+                Console.ReadKey();
             }
         }
 
@@ -87,17 +86,18 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         public static void RunAITournament(int numPlayers, int round)
         {
-            DateTime _startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
             var stats = new Dictionary<string, TournamentPlayerStats>();
             for (int i = 1; i <= round; ++i)
             {
                 var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
+                game.Round = i;
                 var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
                 var improvedEmmAiPlayerExpansion = new ImprovedEMN(new ProductionGameScores());
                 var players = new IPlayer[numPlayers];
                 players.Fill(improvedEmmAiPlayerNormal);
                 players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;
-                for (var j = 0; j < numPlayers; ++j)
+                for (int j = 0; j < numPlayers; ++j)
                 {
                     string name = players[j].Name;
                     if (!stats.ContainsKey(name))
@@ -109,7 +109,6 @@ namespace MingStar.SimUniversity.ConsoleUI
                     }
                 }
                 var controller = new GameController(new ConsoleViewer(), game, false, players);
-                controller.Game.Round = i;
                 int winnerIndex = controller.Run();
                 TournamentPlayerStats stat = stats[players[winnerIndex].Name];
                 ColorConsole.WriteLine(ConsoleColor.Yellow,
@@ -118,11 +117,11 @@ namespace MingStar.SimUniversity.ConsoleUI
                                        stat.PlayerName
                     );
                 stat.HasWon(controller.Game.GameStats.AreDiceFair());
-                foreach (var statForPrint in stats.Values)
+                foreach (TournamentPlayerStats statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();
                 }
-                ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: " + (DateTime.Now - _startTime));
+                ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: " + (DateTime.Now - startTime));
             }
         }
     }

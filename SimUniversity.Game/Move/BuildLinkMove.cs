@@ -1,8 +1,9 @@
-﻿using MingStar.SimUniversity.Contract;
+﻿using System;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game.Move
 {
-    public class BuildLinkMove : IPlayerMove
+    public class BuildLinkMove : IPlayerMoveForUpdate
     {
         public static readonly StudentGroup[] NeededStudents =
             StudentGroup.FromDegrees(DegreeType.Wood, DegreeType.Brick);
@@ -14,24 +15,24 @@ namespace MingStar.SimUniversity.Game.Move
 
         public EdgePosition WhereAt { get; private set; }
 
-        #region IPlayerMove Members
+        #region IPlayerMoveForUpdate Members
 
         public StudentGroup[] StudentsNeeded
         {
             get { return NeededStudents; }
         }
 
-        public void ApplyTo(IGame game)
+        public void ApplyTo(Game game)
         {
             game.BuildLink(WhereAt);
         }
 
-        public void Undo(IGame game)
+        public void Undo(Game game)
         {
             game.UndoBuildLink(WhereAt);
         }
 
-        public bool IsLegalToApply(IGame game)
+        public bool IsLegalToApply(Game game)
         {
             return game.IsLegalToBuildLink(WhereAt);
         }
@@ -41,6 +42,17 @@ namespace MingStar.SimUniversity.Game.Move
         public override string ToString()
         {
             return string.Format("Build internet link at [{0}]", WhereAt);
+        }
+
+
+        public void ApplyTo(IGame game)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Undo(IGame game)
+        {
+            throw new NotImplementedException();
         }
     }
 }

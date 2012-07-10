@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
@@ -11,12 +12,12 @@ using MingStar.Utilities;
 
 namespace MingStar.SimUniversity.Game
 {
-    public class Game : IGame
+    public class Game : IGame, IGameForUpdate
     {
         #region Non-Public Fields
 
         private readonly Dictionary<IVertex, int> _vertexProductionChances = new Dictionary<IVertex, int>();
-        internal ReadOnlyCollection<IPlayerMove> AllMoves;
+        private ReadOnlyCollection<IPlayerMoveForUpdate> AllMoves;
         private Dictionary<Color, University> _color2University;
         private int _currentUniversityIndex;
         private Stack<TurnInfo> _previousTurnInfo;
@@ -29,21 +30,33 @@ namespace MingStar.SimUniversity.Game
         #region Public Properties
 
         public int Round { get; set; }
-        public bool HasHumanPlayer { get; set; }
         public static IRandomEvent RandomEventChance { get; set; }
+        public bool HasHumanPlayer { get; set; }
+
         #endregion
 
         #region Public Queriable Properties
 
+        public Board.Board Board { get; private set; }
+        public GameStats GameStats { get; private set; }
+
+        public University CurrentUniversity
+        {
+            get { return _universities[CurrentUniversityIndex]; }
+        }
+
         public int NumberOfUniversities { get; private set; }
         public double ProbabilityWithNoCut { get; private set; }
         public int CurrentTurn { get; protected set; }
-        public IBoard IBoard { get { return Board; } }
-        public Board.Board Board { get; private set; }
+
+        public IBoard IBoard
+        {
+            get { return Board; }
+        }
+
         public IMostInfo MostFailedStartUps { get; internal set; }
         public IMostInfo LongestInternetLink { get; internal set; }
         public IGameRules Rules { get; private set; }
-        public GameStats GameStats { get; private set; }
 
         public int CurrentUniversityIndex
         {
@@ -64,17 +77,9 @@ namespace MingStar.SimUniversity.Game
             get { return _universities[CurrentUniversityIndex]; }
         }
 
-        public University CurrentUniversity
-        {
-            get { return _universities[CurrentUniversityIndex]; }
-        }
-
         public ReadOnlyCollection<IUniversity> Universities
         {
-            get
-            {
-                return _universities.ToList<IUniversity>().AsReadOnly();
-            }
+            get { return _universities.ToList<IUniversity>().AsReadOnly(); }
         }
 
         public ulong Hash
@@ -101,7 +106,7 @@ namespace MingStar.SimUniversity.Game
 
         public Game(IBoard board, int numOfPlayers, IGameRules rules)
         {
-            Board = (Board.Board)board; //FIXME: remove type casting
+            Board = (Board.Board) board; //FIXME: remove type casting
             Rules = rules;
             NumberOfUniversities = numOfPlayers;
             ProbabilityWithNoCut = Math.Pow(
@@ -119,7 +124,7 @@ namespace MingStar.SimUniversity.Game
 
         public bool IsLegalToBuildLink(EdgePosition pos)
         {
-            var edge = Board[pos];
+            Edge edge = Board[pos];
             if (edge == null || edge.Color != null)
             {
                 return false;
@@ -128,25 +133,22 @@ namespace MingStar.SimUniversity.Game
             {
                 return edge.Adjacent.Edges.Any(e => e.Color == CurrentUniversityColor);
             }
-            else
+            // links to own campus
+            IVertex vertex =
+                edge.Adjacent.Vertices.SingleOrDefault(
+                    v => v.Campus != null && v.Campus.Color == CurrentUniversityColor);
+            if (vertex == null)
             {
-                // links to own campus
-                var vertex =
-                    edge.Adjacent.Vertices.SingleOrDefault(
-                        v => v.Campus != null && v.Campus.Color == CurrentUniversityColor);
-                if (vertex == null)
-                {
-                    return false;
-                }
-                // but not the same campus one as the other link                
-                return !edge.Adjacent.Edges.Any(e => e.Color == CurrentUniversityColor &&
-                                                     e.Adjacent.Vertices.Contains(vertex));
+                return false;
             }
+            // but not the same campus one as the other link                
+            return !edge.Adjacent.Edges.Any(e => e.Color == CurrentUniversityColor &&
+                                                 e.Adjacent.Vertices.Contains(vertex));
         }
 
         public bool IsLegalToBuildCampus(VertexPosition whereAt, CampusType type)
         {
-            var vertex = Board[whereAt];
+            Vertex vertex = Board[whereAt];
             if (vertex == null)
             {
                 return false;
@@ -157,15 +159,13 @@ namespace MingStar.SimUniversity.Game
                         vertex.Campus.Color == CurrentUniversityColor &&
                         vertex.Campus.Type == CampusType.Traditional);
             }
-            else //if CampusType.Traditional
+            // tranditional campus
+            bool result = vertex.IsFreeToBuildCampus();
+            if (CurrentPhase == GamePhase.Play)
             {
-                bool result = vertex.IsFreeToBuildCampus();
-                if (CurrentPhase == GamePhase.Play)
-                {
-                    result = result && vertex.Adjacent.Edges.Any(e => e.Color == CurrentUniversityColor);
-                }
-                return result;
+                result = result && vertex.Adjacent.Edges.Any(e => e.Color == CurrentUniversityColor);
             }
+            return result;
         }
 
         private void CreateUniversities(int numOfPlayers)
@@ -223,21 +223,21 @@ namespace MingStar.SimUniversity.Game
 
         public void BuildCampus(VertexPosition whereAt, CampusType type)
         {
-            var vertex = Board[whereAt];
+            Vertex vertex = Board[whereAt];
             Board.BuildCampus(vertex, type, CurrentUniversity.Color);
             CurrentUniversity.AddCampus(vertex, type);
         }
 
         public void UndoBuildCampus(VertexPosition whereAt)
         {
-            var vertex = Board[whereAt];
+            Vertex vertex = Board[whereAt];
             CurrentUniversity.RemoveCampus(vertex);
             Board.UnBuildCampus(whereAt);
         }
 
         public void BuildLink(EdgePosition whereAt)
         {
-            var edge = Board[whereAt];
+            Edge edge = Board[whereAt];
             Board.BuildLink(edge, CurrentUniversity.Color);
             CurrentUniversity.AddLink(edge);
             Hashing.HashEdge(CurrentUniversityColor, edge.Position);
@@ -312,7 +312,7 @@ namespace MingStar.SimUniversity.Game
             GameStats = new GameStats();
 
             // special order
-            Hashing = new NullHashing(this);
+            Hashing = new NullHashing();
             foreach (University uni in _universities)
             {
                 uni.Reset();
@@ -377,6 +377,8 @@ namespace MingStar.SimUniversity.Game
 
         private Dictionary<DegreeType, double> _scarcity;
 
+        #region IGame Members
+
         public Dictionary<DegreeType, double> Scarcity
         {
             get
@@ -402,37 +404,24 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        #region IGame Members
-
         public bool HasWinner()
         {
             return GetScore(CurrentUniversity) >= Rules.WinningScore;
         }
 
-        public bool IsLegalMove(IPlayerMove move)
-        {
-            if (move is RandomMove)
-            {
-                return true;
-            }
-            if (CurrentPhase == GamePhase.Play && !CurrentUniversity.HasStudentsFor(move.StudentsNeeded))
-            {
-                return false;
-            }
-            return move.IsLegalToApply(this);
-        }
-
         public void ApplyMove(IPlayerMove move)
         {
-            _previousTurnInfo.Push(TurnInfo.Create(this, move));
-            move.ApplyTo(this);
+            var updateMove = move as IPlayerMoveForUpdate;
+            Debug.Assert(updateMove != null);
+            _previousTurnInfo.Push(TurnInfo.Create(this, updateMove));
+            updateMove.ApplyTo(this);
             if (CurrentPhase == GamePhase.Play)
             {
                 CurrentUniversity.ConsumeStudents(move);
             }
             if (CurrentPhase == GamePhase.Setup2 && move is BuildCampusMove)
             {
-                CurrentUniversity.AcquireInitialStudents(((BuildCampusMove)move).WhereAt);
+                CurrentUniversity.AcquireInitialStudents(((BuildCampusMove) move).WhereAt);
             }
             if (CurrentPhase != GamePhase.Play && !(move is EndTurn)) // setup phase
             {
@@ -460,18 +449,40 @@ namespace MingStar.SimUniversity.Game
             CurrentUniversity.LengthOfLongestLink = turnInfo.CurrentUnversityLongestLink;
         }
 
-        public ReadOnlyCollection<IPlayerMove> GenerateAllMoves()
+        IEnumerable<IPlayerMove> IGame.GenerateAllMoves()
         {
-            if (CurrentPhase == GamePhase.Play)
-            {
-                AllMoves = PlayPhraseMoveGenerator.GenerateAllMoves(this).AsReadOnly();
-            }
-            else // GamePhase.Setup1 or 2
-            {
-                AllMoves = _setupMoveGenerator.GenerateAllMoves(this).AsReadOnly();
-            }
-            return AllMoves;
+            return GenerateAllMoves().ToList<IPlayerMove>().AsReadOnly();
         }
+
+        public int GetScore(IUniversity university)
+        {
+            int score = university.SuperCampuses.Count*2 +
+                        university.Campuses.Count +
+                        university.NumberOfSuccessfulCompanies;
+            if (MostFailedStartUps.University == university)
+            {
+                score += GameConstants.Score.MostFailedStartUps;
+            }
+            if (LongestInternetLink.University == university)
+            {
+                score += GameConstants.Score.LongestInternetLinks;
+            }
+            return score;
+        }
+
+        public int GetVertexProductionChance(IVertex vertex)
+        {
+            if (!_vertexProductionChances.ContainsKey(vertex))
+            {
+                _vertexProductionChances[vertex] =
+                    vertex.Adjacent.Hexagons.Sum(hex => GameConstants.HexID2Chance[hex.ProductionNumber]);
+            }
+            return _vertexProductionChances[vertex];
+        }
+
+        #endregion
+
+        #region IGameForUpdate Members
 
         public void TradeInStudent(DegreeType tradedIn)
         {
@@ -518,34 +529,28 @@ namespace MingStar.SimUniversity.Game
 
         #endregion
 
-        public int GetScore(IUniversity university)
+        public bool IsLegalMove(IPlayerMove move)
         {
-            int score = university.SuperCampuses.Count*2 +
-                        university.Campuses.Count +
-                        university.NumberOfSuccessfulCompanies;
-            if (MostFailedStartUps.University == university)
+            if (move is RandomMove)
             {
-                score += GameConstants.Score.MostFailedStartUps;
+                return true;
             }
-            if (LongestInternetLink.University == university)
+            if (CurrentPhase == GamePhase.Play && !CurrentUniversity.HasStudentsFor(move.StudentsNeeded))
             {
-                score += GameConstants.Score.LongestInternetLinks;
+                return false;
             }
-            return score;
+            var updateMove = move as IPlayerMoveForUpdate;
+            Debug.Assert(updateMove != null);
+            return updateMove.IsLegalToApply(this);
         }
 
-        public int GetVertexProductionChance(IVertex vertex)
+        public ReadOnlyCollection<IPlayerMoveForUpdate> GenerateAllMoves()
         {
-            if (!_vertexProductionChances.ContainsKey(vertex))
-            {
-                int chance = 0;
-                foreach (var hex in vertex.Adjacent.Hexagons)
-                {
-                    chance += GameConstants.HexID2Chance[hex.ProductionNumber];
-                }
-                _vertexProductionChances[vertex] = chance;
-            }
-            return _vertexProductionChances[vertex];
+            AllMoves =
+                CurrentPhase == GamePhase.Play
+                    ? PlayPhraseMoveGenerator.GenerateAllMoves(this).AsReadOnly()
+                    : _setupMoveGenerator.GenerateAllMoves(this).AsReadOnly();
+            return AllMoves;
         }
     }
 }

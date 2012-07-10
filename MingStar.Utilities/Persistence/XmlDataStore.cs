@@ -15,10 +15,6 @@ namespace MingStar.Utilities.Persistence
                 stream = File.Open(filename, FileMode.Create);
                 m_xs.Serialize(stream, data);
             }
-            catch
-            {
-                throw;
-            }
             finally
             {
                 if (stream != null)
@@ -35,10 +31,6 @@ namespace MingStar.Utilities.Persistence
             {
                 stream = File.Open(filename, FileMode.Open);
                 return (TData) m_xs.Deserialize(stream);
-            }
-            catch
-            {
-                throw;
             }
             finally
             {

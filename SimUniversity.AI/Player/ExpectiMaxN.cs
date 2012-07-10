@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
@@ -52,21 +51,21 @@ namespace MingStar.SimUniversity.AI.Player
             _gameEvaluation.Scores = scores;
         }
 
-        public virtual GameState SearchBestMoves(Game.Game game)
+        public virtual GameState SearchBestMoves(IGame game)
         {
             return SearchBestMoves(game, 3);
         }
 
-        private GameState SearchBestMoves(Game.Game game, int depth)
+        private GameState SearchBestMoves(IGame game, int depth)
         {
             if (game.HasWinner() || depth == 0)
             {
                 return new GameState(Evaluate(game));
             }
-            ReadOnlyCollection<IPlayerMove> allMoves = game.GenerateAllMoves();
-            if (allMoves.Count == 1)
+            IEnumerable<IPlayerMove> allMoves = game.GenerateAllMoves();
+            if (allMoves.Count() == 1)
             {
-                return new GameState(allMoves[0], Evaluate(game));
+                return new GameState(allMoves.First(), Evaluate(game));
             }
             var bestMoves = new GameState(game.NumberOfUniversities, double.MinValue);
             int currentUniversityIndex = game.CurrentUniversityIndex;

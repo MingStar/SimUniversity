@@ -9,9 +9,9 @@
 
         public override bool Equals(object obj)
         {
-            if (obj is Position)
+            var p = obj as Position;
+            if (p != null)
             {
-                var p = (Position) obj;
                 return (X == p.X && Y == p.Y);
             }
             return false;

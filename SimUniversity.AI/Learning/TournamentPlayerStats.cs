@@ -5,9 +5,9 @@ namespace MingStar.SimUniversity.AI.Learning
 {
     public class TournamentPlayerStats
     {
-        public string PlayerName;
-        public int RealWinCount;
-        public int WinCount;
+        public string PlayerName { get; set; }
+        public int RealWinCount { get; set; }
+        public int WinCount { get; set; }
 
         public void HasWon(bool really)
         {

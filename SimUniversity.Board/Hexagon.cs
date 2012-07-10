@@ -26,6 +26,22 @@ namespace MingStar.SimUniversity.Board
             Position = position;
         }
 
+        #region IHexagon Members
+
+        IVertex IHexagon.this[VertexOrientation vo]
+        {
+            get { return _vertices[(int) vo]; }
+        }
+
+        IEdge IHexagon.this[EdgeOrientation eo]
+        {
+            get { return _edges[(int) eo]; }
+        }
+
+        #endregion
+
+        #region IHexagonForUpdate Members
+
         public Vertex this[VertexOrientation vo]
         {
             get { return _vertices[(int) vo]; }
@@ -35,8 +51,10 @@ namespace MingStar.SimUniversity.Board
         public Edge this[EdgeOrientation eo]
         {
             get { return _edges[(int) eo]; }
-            set { _edges[(int)eo] = value; }
+            set { _edges[(int) eo] = value; }
         }
+
+        #endregion
 
         public override string ToString()
         {
@@ -46,16 +64,6 @@ namespace MingStar.SimUniversity.Board
         public override void Reset()
         {
             //do nothing
-        }
-
-        IVertex IHexagon.this[VertexOrientation vo]
-        {
-            get { return _vertices[(int)vo]; }
-        }
-
-        IEdge IHexagon.this[EdgeOrientation eo]
-        {
-            get { return _edges[(int)eo]; }
         }
     }
 }

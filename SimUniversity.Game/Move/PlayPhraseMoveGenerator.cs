@@ -8,11 +8,11 @@ namespace MingStar.SimUniversity.Game.Move
 {
     internal class PlayPhraseMoveGenerator
     {
-        private static readonly List<IPlayerMove> EmptyMoves = new List<IPlayerMove>();
+        private static readonly List<IPlayerMoveForUpdate> EmptyMoves = new List<IPlayerMoveForUpdate>();
 
-        public static List<IPlayerMove> GenerateAllMoves(Game game)
+        public static List<IPlayerMoveForUpdate> GenerateAllMoves(Game game)
         {
-            var possibleMoves = new List<IPlayerMove>();
+            var possibleMoves = new List<IPlayerMoveForUpdate>();
             // build campuses
             possibleMoves.AddRange(GenerateBuildSuperCampusMoves(game));
             possibleMoves.AddRange(GenerateBuildTradiationCampusMoves(game));
@@ -35,10 +35,10 @@ namespace MingStar.SimUniversity.Game.Move
             return null;
         }
 
-        private static IEnumerable<IPlayerMove> GenerateTradeMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateTradeMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
-            var moves = new List<IPlayerMove>();
+            University currentUni = game.CurrentUniversity;
+            var moves = new List<IPlayerMoveForUpdate>();
             var checkedD = new HashSet<DegreeType>();
             foreach (SpecialTradingSite specialSite in currentUni.SpecialSites)
             {
@@ -55,11 +55,12 @@ namespace MingStar.SimUniversity.Game.Move
                     continue;
                 }
                 if (currentUni.HasNormalTradingSite
-                    && currentUni.HasStudentsFor(outDegree, TradingSite.TradeOutStudentQuantity))
+                    && currentUni.HasStudentsFor(new StudentGroup(outDegree, TradingSite.TradeOutStudentQuantity)))
                 {
                     AddTradingMoves(moves, outDegree, TradingSite.TradeOutStudentQuantity);
                 }
-                else if (currentUni.HasStudentsFor(outDegree, GameConstants.NormalTradingStudentQuantity))
+                else if (
+                    currentUni.HasStudentsFor(new StudentGroup(outDegree, GameConstants.NormalTradingStudentQuantity)))
                 {
                     AddTradingMoves(moves, outDegree, GameConstants.NormalTradingStudentQuantity);
                 }
@@ -67,30 +68,25 @@ namespace MingStar.SimUniversity.Game.Move
             return moves;
         }
 
-        private static void AddTradingMoves(List<IPlayerMove> moves, DegreeType outDegree, int quantity)
+        private static void AddTradingMoves(List<IPlayerMoveForUpdate> moves, DegreeType outDegree, int quantity)
         {
-            foreach (DegreeType degree in Constants.RealDegrees)
-            {
-                if (degree == outDegree)
-                {
-                    continue;
-                }
-                moves.Add(new TradingMove(outDegree, quantity, degree));
-            }
+            moves.AddRange((from degree in Constants.RealDegrees
+                            where degree != outDegree
+                            select new TradingMove(outDegree, quantity, degree)));
         }
 
-        private static List<IPlayerMove> GenerateBuildLinkMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildLinkMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
+            University currentUni = game.CurrentUniversity;
             if (!currentUni.HasStudentsFor(BuildLinkMove.NeededStudents))
             {
                 return EmptyMoves;
             }
-            var checkedE = new HashSet<Edge>();
-            var moves = new List<IPlayerMove>();
-            foreach (Edge link in currentUni.InternetLinks)
+            var checkedE = new HashSet<IEdge>();
+            var moves = new List<IPlayerMoveForUpdate>();
+            foreach (IEdge link in currentUni.InternetLinks)
             {
-                foreach (Edge edge in link.Adjacent.Edges)
+                foreach (IEdge edge in link.Adjacent.Edges)
                 {
                     if (edge.Color == null &&
                         !checkedE.Contains(edge))
@@ -104,16 +100,16 @@ namespace MingStar.SimUniversity.Game.Move
             return moves;
         }
 
-        private static List<IPlayerMove> GenerateBuildTradiationCampusMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildTradiationCampusMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
-            var checkedV = new HashSet<Vertex>();
-            var moves = new List<IPlayerMove>();
+            University currentUni = game.CurrentUniversity;
+            var checkedV = new HashSet<IVertex>();
+            var moves = new List<IPlayerMoveForUpdate>();
             if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForTraditionalCampus))
             {
-                foreach (Edge link in currentUni.InternetLinks)
+                foreach (IEdge link in currentUni.InternetLinks)
                 {
-                    foreach (Vertex vertex in link.Adjacent.Vertices)
+                    foreach (IVertex vertex in link.Adjacent.Vertices)
                     {
                         if (!checkedV.Contains(vertex)
                             && vertex.IsFreeToBuildCampus())
@@ -128,19 +124,16 @@ namespace MingStar.SimUniversity.Game.Move
             return moves;
         }
 
-        private static List<IPlayerMove> GenerateBuildSuperCampusMoves(Game game)
+        private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildSuperCampusMoves(Game game)
         {
-            var currentUni = game.CurrentUniversity;
+            University currentUni = game.CurrentUniversity;
             if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForSuperCampus))
             {
                 return (from campus in currentUni.Campuses
-                        select (IPlayerMove) (new BuildCampusMove(campus.Position, CampusType.Super))
-                       ).ToList();
+                        select new BuildCampusMove(campus.Position, CampusType.Super)
+                       );
             }
-            else
-            {
-                return EmptyMoves;
-            }
+            return EmptyMoves;
         }
     }
 }

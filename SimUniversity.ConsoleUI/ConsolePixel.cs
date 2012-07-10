@@ -7,8 +7,8 @@ namespace MingStar.SimUniversity.ConsoleUI
 {
     public class ConsolePixel
     {
-        public static ConsoleColor DefaultForeColor = ConsoleColor.White;
-        public static ConsoleColor DefaultBackColor = ConsoleColor.Black;
+        public const ConsoleColor DefaultForeColor = ConsoleColor.White;
+        public const ConsoleColor DefaultBackColor = ConsoleColor.Black;
 
         private static readonly ConsolePixel EmptyVertex = new ConsolePixel
                                                                {
@@ -41,39 +41,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         public static ConsolePixel GetVertexPixel(Vertex vertex)
         {
-            if (vertex.Campus == null)
-            {
-                if (!vertex.IsFreeToBuildCampus())
-                {
-                    return EmptyVertex;
-                }
-                else
-                {
-                    ITradingSite site = vertex.TradingSite;
-                    if (site == null)
-                    {
-                        return new ConsolePixel
-                                   {
-                                       Char = '*'
-                                   };
-                    }
-                    else if (site == TradingSite.Instance)
-                    {
-                        return new ConsolePixel
-                                   {
-                                       Char = '?'
-                                   };
-                    }
-                    else
-                    {
-                        return new ConsolePixel
-                                   {
-                                       Char = Transform(((SpecialTradingSite) site).TradeOutDegree)
-                                   };
-                    }
-                }
-            }
-            else
+            if (vertex.Campus != null)
             {
                 return new ConsolePixel
                            {
@@ -82,6 +50,29 @@ namespace MingStar.SimUniversity.ConsoleUI
                                Char = (vertex.Campus.Type == CampusType.Traditional) ? 'T' : 'S',
                            };
             }
+            if (!vertex.IsFreeToBuildCampus())
+            {
+                return EmptyVertex;
+            }
+            ITradingSite site = vertex.TradingSite;
+            if (site == null)
+            {
+                return new ConsolePixel
+                           {
+                               Char = '*'
+                           };
+            }
+            if (site == TradingSite.Instance)
+            {
+                return new ConsolePixel
+                           {
+                               Char = '?'
+                           };
+            }
+            return new ConsolePixel
+                       {
+                           Char = Transform(((SpecialTradingSite) site).TradeOutDegree)
+                       };
         }
 
         public static ConsolePixel GetEdgePixel(Edge edge, char value)

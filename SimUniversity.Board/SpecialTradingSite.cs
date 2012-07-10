@@ -14,12 +14,16 @@ namespace MingStar.SimUniversity.Board
                 new StudentGroup(degree, TradeOutStudentQuantity);
         }
 
+        #region ISpecialTradingSite Members
+
         public DegreeType TradeOutDegree { get; private set; }
 
         public StudentGroup StudentsNeeded
         {
             get { return _studentsNeeded; }
         }
+
+        #endregion
 
         public override string ToString()
         {

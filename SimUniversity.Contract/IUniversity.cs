@@ -6,8 +6,8 @@ namespace MingStar.SimUniversity.Contract
     {
         HashSet<IEdge> InternetLinks { get; }
         int NumberOfSuccessfulCompanies { get; }
-        DegreeCount ProductionChances { get;  }
-        bool HasNormalTradingSite { get;  }
+        DegreeCount ProductionChances { get; }
+        bool HasNormalTradingSite { get; }
         HashSet<ISpecialTradingSite> SpecialSites { get; }
         HashSet<IVertex> Campuses { get; }
         HashSet<IVertex> SuperCampuses { get; }
@@ -15,7 +15,6 @@ namespace MingStar.SimUniversity.Contract
         int NumberOfFailedCompanies { get; }
         int LengthOfLongestLink { get; }
         DegreeCount Students { get; }
-        bool HasStudentsFor(DegreeType outDegree, int count);
         bool HasStudentsFor(params StudentGroup[] studentGroup);
     }
 }

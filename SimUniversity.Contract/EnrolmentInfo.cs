@@ -2,7 +2,7 @@
 {
     public class EnrolmentInfo
     {
-        public DegreeCount[] AddedStudents;
-        public DegreeType[][] CutStudents;
+        public DegreeCount[] AddedStudents { get; set; }
+        public DegreeType[][] CutStudents { get; set; }
     }
 }
