@@ -15,12 +15,11 @@ namespace MingStar.SimUniversity.Game
     {
         #region Non-Public Fields
 
-        private readonly Dictionary<Vertex, int> _vertexProductionChances = new Dictionary<Vertex, int>();
+        private readonly Dictionary<IVertex, int> _vertexProductionChances = new Dictionary<IVertex, int>();
         internal ReadOnlyCollection<IPlayerMove> AllMoves;
         private Dictionary<Color, University> _color2University;
         private int _currentUniversityIndex;
         private Stack<TurnInfo> _previousTurnInfo;
-        private ReadOnlyCollection<University> _readOnlyUniversities;
         private SetupPhraseMoveGenerator _setupMoveGenerator;
         private University[] _universities;
         internal IZobristHashing Hashing { get; private set; }
@@ -36,12 +35,13 @@ namespace MingStar.SimUniversity.Game
 
         #region Public Queriable Properties
 
-        public readonly int NumberOfUniversities;
-        public readonly double ProbabilityWithNoCut;
+        public int NumberOfUniversities { get; private set; }
+        public double ProbabilityWithNoCut { get; private set; }
         public int CurrentTurn { get; protected set; }
+        public IBoard IBoard { get { return Board; } }
         public Board.Board Board { get; private set; }
-        public MostInfo MostFailedStartUps { get; internal set; }
-        public MostInfo LongestInternetLink { get; internal set; }
+        public IMostInfo MostFailedStartUps { get; internal set; }
+        public IMostInfo LongestInternetLink { get; internal set; }
         public IGameRules Rules { get; private set; }
         public GameStats GameStats { get; private set; }
 
@@ -59,20 +59,21 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
+        public IUniversity CurrentIUniversity
+        {
+            get { return _universities[CurrentUniversityIndex]; }
+        }
+
         public University CurrentUniversity
         {
             get { return _universities[CurrentUniversityIndex]; }
         }
 
-        public ReadOnlyCollection<University> Universities
+        public ReadOnlyCollection<IUniversity> Universities
         {
             get
             {
-                if (_readOnlyUniversities == null)
-                {
-                    _readOnlyUniversities = _universities.ToList().AsReadOnly();
-                }
-                return _readOnlyUniversities;
+                return _universities.ToList<IUniversity>().AsReadOnly();
             }
         }
 
@@ -93,14 +94,14 @@ namespace MingStar.SimUniversity.Game
 
         #region Constructor
 
-        public Game(Board.Board board, int numOfPlayers)
+        public Game(IBoard board, int numOfPlayers)
             : this(board, numOfPlayers, new NormalRules())
         {
         }
 
-        public Game(Board.Board board, int numOfPlayers, IGameRules rules)
+        public Game(IBoard board, int numOfPlayers, IGameRules rules)
         {
-            Board = board;
+            Board = (Board.Board)board; //FIXME: remove type casting
             Rules = rules;
             NumberOfUniversities = numOfPlayers;
             ProbabilityWithNoCut = Math.Pow(
@@ -118,7 +119,7 @@ namespace MingStar.SimUniversity.Game
 
         public bool IsLegalToBuildLink(EdgePosition pos)
         {
-            Edge edge = Board[pos];
+            var edge = Board[pos];
             if (edge == null || edge.Color != null)
             {
                 return false;
@@ -130,7 +131,7 @@ namespace MingStar.SimUniversity.Game
             else
             {
                 // links to own campus
-                Vertex vertex =
+                var vertex =
                     edge.Adjacent.Vertices.SingleOrDefault(
                         v => v.Campus != null && v.Campus.Color == CurrentUniversityColor);
                 if (vertex == null)
@@ -145,7 +146,7 @@ namespace MingStar.SimUniversity.Game
 
         public bool IsLegalToBuildCampus(VertexPosition whereAt, CampusType type)
         {
-            Vertex vertex = Board[whereAt];
+            var vertex = Board[whereAt];
             if (vertex == null)
             {
                 return false;
@@ -211,7 +212,7 @@ namespace MingStar.SimUniversity.Game
             var dict = new DegreeType[NumberOfUniversities][];
             for (int i = 0; i < NumberOfUniversities; ++i)
             {
-                dict[i] = Universities[i].CutStudents();
+                dict[i] = _universities[i].CutStudents();
             }
             return dict;
         }
@@ -236,7 +237,7 @@ namespace MingStar.SimUniversity.Game
 
         public void BuildLink(EdgePosition whereAt)
         {
-            Edge edge = Board[whereAt];
+            var edge = Board[whereAt];
             Board.BuildLink(edge, CurrentUniversity.Color);
             CurrentUniversity.AddLink(edge);
             Hashing.HashEdge(CurrentUniversityColor, edge.Position);
@@ -517,7 +518,7 @@ namespace MingStar.SimUniversity.Game
 
         #endregion
 
-        public int GetScore(University university)
+        public int GetScore(IUniversity university)
         {
             int score = university.SuperCampuses.Count*2 +
                         university.Campuses.Count +
@@ -533,12 +534,12 @@ namespace MingStar.SimUniversity.Game
             return score;
         }
 
-        public int GetVertexProductionChance(Vertex vertex)
+        public int GetVertexProductionChance(IVertex vertex)
         {
             if (!_vertexProductionChances.ContainsKey(vertex))
             {
                 int chance = 0;
-                foreach (Hexagon hex in vertex.Adjacent.Hexagons)
+                foreach (var hex in vertex.Adjacent.Hexagons)
                 {
                     chance += GameConstants.HexID2Chance[hex.ProductionNumber];
                 }

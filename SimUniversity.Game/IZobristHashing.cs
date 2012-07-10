@@ -8,7 +8,7 @@ namespace MingStar.SimUniversity.Game
         void HashCurrentUniversity(Color color);
         void HashDegree(Color color, DegreeType degree, int quantity);
         void HashEdge(Color color, EdgePosition ePos);
-        void HashMostInfo(University uni, MostInfoType type);
+        void HashMostInfo(IUniversity uni, MostInfoType type);
         void HashStartUp(Color color, bool isSuccessful, int quantity);
         void HashVertex(Color color, VertexPosition vPos, CampusType type);
         ulong NextNewInt64();

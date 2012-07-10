@@ -2,10 +2,11 @@
 
 namespace MingStar.SimUniversity.Board.Constructor
 {
-    public class SettlerBeginnerBoardConstructor : BoardConstructor
+    public class SettlerBeginnerBoardConstructor : BoardConstructor, IPredefinedBoardConstructor
     {
-        public SettlerBeginnerBoardConstructor()
+        public IBoard ConstructBoard()
         {
+            Board = new Board();
             // 1st bottom row - left to right
             PlaceFirstHexagon(5, DegreeType.Ore);
             PlaceNextHexagon(2, DegreeType.Grain, EdgeOrientation.TopRight);
@@ -43,6 +44,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             SetSpecializedSites(2, 1, VertexOrientation.Right, VertexOrientation.BottomRight, DegreeType.Brick);
             SetSpecializedSites(1, 0, VertexOrientation.Right, VertexOrientation.BottomRight, DegreeType.Wood);
             Lock();
+            return Board;
         }
     }
 }

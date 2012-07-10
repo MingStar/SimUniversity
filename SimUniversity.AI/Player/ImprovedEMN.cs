@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.Contract;
-using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Random;
 
 namespace MingStar.SimUniversity.AI.Player
@@ -11,12 +10,9 @@ namespace MingStar.SimUniversity.AI.Player
         private static ImprovedEMN _instance;
 
         private readonly TranspositionTable _transTable;
-        private Game.Game _game;
 
-        public ImprovedEMN(Game.Game game, GameScores scores) : base(scores)
+        public ImprovedEMN(GameScores scores) : base(scores)
         {
-            _game = game;
-            //_transTable = new TranspositionTable();
         }
 
         private ImprovedEMN()
@@ -41,7 +37,7 @@ namespace MingStar.SimUniversity.AI.Player
             return SearchBestMoves(game, 4, game.CurrentUniversityIndex);
         }
 
-        private GameState SearchBestMoves(Game.Game game, int depth, int playerIndex)
+        private GameState SearchBestMoves(IGame game, int depth, int playerIndex)
         {
             if ((game.CurrentUniversityIndex == playerIndex && game.HasWinner())
                 || depth == 0)
@@ -93,7 +89,7 @@ namespace MingStar.SimUniversity.AI.Player
             return bestMoves;
         }
 
-        private GameState GetNextScores(Game.Game game, int depth, int playerIndex, IPlayerMove move)
+        private GameState GetNextScores(IGame game, int depth, int playerIndex, IPlayerMove move)
         {
             depth -= 1;
             game.ApplyMove(move);

@@ -98,7 +98,7 @@ namespace MingStar.SimUniversity.AI.Player
             return bestMoves;
         }
 
-        protected double[] Evaluate(Game.Game game)
+        protected double[] Evaluate(IGame game)
         {
             return (from uni in game.Universities
                     select _gameEvaluation.Evaluate(game, uni)).ToArray();

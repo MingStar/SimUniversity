@@ -8,8 +8,8 @@ namespace MingStar.SimUniversity.Game
         public ReadOnlyCollection<IPlayerMove> AllMoves;
         public int CurrentUnversityLongestLink;
         public ulong Hash;
-        public MostInfo MostFailedStartUps;
-        public MostInfo MostInternetLinks;
+        public IMostInfo MostFailedStartUps;
+        public IMostInfo MostInternetLinks;
         public IPlayerMove Move;
 
         internal static TurnInfo Create(Game game, IPlayerMove move)

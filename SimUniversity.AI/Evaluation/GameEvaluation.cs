@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 
@@ -15,7 +14,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
 
         public GameScores Scores { get; internal set; }
 
-        public double Evaluate(Game.Game game, University uni)
+        public double Evaluate(IGame game, IUniversity uni)
         {
             double score = 0.0;
             int currentScore = game.GetScore(uni);
@@ -44,7 +43,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
             {
                 score += Scores.NORMAL_SITE;
             }
-            foreach (SpecialTradingSite specialSite in uni.SpecialSites)
+            foreach (var specialSite in uni.SpecialSites)
             {
                 if (productionChances.ContainsKey(specialSite.TradeOutDegree))
                 {
@@ -52,9 +51,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 }
             }
             // take opponent's chance
-            foreach (Vertex campus in uni.Campuses)
+            foreach (var campus in uni.Campuses)
             {
-                foreach (Edge edge in campus.Adjacent.Edges)
+                foreach (var edge in campus.Adjacent.Edges)
                 {
                     if (edge.Color != uni.Color)
                     {
@@ -63,10 +62,10 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 }
             }
             // check for free vertex
-            var checkedV = new HashSet<Vertex>();
-            foreach (Edge link in uni.InternetLinks)
+            var checkedV = new HashSet<IVertex>();
+            foreach (var link in uni.InternetLinks)
             {
-                foreach (Vertex vertex in link.Adjacent.Vertices)
+                foreach (var vertex in link.Adjacent.Vertices)
                 {
                     if (!checkedV.Contains(vertex) && vertex.IsFreeToBuildCampus())
                     {

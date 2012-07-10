@@ -9,7 +9,7 @@ namespace MingStar.SimUniversity.Game
 {
     public class University : IUniversity
     {
-        public readonly Color Color;
+        public Color Color { get; private set; }
         public readonly int PlayerIndex;
         private readonly Game _game;
 
@@ -21,11 +21,12 @@ namespace MingStar.SimUniversity.Game
             Reset();
         }
 
-        public HashSet<Edge> InternetLinks { get; private set; }
-        public HashSet<Vertex> Campuses { get; private set; }
-        public HashSet<Vertex> SuperCampuses { get; private set; }
-        public HashSet<SpecialTradingSite> SpecialSites { get; private set; }
-        public HashSet<Vertex> NormalSiteLocations { get; private set; }
+        public HashSet<IEdge> InternetLinks { get; private set; }
+        public HashSet<IVertex> Campuses { get; private set; }
+        public HashSet<IVertex> SuperCampuses { get; private set; }
+
+        public HashSet<ISpecialTradingSite> SpecialSites { get; private set; }
+        public HashSet<IVertex> NormalSiteLocations { get; private set; }
         public DegreeCount Students { get; private set; }
         public int NumberOfSuccessfulCompanies { get; internal set; }
         public int NumberOfFailedCompanies { get; internal set; }
@@ -57,11 +58,11 @@ namespace MingStar.SimUniversity.Game
 
         internal void Reset()
         {
-            InternetLinks = new HashSet<Edge>();
-            Campuses = new HashSet<Vertex>();
-            SuperCampuses = new HashSet<Vertex>();
-            SpecialSites = new HashSet<SpecialTradingSite>();
-            NormalSiteLocations = new HashSet<Vertex>();
+            InternetLinks = new HashSet<IEdge>();
+            Campuses = new HashSet<IVertex>();
+            SuperCampuses = new HashSet<IVertex>();
+            SpecialSites = new HashSet<ISpecialTradingSite>();
+            NormalSiteLocations = new HashSet<IVertex>();
             Students = new DegreeCount();
             ProductionChances = new DegreeCount();
             ResetStudentCounts();
@@ -120,7 +121,7 @@ namespace MingStar.SimUniversity.Game
             return sb.ToString();
         }
 
-        internal void RemoveCampus(Vertex vertex)
+        public void RemoveCampus(IVertex vertex)
         {
             if (vertex.Campus == null)
             {
@@ -140,7 +141,7 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        private void RemoveTradingSite(Vertex vertex)
+        private void RemoveTradingSite(IVertex vertex)
         {
             if (vertex.TradingSite != null)
             {
@@ -155,7 +156,7 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        internal void AddCampus(Vertex vertex, CampusType type)
+        public void AddCampus(IVertex vertex, CampusType type)
         {
             AddProductionChances(vertex);
             if (type == CampusType.Traditional)
@@ -184,10 +185,10 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        private void CheckLongestLinkForOtherUniversities(Vertex vertex)
+        private void CheckLongestLinkForOtherUniversities(IVertex vertex)
         {
             var colorCount = new Dictionary<Color, int>();
-            foreach (Edge edge in vertex.Adjacent.Edges)
+            foreach (var edge in vertex.Adjacent.Edges)
             {
                 if (edge.Color != null)
                 {
@@ -218,9 +219,9 @@ namespace MingStar.SimUniversity.Game
         /// will increase chances by 1 times only. (NOT 2 times)
         /// </summary>
         /// <param name="vertex"></param>
-        private void AddProductionChances(Vertex vertex)
+        private void AddProductionChances(IVertex vertex)
         {
-            foreach (Hexagon hex in vertex.Adjacent.Hexagons)
+            foreach (var hex in vertex.Adjacent.Hexagons)
             {
                 ProductionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
                 //DiceRollProductionChances[hex.ID] += GameConstants.HexID2Chance[hex.ID];
@@ -231,7 +232,7 @@ namespace MingStar.SimUniversity.Game
         /// Don't need to check campus type, same reason as AddProductionChances()
         /// </summary>
         /// <param name="vertex"></param>
-        private void RemoveProductionChances(Vertex vertex)
+        private void RemoveProductionChances(IVertex vertex)
         {
             foreach (var hex in vertex.Adjacent.Hexagons)
             {
@@ -239,22 +240,22 @@ namespace MingStar.SimUniversity.Game
             }
         }
 
-        internal void AddLink(Edge edge)
+        internal void AddLink(IEdge edge)
         {
             InternetLinks.Add(edge);
             GetLongestLink(edge);
         }
 
 
-        internal void RemoveLink(Edge edge)
+        internal void RemoveLink(IEdge edge)
         {
             InternetLinks.Remove(edge);
         }
 
-        private void GetLongestLink(Edge edge)
+        private void GetLongestLink(IEdge edge)
         {
             int total = 0;
-            var visitedEdges = new HashSet<Edge>();
+            var visitedEdges = new HashSet<IEdge>();
             if (edge.ConnectsBothEndWithSameColorEdges())
             {
                 FullSearchLongestLink();
@@ -286,12 +287,12 @@ namespace MingStar.SimUniversity.Game
             {
                 foreach (var vertex in edge.Adjacent.Vertices)
                 {
-                    CompareLongestLink(GetLongestLink(edge, vertex, new HashSet<Edge>()));
+                    CompareLongestLink(GetLongestLink(edge, vertex, new HashSet<IEdge>()));
                 }
             }
         }
 
-        private int GetLongestLink(Edge currentEdge, Vertex useVertex, HashSet<Edge> visitedEdges)
+        private int GetLongestLink(IEdge currentEdge, IVertex useVertex, HashSet<IEdge> visitedEdges)
         {
             if (visitedEdges.Contains(currentEdge))
             {
@@ -303,7 +304,7 @@ namespace MingStar.SimUniversity.Game
             }
             visitedEdges.Add(currentEdge);
             int max = 0;
-            foreach (Edge edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
+            foreach (var edge in currentEdge.GetAdjacentEdgesSharedWith(useVertex))
             {
                 if (edge.Color == Color)
                 {

@@ -1,24 +1,25 @@
-﻿namespace MingStar.SimUniversity.Game
+﻿using MingStar.SimUniversity.Contract;
+
+namespace MingStar.SimUniversity.Game
 {
-    public class MostInfo
+    public class MostInfo : IMostInfo
     {
-        public readonly int Threshold;
+        public int Threshold { get; private set; }
+        public IUniversity University { get; private set; }
+        public int Number { get; private set; }
 
         public MostInfo(int threshold) : this(null, 0, threshold)
         {
         }
 
-        private MostInfo(University uni, int number, int threshold)
+        private MostInfo(IUniversity uni, int number, int threshold)
         {
             University = uni;
             Number = number;
             Threshold = threshold;
         }
 
-        public University University { get; private set; }
-        public int Number { get; private set; }
-
-        public MostInfo GetMore(University uni, int number)
+        public IMostInfo GetMore(IUniversity uni, int number)
         {
             if (number >= Threshold && number > Number)
             {

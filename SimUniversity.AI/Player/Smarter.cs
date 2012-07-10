@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
-using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game.Move;
 using MingStar.Utilities.Linq;
@@ -35,9 +34,8 @@ namespace MingStar.SimUniversity.AI.Player
 
         #endregion
 
-        private ScoredMove ScoreMove(IGame igame, IPlayerMove move)
+        private ScoredMove ScoreMove(IGame game, IPlayerMove move)
         {
-            var game = (Game.Game) igame;
             double score = 0;
             if (move is BuildCampusMove)
             {
@@ -55,7 +53,7 @@ namespace MingStar.SimUniversity.AI.Player
             {
                 score = 15;
                 var bMove = (BuildLinkMove) move;
-                foreach (Vertex vertex in game.Board[bMove.WhereAt].Adjacent.Vertices)
+                foreach (var vertex in game.IBoard[bMove.WhereAt].Adjacent.Vertices)
                 {
                     if (vertex.IsFreeToBuildCampus())
                     {
@@ -70,7 +68,7 @@ namespace MingStar.SimUniversity.AI.Player
             }
             else if (move is TryStartUpMove)
             {
-                if (game.CurrentUniversity.Students.Values.Sum() > 5)
+                if (game.CurrentIUniversity.Students.Values.Sum() > 5)
                 {
                     score = 5;
                 }

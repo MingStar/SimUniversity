@@ -1,24 +1,26 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Cache
 {
     public class EdgeCache
     {
-        private readonly Edge _edge;
-        private readonly Dictionary<Vertex, List<Edge>> _edgesSharingVertex;
+        private readonly IEdge _edge;
+        private readonly Dictionary<IVertex, List<IEdge>> _edgesSharingVertex;
 
-        public EdgeCache(Edge edge)
+        public EdgeCache(IEdge edge)
         {
             _edge = edge;
-            _edgesSharingVertex = new Dictionary<Vertex, List<Edge>>();
+            _edgesSharingVertex = new Dictionary<IVertex, List<IEdge>>();
         }
 
         public void Cache()
         {
-            foreach (Vertex vertex in _edge.Adjacent.Vertices)
+            foreach (var vertex in _edge.Adjacent.Vertices)
             {
-                _edgesSharingVertex[vertex] = new List<Edge>();
-                foreach (Edge edge in _edge.Adjacent.Edges)
+                _edgesSharingVertex[vertex] = new List<IEdge>();
+                foreach (var edge in _edge.Adjacent.Edges)
                 {
                     if (edge.Adjacent.Vertices.Contains(vertex))
                     {
@@ -28,7 +30,7 @@ namespace MingStar.SimUniversity.Board.Cache
             }
         }
 
-        internal IEnumerable<Edge> GetAdjacentEdgesSharedWith(Vertex vertex)
+        internal IEnumerable<IEdge> GetAdjacentEdgesSharedWith(IVertex vertex)
         {
             return _edgesSharingVertex[vertex];
         }

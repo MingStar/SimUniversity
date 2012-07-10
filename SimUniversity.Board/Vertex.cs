@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Vertex : Place
+    public class Vertex : Place, IVertex
     {
         #region Public Read-Only Properties
 
@@ -24,7 +24,7 @@ namespace MingStar.SimUniversity.Board
 
         public Vertex(Hexagon hex, VertexOrientation vo)
         {
-            Adjacent.Add(hex);
+            AdjacentForUpdate.Add(hex);
             _originalHexagon = hex;
             _originalOrientation = vo;
             Position = new VertexPosition(hex.Position, vo);
@@ -43,7 +43,7 @@ namespace MingStar.SimUniversity.Board
 
         #endregion
 
-        internal override void Reset()
+        public override void Reset()
         {
             Campus = null;
             NumberOfNeighbourCampuses = 0;
@@ -54,7 +54,7 @@ namespace MingStar.SimUniversity.Board
             return Campus == null && NumberOfNeighbourCampuses == 0;
         }
 
-        internal void BuildCampus(CampusType type, Color color)
+        public void BuildCampus(CampusType type, Color color)
         {
             Campus = new Campus(type, color);
             if (type == CampusType.Traditional)
@@ -66,17 +66,17 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        internal void MakeSpecialSite(DegreeType degree)
+        public void MakeSpecialSite(DegreeType degree)
         {
             TradingSite = new SpecialTradingSite(degree);
         }
 
-        internal void MakeMultiSite()
+        public void MakeMultiSite()
         {
             TradingSite = SimUniversity.Board.TradingSite.Instance;
         }
 
-        internal void DowngradeCampus()
+        public void DowngradeCampus()
         {
             if (Campus == null)
             {

@@ -13,7 +13,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             Board = new Board();
         }
 
-        public Board Board { get; private set; }
+        protected Board Board { get; set; }
 
         protected void PlaceFirstHexagon(int id, DegreeType degreeType)
         {
@@ -80,26 +80,27 @@ namespace MingStar.SimUniversity.Board.Constructor
                         {
                             VertexStaticInfo staticInfo = VertexStaticInfo.Get(thisOritentation);
                             // add edges
-                            vertex.Adjacent.Add(
+                            vertex.AdjacentForUpdate.Add(
                                 staticInfo.AdjacentEdgeOrientations.Select(adjEo => hex[adjEo])
                                 );
                             // add vertices
-                            vertex.Adjacent.Add(
+                            vertex.AdjacentForUpdate.Add(
                                 staticInfo.AdjacentVertexOrientations.Select(adjVo => hex[adjVo])
                                 );
                         }
                     }
                 }
             }
-            IEnumerable<Edge> allEdges = Board.GetEdges();
-            foreach (Edge edge in allEdges)
+            var allEdges = Board.GetEdges();
+            foreach (var edge in allEdges)
             {
                 edge.FindAllAdjacents(Board);
             }
-            foreach (Edge edge in allEdges)
+            foreach (var edge in allEdges)
             {
                 edge.Cache();
             }
         }
+
     }
 }

@@ -30,13 +30,13 @@ namespace MingStar.SimUniversity.Tests
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
         {
-            _board = (new SettlerBeginnerBoardConstructor()).Board;
+            _board = (new SettlerBeginnerBoardConstructor()).ConstructBoard() as Board.Board; //FIXME: remove casting
         }
 
         [When(@"I set up the basic board for Catan")]
         public void WhenISetUpTheBasicBoardForCatan()
         {
-            _board = (new SettlerBoardConstructor()).Board;
+            _board = (new SettlerBoardConstructor()).ConstructBoard() as Board.Board; //FIXME: remove casting
         }
 
         [Given(@"the dice roll is predefined to (.*)")]
@@ -75,12 +75,12 @@ namespace MingStar.SimUniversity.Tests
         {
             foreach (TableRow row in table.Rows)
             {
-                Hexagon hex = _board[int.Parse(row["X"]), int.Parse(row["Y"])];
+                var hex = _board[new Position(int.Parse(row["X"]), int.Parse(row["Y"]))];
                 Assert.IsNotNull(hex);
                 Assert.AreEqual(int.Parse(row["Number Marker"]), hex.ProductionNumber);
                 Assert.AreEqual(row["Student"], hex.Degree.ToString());
-                AdjacentInfo adj = hex.Adjacent;
-                Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count);
+                var adj = hex.Adjacent;
+                Assert.AreEqual(int.Parse(row["Adj. # of hexes"]), adj.Hexagons.Count());
             }
         }
 
@@ -106,17 +106,17 @@ namespace MingStar.SimUniversity.Tests
             }
         }
 
-        private void AssertAdjacentInfo(IEnumerable<Place> places, TableRow row)
+        private void AssertAdjacentInfo(IEnumerable<IPlace> places, TableRow row)
         {
-            foreach (Place place in places)
+            foreach (var place in places)
             {
-                AdjacentInfo adjacentInfo = place.Adjacent;
-                Assert.GreaterOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Min# of vertices"]));
-                Assert.LessOrEqual(adjacentInfo.Vertices.Count, int.Parse(row["Max# of vertices"]));
-                Assert.GreaterOrEqual(adjacentInfo.Edges.Count, int.Parse(row["Min# of edges"]));
-                Assert.LessOrEqual(adjacentInfo.Edges.Count, int.Parse(row["Max# of edges"]));
-                Assert.GreaterOrEqual(adjacentInfo.Hexagons.Count, int.Parse(row["Min# of hexagons"]));
-                Assert.LessOrEqual(adjacentInfo.Hexagons.Count, int.Parse(row["Max# of hexagons"]));
+                var adjacentInfo = place.Adjacent;
+                Assert.GreaterOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Min# of vertices"]));
+                Assert.LessOrEqual(adjacentInfo.Vertices.Count(), int.Parse(row["Max# of vertices"]));
+                Assert.GreaterOrEqual(adjacentInfo.Edges.Count(), int.Parse(row["Min# of edges"]));
+                Assert.LessOrEqual(adjacentInfo.Edges.Count(), int.Parse(row["Max# of edges"]));
+                Assert.GreaterOrEqual(adjacentInfo.Hexagons.Count(), int.Parse(row["Min# of hexagons"]));
+                Assert.LessOrEqual(adjacentInfo.Hexagons.Count(), int.Parse(row["Max# of hexagons"]));
             }
         }
 
@@ -135,13 +135,31 @@ namespace MingStar.SimUniversity.Tests
         [Then(@"all edges should have 2 adjacent vertices")]
         public void ThenAllEdgesShouldHave2AdjacentVertices()
         {
-            Assert.IsTrue(_board.GetEdges().All(e => e.Adjacent.Vertices.Count == 2));
+            Assert.IsTrue(_board.GetEdges().All(e => e.Adjacent.Vertices.Count() == 2));
         }
 
         [When(@"I set up the Catan beginner's game")]
         public void WhenISetUpTheCatanBeginnerSGame()
         {
             _game = new SettlerBeginnerGame();
+        }
+
+        [When(@"the turn is ended")]
+        public void WhenTheTurnIsEnded()
+        {
+            CheckAndApply(new EndTurn());
+        }
+
+        [When(@"the player found a startup company")]
+        public void WhenThePlayerFoundAStartupCompany()
+        {
+            CheckAndApply(new TryStartUpMove());
+        }
+
+        [When(@"the university build an internet link at (.*)")]
+        public void WhenTheUniversityBuildAnInternetLinkAt(string location)
+        {
+            CheckAndApply(new BuildLinkMove(ParseEdgePosition(location)));
         }
 
         [Then(@"the current game phase should be '(.*)'")]
@@ -162,7 +180,7 @@ namespace MingStar.SimUniversity.Tests
                 }
                 if (row.ContainsKey("Campuses"))
                 {
-                    IEnumerable<Vertex> expectedVertices =
+                    var expectedVertices =
                         row["Campuses"].Split(';').Select(l => _game.Board[ParseVertexPosition(l)]);
                     CollectionAssert.AreEquivalent(university.Campuses, expectedVertices);
                 }
@@ -183,14 +201,6 @@ namespace MingStar.SimUniversity.Tests
                     Assert.AreEqual(int.Parse(row["Failed Startups"]), university.NumberOfFailedCompanies);
                 }
             }
-        }
-
-        [When(@"the enrolment happens with dice roll (.*)")]
-        public void WhenTheEnrolmentHappensWithDiceRoll(int roll)
-        {
-            Assert.LessOrEqual(roll, 12);
-            Assert.GreaterOrEqual(roll, 2);
-            //_game.EndTurn(roll);
         }
 
 
@@ -314,10 +324,18 @@ namespace MingStar.SimUniversity.Tests
             Assert.AreEqual(ParseColor(expected), _game.CurrentUniversityColor);
         }
 
-        [When(@"the university build an internet link at (.*)")]
-        public void WhenTheUniversityBuildAnInternetLinkAt(string location)
+
+
+        private void CheckAndApply(IPlayerMove move)
         {
-            _game.ApplyMove(new BuildLinkMove(ParseEdgePosition(location)));
+            if (_game.IsLegalMove(move))
+            {
+                _game.ApplyMove(move);
+            }
+            else
+            {
+                throw new Exception("Illegal move: " + move);
+            }
         }
 
         [Then(@"a (.*) internet link should be at (.*)")]
@@ -327,23 +345,18 @@ namespace MingStar.SimUniversity.Tests
             Assert.AreEqual(ParseColor(university), edge.Color);
         }
 
-        [When(@"the turn is ended")]
-        public void WhenTheTurnIsEnded()
-        {
-            _game.ApplyMove(new EndTurn());
-        }
-
         [Given(@"the startup will fail")]
         public void GivenTheStartupWillFail()
         {
             _fakeRandomEvent.SetNextStartUpSuccessful(false);
         }
 
-        [When(@"the player found a startup company")]
-        public void WhenThePlayerFoundAStartupCompany()
+        [When(@"the university exchanges (.*) (.*) for 1 (.*)")]
+        public void WhenTheUniversityExchanges(int outgoingQuantity, string outgoingResource, string IncomingResource)
         {
-            _game.ApplyMove(new TryStartUpMove());
+            //CheckAndApply(new TradingMove(ParseStudent()));
         }
+
 
     }
 }

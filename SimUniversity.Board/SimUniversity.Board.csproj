@@ -78,6 +78,9 @@
     <Compile Include="Constructor\SettlerBoardConstructor.cs" />
     <Compile Include="BoardConstants.cs" />
     <Compile Include="Constructor\VertexAdjacentInfoFinder.cs" />
+    <Compile Include="IAdjacentInfoForUpdate.cs" />
+    <Compile Include="IBoardForUpdate.cs" />
+    <Compile Include="IHexagonForUpdate.cs" />
     <Compile Include="Positioning\EdgeStaticInfo.cs" />
     <Compile Include="Hexagon.cs" />
     <Compile Include="Place.cs" />

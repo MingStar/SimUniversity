@@ -6,6 +6,5 @@
         bool IsLegalToApply(IGame game);
         void ApplyTo(IGame game);
         void Undo(IGame game);
-        //UInt64 GetHash(IGame game);
     }
 }

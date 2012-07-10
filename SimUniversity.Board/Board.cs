@@ -6,9 +6,9 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Board
+    public class Board : IBoard, IBoardForUpdate
     {
-        protected ReadOnlyCollection<Edge> _edges;
+        protected ReadOnlyCollection<IEdge> _edges;
         protected HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
         protected Dictionary<Position, Hexagon> _hexgonPositions = new Dictionary<Position, Hexagon>();
         protected Dictionary<int, List<Hexagon>> _id2HexgonMap = new Dictionary<int, List<Hexagon>>();
@@ -68,7 +68,13 @@ namespace MingStar.SimUniversity.Board
             get { return GetHexagonOrNull(pos); }
         }
 
-        public Edge this[EdgePosition pos]
+
+        IHexagon IBoard.this[Position pos]
+        {
+            get { return GetHexagonOrNull(pos); }
+        }
+
+        public IEdge this[EdgePosition pos]
         {
             get
             {
@@ -77,7 +83,7 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        public Vertex this[VertexPosition pos]
+        public IVertex this[VertexPosition pos]
         {
             get
             {
@@ -91,7 +97,7 @@ namespace MingStar.SimUniversity.Board
             return _hexagons.ToArray();
         }
 
-        public IEnumerable<Vertex> GetVertices()
+        public IEnumerable<IVertex> GetVertices()
         {
             if (_vertices == null)
             {
@@ -108,14 +114,15 @@ namespace MingStar.SimUniversity.Board
             return _vertices;
         }
 
-        public IEnumerable<Edge> GetEdges()
+
+        public IEnumerable<IEdge> GetEdges()
         {
             if (_edges == null)
             {
-                var edges = new HashSet<Edge>();
-                foreach (Hexagon hex in _hexagons)
+                var edges = new HashSet<IEdge>();
+                foreach (var hex in _hexagons)
                 {
-                    foreach (Edge e in hex.Adjacent.Edges)
+                    foreach (var e in hex.Adjacent.Edges)
                     {
                         edges.Add(e);
                     }
@@ -127,22 +134,22 @@ namespace MingStar.SimUniversity.Board
 
         public void Clear()
         {
-            foreach (Vertex vertex in GetVertices())
+            foreach (var vertex in GetVertices())
             {
                 vertex.Reset();
             }
-            foreach (Edge edge in GetEdges())
+            foreach (var edge in GetEdges())
             {
                 edge.Reset();
             }
         }
 
-        public void BuildCampus(Vertex vertex, CampusType type, Color color)
+        public void BuildCampus(IVertex vertex, CampusType type, Color color)
         {
             vertex.BuildCampus(type, color);
         }
 
-        public void BuildLink(Edge side, Color color)
+        public void BuildLink(IEdge side, Color color)
         {
             side.Color = color;
         }
@@ -156,5 +163,9 @@ namespace MingStar.SimUniversity.Board
         {
             this[whereAt].Reset();
         }
+
+
+
+
     }
 }

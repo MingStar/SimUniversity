@@ -5,9 +5,9 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Edge : Place
+    public class Edge : Place, IEdge
     {
-        public readonly EdgePosition Position;
+        public EdgePosition Position { get; private set; }
         private readonly EdgeCache _cache;
 
         private readonly Hexagon _originalHexagon;
@@ -15,14 +15,14 @@ namespace MingStar.SimUniversity.Board
 
         public Edge(Hexagon hex, EdgeOrientation so)
         {
-            Adjacent.Add(hex);
+            AdjacentForUpdate.Add(hex);
             _originalHexagon = hex;
             _originalOrientation = so;
             Position = new EdgePosition(_originalHexagon.Position, _originalOrientation);
             _cache = new EdgeCache(this);
         }
 
-        public Color? Color { get; internal set; }
+        public Color? Color { get; set; }
 
         public override string ToString()
         {
@@ -30,12 +30,12 @@ namespace MingStar.SimUniversity.Board
                                  _originalHexagon.Position, _originalOrientation, Color);
         }
 
-        internal override void Reset()
+        public override void Reset()
         {
             Color = null;
         }
 
-        internal void FindAllAdjacents(Board board)
+        public void FindAllAdjacents(IBoard board)
         {
             // from the original hex
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
@@ -44,12 +44,12 @@ namespace MingStar.SimUniversity.Board
                 if (_originalHexagon[edgeOrientation] == this)
                 {
                     // add edges
-                    Adjacent.Add(
+                    AdjacentForUpdate.Add(
                         (from eo in EdgeStaticInfo.Get(edgeOrientation).AdjacentEdgeOrientations
                          select _originalHexagon[eo])
                         );
                     // add vertices
-                    Adjacent.Add(
+                    AdjacentForUpdate.Add(
                         (from vo in EdgeStaticInfo.Get(edgeOrientation).AdjacentVertexOrientations
                          select _originalHexagon[vo])
                         );
@@ -59,20 +59,20 @@ namespace MingStar.SimUniversity.Board
             foreach (EdgePosition edgeOffset in EdgeStaticInfo.Get(_originalOrientation).AdjacentEdgeOffsets)
             {
                 Position hexPos = _originalHexagon.Position.Add(edgeOffset.HexPosition.X, edgeOffset.HexPosition.Y);
-                Hexagon hex = board[hexPos];
+                var hex = board[hexPos];
                 if (hex != null)
                 {
-                    Adjacent.Add(hex[edgeOffset.Orientation]);
+                    AdjacentForUpdate.Add(hex[edgeOffset.Orientation]);
                 }
             }
         }
 
-        internal void Cache()
+        public void Cache()
         {
             _cache.Cache();
         }
 
-        public IEnumerable<Edge> GetAdjacentEdgesSharedWith(Vertex vertex)
+        public IEnumerable<IEdge> GetAdjacentEdgesSharedWith(IVertex vertex)
         {
             return _cache.GetAdjacentEdgesSharedWith(vertex);
         }

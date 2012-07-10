@@ -81,13 +81,13 @@ namespace MingStar.SimUniversity.Game
 
         public void HashVertex(Color color, VertexPosition vPos, CampusType type)
         {
-            Vertex vertex = _game.Board[vPos];
+            var vertex = _game.Board[vPos];
             Hash ^= _coloredHashing[color].CampusHash[type][vertex];
         }
 
         public void HashEdge(Color color, EdgePosition ePos)
         {
-            Edge edge = _game.Board[ePos];
+            var edge = _game.Board[ePos];
             Hash ^= _coloredHashing[color].LinkHash[edge];
         }
 
@@ -119,7 +119,7 @@ namespace MingStar.SimUniversity.Game
             Hash ^= dict[quantity];
         }
 
-        public void HashMostInfo(University uni, MostInfoType type)
+        public void HashMostInfo(IUniversity uni, MostInfoType type)
         {
             if (uni == null)
             {
@@ -134,9 +134,9 @@ namespace MingStar.SimUniversity.Game
 
         private class ColoredHashing
         {
-            public readonly Dictionary<CampusType, Dictionary<Vertex, ulong>> CampusHash;
+            public readonly Dictionary<CampusType, Dictionary<IVertex, ulong>> CampusHash;
             public readonly Dictionary<DegreeType, Dictionary<int, ulong>> DegreeHash;
-            public readonly Dictionary<Edge, ulong> LinkHash;
+            public readonly Dictionary<IEdge, ulong> LinkHash;
             public readonly Dictionary<MostInfoType, ulong> MostInfoHash;
             public readonly Dictionary<bool, Dictionary<int, ulong>> StartUpHash;
             public ulong CurrentUniversityHash;
@@ -148,10 +148,10 @@ namespace MingStar.SimUniversity.Game
                 {
                     DegreeHash[degree] = new Dictionary<int, ulong>();
                 }
-                CampusHash = new Dictionary<CampusType, Dictionary<Vertex, ulong>>();
-                CampusHash[CampusType.Traditional] = new Dictionary<Vertex, ulong>();
-                CampusHash[CampusType.Super] = new Dictionary<Vertex, ulong>();
-                LinkHash = new Dictionary<Edge, ulong>();
+                CampusHash = new Dictionary<CampusType, Dictionary<IVertex, ulong>>();
+                CampusHash[CampusType.Traditional] = new Dictionary<IVertex, ulong>();
+                CampusHash[CampusType.Super] = new Dictionary<IVertex, ulong>();
+                LinkHash = new Dictionary<IEdge, ulong>();
 
                 StartUpHash = new Dictionary<bool, Dictionary<int, ulong>>();
                 StartUpHash[true] = new Dictionary<int, ulong>();

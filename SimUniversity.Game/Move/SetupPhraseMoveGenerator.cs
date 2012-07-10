@@ -37,15 +37,15 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static List<IPlayerMove> GenerateBuildLinkMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             var moves = new List<IPlayerMove>();
-            foreach (Vertex campus in currentUni.Campuses)
+            foreach (IVertex campus in currentUni.Campuses)
             {
                 if (campus.Adjacent.Edges.Any(e => e.Color != null))
                 {
                     continue;
                 }
-                foreach (Edge edge in campus.Adjacent.Edges)
+                foreach (IEdge edge in campus.Adjacent.Edges)
                 {
                     // we can build link
                     moves.Add(new BuildLinkMove(edge.Position));
@@ -56,10 +56,10 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static List<IPlayerMove> GenerateBuildTradiationCampusMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             var checkedV = new HashSet<Vertex>();
             var moves = new List<IPlayerMove>();
-            foreach (Vertex vertex in game.Board.GetVertices())
+            foreach (var vertex in game.Board.GetVertices())
             {
                 if (vertex.IsFreeToBuildCampus())
                 {

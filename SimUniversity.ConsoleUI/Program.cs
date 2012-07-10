@@ -25,6 +25,23 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private static void Main()
         {
+            try
+            {
+                RunMain();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            finally
+            {
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();                
+            }
+        }
+
+        private static void RunMain()
+        {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
             Game.Game.RandomEventChance = new RandomEvent();
             ConsoleKey key = Console.ReadKey().Key;
@@ -36,7 +53,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                     break;
                 case ConsoleKey.L:
                     _log.Info("start ai learning");
-                    var learning = new Learning(new ConsoleViewer());
+                    var learning = new Learning(new ConsoleViewer(), new SettlerBoardConstructor());
                     learning.Learn(30);
                     break;
                 default:
@@ -44,16 +61,14 @@ namespace MingStar.SimUniversity.ConsoleUI
                     PlayGame();
                     break;
             }
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
         }
 
         public static void PlayGame()
         {
             while (true)
             {
-                var game = new Game.Game((new SettlerBoardConstructor()).Board, 4);
-                IPlayer improvedEMM_AIPlayer = new ImprovedEMN(game, new GameScores());
+                var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), 4);
+                IPlayer improvedEMM_AIPlayer = new ImprovedEMN(new GameScores());
                 var players = new IPlayer[4];
                 players.Fill(improvedEMM_AIPlayer);
                 players[RandomGenerator.Next(4)] = _humanConsolePlayer;
@@ -76,13 +91,13 @@ namespace MingStar.SimUniversity.ConsoleUI
             var stats = new Dictionary<string, TournamentPlayerStats>();
             for (int i = 1; i <= round; ++i)
             {
-                var game = new Game.Game((new SettlerBoardConstructor()).Board, numPlayers);
-                var _improvedEMM_AIPlayer_normal = new ImprovedEMN(game, new GameScores());
-                var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(game, new ProductionGameScores());
+                var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
+                var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
+                var improvedEmmAiPlayerExpansion = new ImprovedEMN(new ProductionGameScores());
                 var players = new IPlayer[numPlayers];
-                players.Fill(_improvedEMM_AIPlayer_normal);
-                players[RandomGenerator.Next(numPlayers)] = _improvedEMM_AIPlayer_expansion;
-                for (int j = 0; j < numPlayers; ++j)
+                players.Fill(improvedEmmAiPlayerNormal);
+                players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;
+                for (var j = 0; j < numPlayers; ++j)
                 {
                     string name = players[j].Name;
                     if (!stats.ContainsKey(name))
@@ -103,7 +118,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                                        stat.PlayerName
                     );
                 stat.HasWon(controller.Game.GameStats.AreDiceFair());
-                foreach (TournamentPlayerStats statForPrint in stats.Values)
+                foreach (var statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();
                 }

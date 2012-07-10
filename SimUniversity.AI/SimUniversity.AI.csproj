@@ -98,10 +98,6 @@
       <Project>{2174A875-E5D2-48D7-BC14-7EA8753A0B3F}</Project>
       <Name>MingStar.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SimUniversity.Board\SimUniversity.Board.csproj">
-      <Project>{F37E59E9-3ABF-4597-AB7A-3E9516528F0A}</Project>
-      <Name>SimUniversity.Board</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SimUniversity.Contract\SimUniversity.Contract.csproj">
       <Project>{13B70D36-3E82-4304-8DF6-E85C77A2B304}</Project>
       <Name>SimUniversity.Contract</Name>

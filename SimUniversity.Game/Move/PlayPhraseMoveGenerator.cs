@@ -37,7 +37,7 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static IEnumerable<IPlayerMove> GenerateTradeMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             var moves = new List<IPlayerMove>();
             var checkedD = new HashSet<DegreeType>();
             foreach (SpecialTradingSite specialSite in currentUni.SpecialSites)
@@ -81,7 +81,7 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static List<IPlayerMove> GenerateBuildLinkMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             if (!currentUni.HasStudentsFor(BuildLinkMove.NeededStudents))
             {
                 return EmptyMoves;
@@ -106,7 +106,7 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static List<IPlayerMove> GenerateBuildTradiationCampusMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             var checkedV = new HashSet<Vertex>();
             var moves = new List<IPlayerMove>();
             if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForTraditionalCampus))
@@ -130,7 +130,7 @@ namespace MingStar.SimUniversity.Game.Move
 
         private static List<IPlayerMove> GenerateBuildSuperCampusMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
+            var currentUni = game.CurrentUniversity;
             if (currentUni.HasStudentsFor(BuildCampusMove.StudentsNeededForSuperCampus))
             {
                 return (from campus in currentUni.Campuses

@@ -1,7 +1,24 @@
-﻿namespace MingStar.SimUniversity.Contract
+﻿using System.Collections.Generic;
+
+namespace MingStar.SimUniversity.Contract
 {
     public interface IUniversity
     {
-        bool HasStudentsFor(StudentGroup[] studentGroup);
+        HashSet<IEdge> InternetLinks { get; }
+        int NumberOfSuccessfulCompanies { get; }
+        DegreeCount ProductionChances { get;  }
+        bool HasNormalTradingSite { get;  }
+        HashSet<ISpecialTradingSite> SpecialSites { get; }
+        HashSet<IVertex> Campuses { get; }
+        HashSet<IVertex> SuperCampuses { get; }
+        Color Color { get; }
+        int NumberOfFailedCompanies { get; }
+        int LengthOfLongestLink { get; }
+        DegreeCount Students { get; }
+        bool HasStudentsFor(DegreeType outDegree, int count);
+        bool HasStudentsFor(params StudentGroup[] studentGroup);
+
+        void AddCampus(IVertex vertex, CampusType type);
+        void RemoveCampus(IVertex vertex);
     }
 }

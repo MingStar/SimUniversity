@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
 using MingStar.SimUniversity.AI.Player;
-using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Random;
@@ -19,10 +18,12 @@ namespace MingStar.SimUniversity.AI.Learning
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
         private static bool IsFirstCall = true;
         private readonly IViewer _gameViewer;
+        private readonly IPredefinedBoardConstructor _boardConstructor;
 
-        public Learning(IViewer gameGameViewer)
+        public Learning(IViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
             _gameViewer = gameGameViewer;
+            _boardConstructor = boardConstructor;
         }
 
         public void Learn(int rounds)
@@ -84,9 +85,9 @@ namespace MingStar.SimUniversity.AI.Learning
                 ++round;
                 string challengerName;
                 int challengerIndex = RandomGenerator.Next(numPlayers);
-                var game = new Game.Game((new SettlerBoardConstructor()).Board, numPlayers);
-                var _improvedEMM_AIPlayer_normal = new ImprovedEMN(game, new GameScores());
-                var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(game, learnedScores);
+                var game = new Game.Game(_boardConstructor.ConstructBoard(), numPlayers);
+                var _improvedEMM_AIPlayer_normal = new ImprovedEMN(new GameScores());
+                var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(learnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(_improvedEMM_AIPlayer_normal);
                 challengerName = _improvedEMM_AIPlayer_expansion.Name;
@@ -138,7 +139,7 @@ namespace MingStar.SimUniversity.AI.Learning
         private static double GetChallengerScore(Game.Game game, int challengerIndex)
         {
             double totalScore = 0.0;
-            University challengerUni = game.Universities[challengerIndex];
+            var challengerUni = game.Universities[challengerIndex];
             int challengerScore = game.GetScore(challengerUni);
             // score difference to other players
             foreach (University uni in game.Universities)

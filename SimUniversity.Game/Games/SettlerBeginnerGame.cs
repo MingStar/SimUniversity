@@ -6,7 +6,7 @@ namespace MingStar.SimUniversity.Game.Games
 {
     public class SettlerBeginnerGame : Game
     {
-        public SettlerBeginnerGame() : base((new SettlerBeginnerBoardConstructor()).Board, 4)
+        public SettlerBeginnerGame() : base((new SettlerBeginnerBoardConstructor()).ConstructBoard(), 4)
         {
             Setup();
         }

@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
-using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
 using MingStar.SimUniversity.Game.Move;
@@ -52,10 +51,10 @@ namespace MingStar.SimUniversity.AI.Player
             {
                 return new ScoredMove(move, 100);
             }
-            return new ScoredMove(move, GetVertexScore(game, game.Board[buildCampus.WhereAt]));
+            return new ScoredMove(move, GetVertexScore(game, game.IBoard[buildCampus.WhereAt]));
         }
 
-        private double GetVertexScore(Game.Game game, Vertex vertex)
+        private double GetVertexScore(IGame game, IVertex vertex)
         {
             if (!vertex.IsFreeToBuildCampus())
             {
@@ -63,8 +62,8 @@ namespace MingStar.SimUniversity.AI.Player
             }
             // current production chance for uni
             var productionChances = new DegreeCount();
-            productionChances.Add(game.CurrentUniversity.ProductionChances);
-            foreach (Hexagon hex in vertex.Adjacent.Hexagons)
+            productionChances.Add(game.CurrentIUniversity.ProductionChances);
+            foreach (var hex in vertex.Adjacent.Hexagons)
             {
                 productionChances[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
             }
@@ -102,17 +101,17 @@ namespace MingStar.SimUniversity.AI.Player
                     productionScores[degree] *= _gameEvaluation.Scores.DegreeModifier[degree];
                 }
                 // site score
-                if (vertex.TradingSite == TradingSite.Instance)
+                if (vertex.TradingSite != null)
                 {
-                    score += _gameEvaluation.Scores.NORMAL_SITE;
-                }
-                else if (vertex.TradingSite != null)
-                {
-                    var specialSite = vertex.TradingSite as SpecialTradingSite;
+                    var specialSite = vertex.TradingSite as ISpecialTradingSite;
                     if (specialSite != null)
                     {
-                        score += productionChances[specialSite.TradeOutDegree]*
+                        score += productionChances[specialSite.TradeOutDegree] *
                                  _gameEvaluation.Scores.SPECIAL_SITE_MULTIPLIER;
+                    }
+                    else // normal site
+                    {
+                        score += _gameEvaluation.Scores.NORMAL_SITE;
                     }
                 }
             }
@@ -121,35 +120,35 @@ namespace MingStar.SimUniversity.AI.Player
         }
 
 
-        private ScoredMove GetBuildLinkMoveScore(Game.Game game, BuildLinkMove buildLinkMove)
+        private ScoredMove GetBuildLinkMoveScore(IGame game, BuildLinkMove buildLinkMove)
         {
             int remainingSetupTurn = game.NumberOfUniversities*GameConstants.NumberOfInitialSetups - game.CurrentTurn;
             if (remainingSetupTurn < 0)
             {
                 remainingSetupTurn = 0;
             }
-            var vertexScores = new Dictionary<Vertex, double>();
-            foreach (Vertex vertex in game.Board.GetVertices())
+            var vertexScores = new Dictionary<IVertex, double>();
+            foreach (var vertex in game.IBoard.GetVertices())
             {
                 vertexScores[vertex] = GetVertexScore(game, vertex);
             }
-            IOrderedEnumerable<KeyValuePair<Vertex, double>> result = from pair in vertexScores
+            IOrderedEnumerable<KeyValuePair<IVertex, double>> result = from pair in vertexScores
                                                                       orderby pair.Value descending
                                                                       select pair;
-            var adjustedVertexScores = new Dictionary<Vertex, double>();
+            var adjustedVertexScores = new Dictionary<IVertex, double>();
             foreach (var pair in result.Skip(remainingSetupTurn))
             {
                 adjustedVertexScores[pair.Key] = pair.Value;
             }
-            var checkedEdges = new HashSet<Edge>();
-            Edge edge = game.Board[buildLinkMove.WhereAt];
+            var checkedEdges = new HashSet<IEdge>();
+            var edge = game.IBoard[buildLinkMove.WhereAt];
 
             double score = GetEdgeScore(game, edge, checkedEdges, adjustedVertexScores, 1);
             return new ScoredMove(buildLinkMove, score);
         }
 
-        private double GetEdgeScore(Game.Game game, Edge edge, HashSet<Edge> checkedEdges,
-                                    Dictionary<Vertex, double> vertexScores, int level)
+        private double GetEdgeScore(IGame game, IEdge edge, HashSet<IEdge> checkedEdges,
+                                    Dictionary<IVertex, double> vertexScores, int level)
         {
             if (checkedEdges.Contains(edge))
             {
@@ -158,7 +157,7 @@ namespace MingStar.SimUniversity.AI.Player
             checkedEdges.Add(edge);
             double score = 0.0;
             // get adjacent vertex scores
-            foreach (Vertex vertex in edge.Adjacent.Vertices)
+            foreach (var vertex in edge.Adjacent.Vertices)
             {
                 if (vertexScores.ContainsKey(vertex))
                 {
@@ -168,7 +167,7 @@ namespace MingStar.SimUniversity.AI.Player
             }
             score /= level;
             // other edge scores
-            foreach (Edge nextEdge in edge.Adjacent.Edges)
+            foreach (var nextEdge in edge.Adjacent.Edges)
             {
                 if (nextEdge.Color == null)
                 {

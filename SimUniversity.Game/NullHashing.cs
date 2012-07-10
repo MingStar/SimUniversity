@@ -28,7 +28,7 @@ namespace MingStar.SimUniversity.Game
         {
         }
 
-        public void HashMostInfo(University uni, MostInfoType type)
+        public void HashMostInfo(IUniversity uni, MostInfoType type)
         {
         }
 

@@ -4,7 +4,7 @@ using MingStar.Utilities.Linq;
 
 namespace MingStar.SimUniversity.Board.Constructor
 {
-    public class SettlerBoardConstructor : BoardConstructor
+    public class SettlerBoardConstructor : BoardConstructor, IPredefinedBoardConstructor
     {
         private static readonly DegreeCount _originalList;
 
@@ -19,8 +19,49 @@ namespace MingStar.SimUniversity.Board.Constructor
             _originalList[DegreeType.None] = 1;
         }
 
-        public SettlerBoardConstructor()
+        public virtual IEnumerable<DegreeType> GetDegrees()
         {
+            return _originalList.ToList().Shuffle();
+        }
+
+        public virtual IEnumerable<DegreeType> GetSpecialSiteDegrees()
+        {
+            return Constants.RealDegrees.Shuffle();
+        }
+
+        public virtual IEnumerable<int> GetTokens()
+        {
+            return new[] {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
+        }
+
+        public virtual IEnumerable<EdgeOrientation> GetTokenPlaceOrders()
+        {
+            return new[]
+                       {
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.BottomRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.TopRight,
+                           EdgeOrientation.Top,
+                           EdgeOrientation.TopLeft,
+                           EdgeOrientation.BottomLeft,
+                           EdgeOrientation.Bottom,
+                           EdgeOrientation.TopRight
+                       };
+        }
+
+        public IBoard ConstructBoard()
+        {
+            Board = new Board();
             IEnumerable<DegreeType> degrees = GetDegrees();
             bool isFirst = true;
             IEnumerator<int> tokenEnumerator = GetTokens().GetEnumerator();
@@ -76,46 +117,7 @@ namespace MingStar.SimUniversity.Board.Constructor
             SetSpecializedSites(1, 0, VertexOrientation.Right, VertexOrientation.BottomRight,
                                 siteDegreeEnumerator.Current);
             Lock();
-        }
-
-        public virtual IEnumerable<DegreeType> GetDegrees()
-        {
-            return _originalList.ToList().Shuffle();
-        }
-
-        public virtual IEnumerable<DegreeType> GetSpecialSiteDegrees()
-        {
-            return Constants.RealDegrees.Shuffle();
-        }
-
-        public virtual IEnumerable<int> GetTokens()
-        {
-            return new[] {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11};
-        }
-
-        public virtual IEnumerable<EdgeOrientation> GetTokenPlaceOrders()
-        {
-            return new[]
-                       {
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.BottomRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.TopRight,
-                           EdgeOrientation.Top,
-                           EdgeOrientation.TopLeft,
-                           EdgeOrientation.BottomLeft,
-                           EdgeOrientation.Bottom,
-                           EdgeOrientation.TopRight
-                       };
+            return Board;
         }
     }
 }

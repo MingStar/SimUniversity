@@ -1,65 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class AdjacentInfo
+    public class AdjacentInfo : IAdjacentInfo, IAdjacentInfoForUpdate
     {
-        private readonly HashSet<Edge> _edges = new HashSet<Edge>();
-        private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
-        private readonly HashSet<Vertex> _vertices = new HashSet<Vertex>();
-        public ReadOnlyCollection<Hexagon> Hexagons { get; private set; }
-        public ReadOnlyCollection<Edge> Edges { get; private set; }
-        public ReadOnlyCollection<Vertex> Vertices { get; private set; }
+        private readonly HashSet<IEdge> _edges = new HashSet<IEdge>();
+        private readonly HashSet<IHexagon> _hexagons = new HashSet<IHexagon>();
+        private readonly HashSet<IVertex> _vertices = new HashSet<IVertex>();
+        public IEnumerable<IHexagon> Hexagons { get { return _hexagons; } }
+        public IEnumerable<IEdge> Edges { get { return _edges; } }
+        public IEnumerable<IVertex> Vertices { get { return _vertices; } }
 
-        public void Add(Hexagon hex)
+        public void Add(IHexagon hex)
         {
             if (hex == null)
             {
                 return;
             }
             _hexagons.Add(hex);
-            Hexagons = _hexagons.ToList().AsReadOnly();
         }
 
         public override string ToString()
         {
             return string.Format("Adjacent: [hex: {0}, ver: {1}, edge: {2}]",
-                                 Hexagons.Count, Vertices.Count, Edges.Count);
+                                 _hexagons.Count, _vertices.Count, _edges.Count);
         }
 
 
-        public void Add(Edge edge)
+        public void Add(IEdge edge)
         {
             if (edge == null)
             {
                 return;
             }
             _edges.Add(edge);
-            Edges = _edges.ToList().AsReadOnly();
         }
 
-        public void Add(IEnumerable<Edge> edges)
+        public void Add(IEnumerable<IEdge> edges)
         {
             _edges.UnionWith(edges);
-            Edges = _edges.ToList().AsReadOnly();
         }
 
-        public void Add(Vertex vertex)
+        public void Add(IVertex vertex)
         {
             if (vertex == null)
             {
                 return;
             }
             _vertices.Add(vertex);
-            Vertices = _vertices.ToList().AsReadOnly();
         }
 
-        public void Add(IEnumerable<Vertex> vertices)
+        public void Add(IEnumerable<IVertex> vertices)
         {
             _vertices.UnionWith(vertices);
-            Vertices = _vertices.ToList().AsReadOnly();
         }
     }
 }
