@@ -13,10 +13,8 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
 
 ### TODO:
-* Move the game moves info to the contract
-* Seperate interfaces for game update and interfaces for AI queries
-* Write tests for the game play
 * Fix AI player selecting bad location in set up phase
+* Write tests for the game play
 * Enable deep copy of game state (so AI cannot break the actual game)
 
 ### Tidy up:
