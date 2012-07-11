@@ -55,7 +55,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private static void PrintAllMoves(IGame game)
         {
-            IEnumerable<IPlayerMove> allMoves = game.GenerateAllMoves();
+            var allMoves = game.GenerateAllMoves();
             if (game.CurrentPhase == GamePhase.Play || allMoves.Count() < 10)
             {
                 PrintMoves(ConsoleColor.Yellow, allMoves);

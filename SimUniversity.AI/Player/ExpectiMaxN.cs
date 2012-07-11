@@ -60,7 +60,7 @@ namespace MingStar.SimUniversity.AI.Player
             {
                 return new GameState(Evaluate(game));
             }
-            IEnumerable<IPlayerMove> allMoves = game.GenerateAllMoves();
+            var allMoves = game.GenerateAllMoves();
             if (allMoves.Count() == 1)
             {
                 return new GameState(allMoves.First(), Evaluate(game));

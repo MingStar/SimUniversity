@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Game
 {
-    public class TurnInfo
+    internal class TurnInfo
     {
         public ReadOnlyCollection<IPlayerMoveForUpdate> AllMoves { get; private set; }
         public int CurrentUnversityLongestLink { get; private set; }

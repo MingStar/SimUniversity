@@ -17,7 +17,7 @@ namespace MingStar.SimUniversity.Game
         #region Non-Public Fields
 
         private readonly Dictionary<IVertex, int> _vertexProductionChances = new Dictionary<IVertex, int>();
-        private ReadOnlyCollection<IPlayerMoveForUpdate> AllMoves;
+        private ReadOnlyCollection<IPlayerMoveForUpdate> _allAvailableMoves;
         private Dictionary<Color, University> _color2University;
         private int _currentUniversityIndex;
         private Stack<TurnInfo> _previousTurnInfo;
@@ -279,6 +279,7 @@ namespace MingStar.SimUniversity.Game
                 }
             }
             CurrentUniversityIndex = (CurrentUniversityIndex + _universities.Length - 1)%_universities.Length;
+            _allAvailableMoves = null;
             --CurrentTurn;
             GameStats.UndoDiceRolled(diceTotal);
         }
@@ -311,7 +312,7 @@ namespace MingStar.SimUniversity.Game
             CurrentTurn = 1;
             MostFailedStartUps = new MostInfo(3);
             LongestInternetLink = new MostInfo(5);
-            AllMoves = null;
+            _allAvailableMoves = null;
             _previousTurnInfo = new Stack<TurnInfo>();
             _setupMoveGenerator = new SetupPhraseMoveGenerator();
             GameStats = new GameStats();
@@ -333,6 +334,7 @@ namespace MingStar.SimUniversity.Game
         public void NextTurn()
         {
             ++CurrentTurn;
+            _allAvailableMoves = null;
             switch (CurrentPhase)
             {
                 case GamePhase.Setup1:
@@ -420,6 +422,7 @@ namespace MingStar.SimUniversity.Game
             Debug.Assert(updateMove != null);
             _previousTurnInfo.Push(TurnInfo.Create(this, updateMove));
             updateMove.ApplyTo(this);
+            _allAvailableMoves = null;
             if (CurrentPhase == GamePhase.Play)
             {
                 CurrentUniversity.ConsumeStudents(move);
@@ -441,7 +444,7 @@ namespace MingStar.SimUniversity.Game
         public void UndoMove()
         {
             TurnInfo turnInfo = _previousTurnInfo.Pop();
-            AllMoves = turnInfo.AllMoves;
+            _allAvailableMoves = turnInfo.AllMoves;
             MostFailedStartUps = turnInfo.MostFailedStartUps;
             LongestInternetLink = turnInfo.MostInternetLinks;
             Hash = turnInfo.Hash;
@@ -456,7 +459,7 @@ namespace MingStar.SimUniversity.Game
 
         IEnumerable<IPlayerMove> IGame.GenerateAllMoves()
         {
-            return GenerateAllMoves().ToList<IPlayerMove>().AsReadOnly();
+            return GenerateAllMoves().ToArray<IPlayerMove>();
         }
 
         public int GetScore(IUniversity university)
@@ -551,11 +554,14 @@ namespace MingStar.SimUniversity.Game
 
         public ReadOnlyCollection<IPlayerMoveForUpdate> GenerateAllMoves()
         {
-            AllMoves =
-                CurrentPhase == GamePhase.Play
-                    ? PlayPhraseMoveGenerator.GenerateAllMoves(this).AsReadOnly()
-                    : _setupMoveGenerator.GenerateAllMoves(this).AsReadOnly();
-            return AllMoves;
+            if (_allAvailableMoves == null)
+            {
+                _allAvailableMoves =
+                    CurrentPhase == GamePhase.Play
+                        ? PlayPhraseMoveGenerator.GenerateAllMoves(this).AsReadOnly()
+                        : _setupMoveGenerator.GenerateAllMoves(this).AsReadOnly();
+            }
+            return _allAvailableMoves;
         }
 
 
