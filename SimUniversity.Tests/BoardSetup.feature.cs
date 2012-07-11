@@ -110,7 +110,7 @@ this.ScenarioSetup(scenarioInfo);
                         "6",
                         "6",
                         "6",
-                        "1",
+                        "3",
                         "6"});
 #line 8
  testRunner.And("the adjacent information should be the following:", ((string)(null)), table1);
@@ -335,7 +335,7 @@ this.ScenarioSetup(scenarioInfo);
                         "6",
                         "6",
                         "6",
-                        "1",
+                        "3",
                         "6"});
 #line 56
  testRunner.And("the adjacent information should be the following:", ((string)(null)), table5);

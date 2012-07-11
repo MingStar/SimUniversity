@@ -1,7 +1,7 @@
 ﻿Feature: Game Play
 	* build internet link
 	* try start up
-	* 
+	* end turn
 
 Scenario: 010 Set up the Catan beginnger's game
 	Given the dice roll is predefined to 5 

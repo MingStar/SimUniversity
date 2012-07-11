@@ -9,7 +9,7 @@ Scenario: Set up the beginner board for Catan (as from the game rules)
 		| Place Type | Min# of vertices | Max# of vertices | Min# of edges | Max# of edges | Min# of hexagons | Max# of hexagons |
 		| Edge       | 2                | 2                | 2             | 4             | 1                | 2                |
 		| Vertex     | 2                | 3                | 2             | 3             | 1                | 3                |
-		| Hexagon    | 6                | 6                | 6             | 6             | 1                | 6                |
+		| Hexagon    | 6                | 6                | 6             | 6             | 3                | 6                |
 	And the resource count should be the following:
 		| Resource | Count |
 		| Grain    | 4     |
@@ -57,4 +57,4 @@ Scenario: Set up the basic board for Catan
 		| Place Type | Min# of vertices | Max# of vertices | Min# of edges | Max# of edges | Min# of hexagons | Max# of hexagons |
 		| Edge       | 2                | 2                | 2             | 4             | 1                | 2                |
 		| Vertex     | 2                | 3                | 2             | 3             | 1                | 3                |
-		| Hexagon    | 6                | 6                | 6             | 6             | 1                | 6                |
+		| Hexagon    | 6                | 6                | 6             | 6             | 3                | 6                |
