@@ -50,7 +50,7 @@ namespace MingStar.SimUniversity.Contract
         public List<DegreeType> ToList()
         {
             var degrees = new List<DegreeType>();
-            foreach (DegreeType degree in Keys)
+            foreach (var degree in Keys)
             {
                 for (int i = 0; i < this[degree]; ++i)
                 {

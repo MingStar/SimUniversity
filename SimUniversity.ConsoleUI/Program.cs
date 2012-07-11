@@ -43,21 +43,23 @@ namespace MingStar.SimUniversity.ConsoleUI
         private static void RunMain()
         {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
-            Game.Game.RandomEventChance = new DiceRollRandomEvent();
             ConsoleKey key = Console.ReadKey().Key;
             switch (key)
             {
                 case ConsoleKey.A:
                     _log.Info("start ai tournament");
+                    Game.Game.RandomEventChance = new DiceCardRandomEvent();
                     RunAITournament(2, 200);
                     break;
                 case ConsoleKey.L:
                     _log.Info("start ai learning");
+                    Game.Game.RandomEventChance = new DiceCardRandomEvent();
                     var learning = new Learning(new ConsoleViewer(), new SettlerBoardConstructor());
                     learning.Learn(30);
                     break;
                 default:
                     _log.Info("start human vs. ai");
+                    Game.Game.RandomEventChance = new DiceRollRandomEvent();
                     PlayGame();
                     break;
             }

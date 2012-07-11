@@ -66,6 +66,7 @@
       <DependentUpon>BoardSetup.feature</DependentUpon>
     </Compile>
     <Compile Include="StepsDefinition.cs" />
+    <Compile Include="TestDiceCardRandomEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

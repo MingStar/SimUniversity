@@ -17,6 +17,7 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 
 ### TODO:
 * Use dice cards instead of dice rolls for AI learning (to minimise the dice roll variance)
+* Have another AI to search all possible moves within the turn (particular useful in late game)
 * Write tests for the game play
 * Enable deep copy of game state (so AI cannot break the actual game)
 * Persist game state
