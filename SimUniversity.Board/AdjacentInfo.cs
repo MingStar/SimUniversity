@@ -3,7 +3,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class AdjacentInfo : IAdjacentInfoForUpdate, IAdjacentInfo
+    public class AdjacentInfo : IAdjacentInfo
     {
         private readonly HashSet<Edge> _edges = new HashSet<Edge>();
         private readonly HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
@@ -25,27 +25,24 @@ namespace MingStar.SimUniversity.Board
         {
             get { return _vertices; }
         }
-
         #endregion
 
-        #region IAdjacentInfoForUpdate Members
-
-        public IEnumerable<Hexagon> Hexagons
+        internal IEnumerable<Hexagon> Hexagons
         {
             get { return _hexagons; }
         }
 
-        public IEnumerable<Edge> Edges
+        internal IEnumerable<Edge> Edges
         {
             get { return _edges; }
         }
 
-        public IEnumerable<Vertex> Vertices
+        internal IEnumerable<Vertex> Vertices
         {
             get { return _vertices; }
         }
 
-        public void Add(Hexagon hex)
+        internal void Add(Hexagon hex)
         {
             if (hex == null)
             {
@@ -54,8 +51,7 @@ namespace MingStar.SimUniversity.Board
             _hexagons.Add(hex);
         }
 
-
-        public void Add(Edge edge)
+        internal void Add(Edge edge)
         {
             if (edge == null)
             {
@@ -64,12 +60,12 @@ namespace MingStar.SimUniversity.Board
             _edges.Add(edge);
         }
 
-        public void Add(IEnumerable<Edge> edges)
+        internal void Add(IEnumerable<Edge> edges)
         {
             _edges.UnionWith(edges);
         }
 
-        public void Add(Vertex vertex)
+        internal void Add(Vertex vertex)
         {
             if (vertex == null)
             {
@@ -78,12 +74,10 @@ namespace MingStar.SimUniversity.Board
             _vertices.Add(vertex);
         }
 
-        public void Add(IEnumerable<Vertex> vertices)
+        internal void Add(IEnumerable<Vertex> vertices)
         {
             _vertices.UnionWith(vertices);
         }
-
-        #endregion
 
         public override string ToString()
         {

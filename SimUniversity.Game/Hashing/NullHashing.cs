@@ -1,6 +1,6 @@
 ﻿using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.Game
+namespace MingStar.SimUniversity.Game.Hashing
 {
     internal class NullHashing : IZobristHashing
     {

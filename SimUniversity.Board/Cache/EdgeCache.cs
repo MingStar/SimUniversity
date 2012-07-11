@@ -4,7 +4,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board.Cache
 {
-    public class EdgeCache
+    internal class EdgeCache
     {
         private readonly IEdge _edge;
         private readonly Dictionary<IVertex, List<IEdge>> _edgesSharingVertex;
@@ -17,10 +17,10 @@ namespace MingStar.SimUniversity.Board.Cache
 
         public void Cache()
         {
-            foreach (IVertex vertex in _edge.Adjacent.Vertices)
+            foreach (var vertex in _edge.Adjacent.Vertices)
             {
                 _edgesSharingVertex[vertex] = new List<IEdge>();
-                foreach (IEdge edge in _edge.Adjacent.Edges)
+                foreach (var edge in _edge.Adjacent.Edges)
                 {
                     if (edge.Adjacent.Vertices.Contains(vertex))
                     {

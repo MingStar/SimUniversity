@@ -14,7 +14,7 @@ namespace MingStar.SimUniversity.Board
             _adjacentInfo = new AdjacentInfo();
         }
 
-        internal IAdjacentInfoForUpdate AdjacentForUpdate
+        internal AdjacentInfo AdjacentForUpdate
         {
             get { return _adjacentInfo; }
         }
@@ -28,6 +28,6 @@ namespace MingStar.SimUniversity.Board
 
         #endregion
 
-        public abstract void Reset();
+        internal abstract void Reset();
     }
 }

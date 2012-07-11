@@ -6,10 +6,9 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Edge : Place, IEdge, IEdgeForUpdate
+    public class Edge : Place, IEdge
     {
         private readonly EdgeCache _cache;
-
         private readonly Hexagon _originalHexagon;
         private readonly EdgeOrientation _originalOrientation;
 
@@ -42,14 +41,12 @@ namespace MingStar.SimUniversity.Board
 
         #endregion
 
-        #region IEdgeForUpdate Members
-
-        public override void Reset()
+        internal override void Reset()
         {
             Color = null;
         }
 
-        public void FindAllAdjacents(Board board)
+        internal void FindAllAdjacents(Board board)
         {
             // from the original hex
             for (int i = 0; i < BoardConstants.EdgeOrentationCount; ++i)
@@ -81,17 +78,15 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        public void Cache()
+        internal void Cache()
         {
             _cache.Cache();
         }
 
-        public void SetColor(Color color)
+        internal void SetColor(Color color)
         {
             Color = color;
         }
-
-        #endregion
 
         public override string ToString()
         {

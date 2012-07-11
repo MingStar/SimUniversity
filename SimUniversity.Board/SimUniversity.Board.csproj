@@ -77,11 +77,6 @@
     <Compile Include="Constructor\HexagonExtensions.cs" />
     <Compile Include="Constructor\SettlerBoardConstructor.cs" />
     <Compile Include="BoardConstants.cs" />
-    <Compile Include="IAdjacentInfoForUpdate.cs" />
-    <Compile Include="IBoardForUpdate.cs" />
-    <Compile Include="IEdgeForUpdate.cs" />
-    <Compile Include="IHexagonForUpdate.cs" />
-    <Compile Include="IVertextForUpdate.cs" />
     <Compile Include="Positioning\EdgeStaticInfo.cs" />
     <Compile Include="Hexagon.cs" />
     <Compile Include="Place.cs" />

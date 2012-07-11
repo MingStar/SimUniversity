@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
 
-namespace MingStar.SimUniversity.Game
+namespace MingStar.SimUniversity.Game.Hashing
 {
     public class ZobristHashing : IZobristHashing
     {

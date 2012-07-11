@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Vertex : Place, IVertex, IVertextForUpdate
+    public class Vertex : Place, IVertex
     {
         #region Public Read-Only Properties
 
@@ -54,13 +54,13 @@ namespace MingStar.SimUniversity.Board
 
         #region IVertextForUpdate Members
 
-        public override void Reset()
+        internal override void Reset()
         {
             Campus = null;
             NumberOfNeighbourCampuses = 0;
         }
 
-        public void BuildCampus(CampusType type, Color color)
+        internal void BuildCampus(CampusType type, Color color)
         {
             Campus = new Campus(type, color);
             if (type == CampusType.Traditional)
@@ -72,17 +72,17 @@ namespace MingStar.SimUniversity.Board
             }
         }
 
-        public void MakeSpecialSite(DegreeType degree)
+        internal void MakeSpecialSite(DegreeType degree)
         {
             TradingSite = new SpecialTradingSite(degree);
         }
 
-        public void MakeMultiSite()
+        internal void MakeMultiSite()
         {
             TradingSite = SimUniversity.Board.TradingSite.Instance;
         }
 
-        public void DowngradeCampus()
+        internal void DowngradeCampus()
         {
             if (Campus == null)
             {

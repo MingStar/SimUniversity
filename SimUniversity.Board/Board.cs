@@ -6,7 +6,7 @@ using MingStar.SimUniversity.Contract;
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Board : IBoard, IBoardForUpdate
+    public class Board : IBoard
     {
         protected ReadOnlyCollection<Edge> _edges;
         protected HashSet<Hexagon> _hexagons = new HashSet<Hexagon>();
@@ -105,14 +105,10 @@ namespace MingStar.SimUniversity.Board
 
         #endregion
 
-        #region IBoardForUpdate Members
-
         public Hexagon this[Position pos]
         {
             get { return GetHexagonOrNull(pos); }
         }
-
-        #endregion
 
         public Hexagon[] GetHexagons()
         {

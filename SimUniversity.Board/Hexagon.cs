@@ -2,7 +2,7 @@
 
 namespace MingStar.SimUniversity.Board
 {
-    public class Hexagon : Place, IHexagon, IHexagonForUpdate
+    public class Hexagon : Place, IHexagon
     {
         #region Public Properties
 
@@ -42,13 +42,13 @@ namespace MingStar.SimUniversity.Board
 
         #region IHexagonForUpdate Members
 
-        public Vertex this[VertexOrientation vo]
+        internal Vertex this[VertexOrientation vo]
         {
             get { return _vertices[(int) vo]; }
             set { _vertices[(int) vo] = value; }
         }
 
-        public Edge this[EdgeOrientation eo]
+        internal Edge this[EdgeOrientation eo]
         {
             get { return _edges[(int) eo]; }
             set { _edges[(int) eo] = value; }
@@ -61,7 +61,7 @@ namespace MingStar.SimUniversity.Board
             return string.Format("Hexagon [{0}, {1}, {2}]", ProductionNumber, Degree, Position);
         }
 
-        public override void Reset()
+        internal override void Reset()
         {
             //do nothing
         }

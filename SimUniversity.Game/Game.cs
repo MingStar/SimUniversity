@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Contract;
+using MingStar.SimUniversity.Game.Hashing;
 using MingStar.SimUniversity.Game.Move;
 using MingStar.SimUniversity.Game.Random;
 using MingStar.SimUniversity.Game.Rules;
