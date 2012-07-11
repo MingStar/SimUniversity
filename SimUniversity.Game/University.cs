@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MingStar.SimUniversity.Board;
@@ -9,8 +10,8 @@ namespace MingStar.SimUniversity.Game
 {
     public class University : IUniversity
     {
-        public readonly int PlayerIndex;
         private readonly Game _game;
+        private HashSet<IVertex> _normalSiteLocations;
 
         public University(Game game, Color color, int playerIndex)
         {
@@ -20,31 +21,23 @@ namespace MingStar.SimUniversity.Game
             Reset();
         }
 
-        public HashSet<IVertex> NormalSiteLocations { get; private set; }
 
-        public string Name
-        {
-            get { return "University " + Color; }
-        }
+        public readonly int PlayerIndex;
 
         #region IUniversity Members
-
         public Color Color { get; private set; }
-
         public HashSet<IEdge> InternetLinks { get; private set; }
         public HashSet<IVertex> Campuses { get; private set; }
         public HashSet<IVertex> SuperCampuses { get; private set; }
-
         public HashSet<ISpecialTradingSite> SpecialSites { get; private set; }
         public DegreeCount Students { get; private set; }
         public int NumberOfSuccessfulCompanies { get; internal set; }
         public int NumberOfFailedCompanies { get; internal set; }
         public int LengthOfLongestLink { get; internal set; }
         public DegreeCount ProductionChances { get; private set; }
-
         public bool HasNormalTradingSite
         {
-            get { return NormalSiteLocations.Count > 0; }
+            get { return _normalSiteLocations.Count > 0; }
         }
 
         public bool HasStudentsFor(params StudentGroup[] studentGroups)
@@ -55,8 +48,19 @@ namespace MingStar.SimUniversity.Game
             }
             return !studentGroups.Any(group => Students[group.Degree] < group.Quantity);
         }
-
         #endregion
+
+        private int _generalTradingRate;
+
+        internal IEnumerable<StudentGroup> GetDegreeTradingRates()
+        {
+            return GameConstants.RealDegrees.Select(d =>
+                new StudentGroup(d,
+                    SpecialSites.Any(s => s.TradeOutDegree == d)
+                    ? SpecialTradingSite.TradeOutStudentQuantity
+                    : _generalTradingRate)
+                );
+        }
 
         internal void Reset()
         {
@@ -64,17 +68,18 @@ namespace MingStar.SimUniversity.Game
             Campuses = new HashSet<IVertex>();
             SuperCampuses = new HashSet<IVertex>();
             SpecialSites = new HashSet<ISpecialTradingSite>();
-            NormalSiteLocations = new HashSet<IVertex>();
+            _normalSiteLocations = new HashSet<IVertex>();
             Students = new DegreeCount();
             ProductionChances = new DegreeCount();
             ResetStudentCounts();
             NumberOfSuccessfulCompanies = 0;
             NumberOfFailedCompanies = 0;
+            _generalTradingRate = GameConstants.NormalTradingStudentQuantity;
         }
 
         private void ResetStudentCounts()
         {
-            foreach (DegreeType degree in GameConstants.RealDegrees)
+            foreach (var degree in GameConstants.RealDegrees)
             {
                 Students[degree] = 0;
             }
@@ -83,7 +88,7 @@ namespace MingStar.SimUniversity.Game
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append(Name);
+            sb.Append("University " + Color);
             sb.Append(" Score: " + _game.GetScore(this));
             sb.Append(" [");
             bool isFirst = true;
@@ -149,7 +154,11 @@ namespace MingStar.SimUniversity.Game
             {
                 if (vertex.TradingSite == TradingSite.Instance)
                 {
-                    NormalSiteLocations.Remove(vertex);
+                    _normalSiteLocations.Remove(vertex);
+                    if (!HasNormalTradingSite)
+                    {
+                        _generalTradingRate = GameConstants.NormalTradingStudentQuantity;
+                    }
                 }
                 else
                 {
@@ -166,17 +175,7 @@ namespace MingStar.SimUniversity.Game
                 Campuses.Add(vertex);
                 _game.Hashing.HashVertex(Color, vertex.Position, type);
                 CheckLongestLinkForOtherUniversities(vertex);
-                if (vertex.TradingSite != null)
-                {
-                    if (vertex.TradingSite == TradingSite.Instance)
-                    {
-                        NormalSiteLocations.Add(vertex);
-                    }
-                    else
-                    {
-                        SpecialSites.Add((SpecialTradingSite) vertex.TradingSite);
-                    }
-                }
+                AddTradingSite(vertex);
             }
             else //if (type == CampusType.Super)
             {
@@ -184,6 +183,22 @@ namespace MingStar.SimUniversity.Game
                 Campuses.Remove(vertex);
                 _game.Hashing.HashVertex(Color, vertex.Position, CampusType.Super);
                 _game.Hashing.HashVertex(Color, vertex.Position, CampusType.Traditional);
+            }
+        }
+
+        private void AddTradingSite(IVertex vertex)
+        {
+            if (vertex.TradingSite != null)
+            {
+                if (vertex.TradingSite == TradingSite.Instance)
+                {
+                    _normalSiteLocations.Add(vertex);
+                    _generalTradingRate = TradingSite.TradeOutStudentQuantity;
+                }
+                else
+                {
+                    SpecialSites.Add((SpecialTradingSite) vertex.TradingSite);
+                }
             }
         }
 

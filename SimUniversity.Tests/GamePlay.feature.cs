@@ -19,20 +19,20 @@ namespace MingStar.SimUniversity.Tests
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.8.1.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Test the set up phase of the game")]
-    public partial class TestTheSetUpPhaseOfTheGameFeature
+    [NUnit.Framework.DescriptionAttribute("Game Play")]
+    public partial class GamePlayFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "GameSetup.feature"
+#line 1 "GamePlay.feature"
 #line hidden
         
         [NUnit.Framework.TestFixtureSetUpAttribute()]
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Test the set up phase of the game", "", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Game Play", "* build internet link\r\n* try start up\r\n*", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -69,11 +69,11 @@ namespace MingStar.SimUniversity.Tests
         public virtual void _010SetUpTheCatanBeginngerSGame()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("010 Set up the Catan beginnger\'s game", ((string[])(null)));
-#line 3
+#line 6
 this.ScenarioSetup(scenarioInfo);
-#line 4
+#line 7
  testRunner.Given("the dice roll is predefined to 5");
-#line 5
+#line 8
  testRunner.When("I set up the Catan beginner\'s game");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -106,11 +106,11 @@ this.ScenarioSetup(scenarioInfo);
                         "(2, 2, l); (1, 3, tl)",
                         "(2, 2, bl); (1, 3, tl)",
                         "g, s, w"});
-#line 6
+#line 9
  testRunner.Then("the university information should be the following:", ((string)(null)), table1);
-#line 12
+#line 15
  testRunner.And("the current game phase should be \'Play\'");
-#line 13
+#line 16
  testRunner.And("the current university of the turn should be \'Red\'");
 #line hidden
             this.ScenarioCleanup();
@@ -121,11 +121,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _020BuildAInternetLink()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("020 build a internet link", ((string[])(null)));
-#line 15
+#line 18
 this.ScenarioSetup(scenarioInfo);
-#line 16
+#line 19
  testRunner.When("the university build an internet link at (0, 3, tl)");
-#line 17
+#line 20
  testRunner.Then("a red internet link should be at (0, 3, tl)");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -153,11 +153,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "(2, 2, bl); (1, 3, tl)",
                         "g, s, w"});
-#line 18
+#line 21
  testRunner.And("the university information should be the following:", ((string)(null)), table2);
-#line 24
+#line 27
  testRunner.And("the current game phase should be \'Play\'");
-#line 25
+#line 28
  testRunner.And("the current university of the turn should be \'Red\'");
 #line hidden
             this.ScenarioCleanup();
@@ -168,11 +168,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _030EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("030 End turn", ((string[])(null)));
-#line 27
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 28
+#line 31
  testRunner.Given("the dice roll is predefined to 4");
-#line 29
+#line 32
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -190,9 +190,9 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "Orange",
                         "g, s, 2w"});
-#line 30
+#line 33
  testRunner.Then("the university information should be the following:", ((string)(null)), table3);
-#line 36
+#line 39
  testRunner.And("the current university of the turn should be \'Blue\'");
 #line hidden
             this.ScenarioCleanup();
@@ -203,11 +203,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _040EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("040 End turn", ((string[])(null)));
-#line 38
+#line 41
 this.ScenarioSetup(scenarioInfo);
-#line 39
+#line 42
  testRunner.Given("the dice roll is predefined to 6");
-#line 40
+#line 43
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -225,9 +225,9 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "Orange",
                         "g, s, 2w"});
-#line 41
+#line 44
  testRunner.Then("the university information should be the following:", ((string)(null)), table4);
-#line 47
+#line 50
  testRunner.And("the current university of the turn should be \'White\'");
 #line hidden
             this.ScenarioCleanup();
@@ -238,11 +238,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _050BuildAInternetLink()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("050 Build a internet link", ((string[])(null)));
-#line 49
+#line 52
 this.ScenarioSetup(scenarioInfo);
-#line 50
+#line 53
  testRunner.When("the university build an internet link at (2, 0, t)");
-#line 51
+#line 54
  testRunner.Then("a white internet link should be at (2, 0, t)");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -270,9 +270,9 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "(2, 2, bl); (1, 3, tl)",
                         "g, s, 2w"});
-#line 52
+#line 55
  testRunner.And("the university information should be the following:", ((string)(null)), table5);
-#line 58
+#line 61
  testRunner.And("the current university of the turn should be \'White\'");
 #line hidden
             this.ScenarioCleanup();
@@ -283,11 +283,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _060EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("060 End turn", ((string[])(null)));
-#line 60
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 61
+#line 64
  testRunner.Given("the dice roll is predefined to 8");
-#line 62
+#line 65
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -305,9 +305,9 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "Orange",
                         "2g, s, 2w"});
-#line 63
+#line 66
  testRunner.Then("the university information should be the following:", ((string)(null)), table6);
-#line 69
+#line 72
  testRunner.And("the current university of the turn should be \'Orange\'");
 #line hidden
             this.ScenarioCleanup();
@@ -318,11 +318,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _070EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("070 End turn", ((string[])(null)));
-#line 71
+#line 74
 this.ScenarioSetup(scenarioInfo);
-#line 72
+#line 75
  testRunner.Given("the dice roll is predefined to 9");
-#line 73
+#line 76
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -340,9 +340,9 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "Orange",
                         "3g, s, 2w"});
-#line 74
+#line 77
  testRunner.Then("the university information should be the following:", ((string)(null)), table7);
-#line 80
+#line 83
  testRunner.And("the current university of the turn should be \'Red\'");
 #line hidden
             this.ScenarioCleanup();
@@ -353,11 +353,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _080EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("080 End turn", ((string[])(null)));
-#line 82
+#line 85
 this.ScenarioSetup(scenarioInfo);
-#line 83
+#line 86
  testRunner.Given("the dice roll is predefined to 2");
-#line 84
+#line 87
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -375,9 +375,9 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "Orange",
                         "3g, s, 2w"});
-#line 85
+#line 88
  testRunner.Then("the university information should be the following:", ((string)(null)), table8);
-#line 91
+#line 94
  testRunner.And("the current university of the turn should be \'Blue\'");
 #line hidden
             this.ScenarioCleanup();
@@ -388,11 +388,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _090TryStartUp()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("090 Try Start up", ((string[])(null)));
-#line 93
+#line 96
 this.ScenarioSetup(scenarioInfo);
-#line 94
+#line 97
  testRunner.Given("the startup will fail");
-#line 95
+#line 98
  testRunner.When("the player found a startup company");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -415,9 +415,9 @@ this.ScenarioSetup(scenarioInfo);
                         "Orange",
                         "3g, s, 2w",
                         "0"});
-#line 96
+#line 99
  testRunner.Then("the university information should be the following:", ((string)(null)), table9);
-#line 102
+#line 105
  testRunner.And("the current university of the turn should be \'Blue\'");
 #line hidden
             this.ScenarioCleanup();
@@ -428,11 +428,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _100EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("100 End turn", ((string[])(null)));
-#line 104
+#line 107
 this.ScenarioSetup(scenarioInfo);
-#line 105
+#line 108
  testRunner.Given("the dice roll is predefined to 10");
-#line 106
+#line 109
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -450,9 +450,9 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "Orange",
                         "3g, 3s, 2w"});
-#line 107
+#line 110
  testRunner.Then("the university information should be the following:", ((string)(null)), table10);
-#line 113
+#line 116
  testRunner.And("the current university of the turn should be \'White\'");
 #line hidden
             this.ScenarioCleanup();
@@ -463,11 +463,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void _110EndTurn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("110 End turn", ((string[])(null)));
-#line 115
+#line 118
 this.ScenarioSetup(scenarioInfo);
-#line 116
+#line 119
  testRunner.Given("the dice roll is predefined to 10");
-#line 117
+#line 120
  testRunner.When("the turn is ended");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -485,9 +485,9 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "Orange",
                         "3g, 5s, 2w"});
-#line 118
+#line 121
  testRunner.Then("the university information should be the following:", ((string)(null)), table11);
-#line 124
+#line 127
  testRunner.And("the current university of the turn should be \'Orange\'");
 #line hidden
             this.ScenarioCleanup();
@@ -500,9 +500,9 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("120 Exchange students", new string[] {
                         "ignore"});
-#line 127
+#line 130
 this.ScenarioSetup(scenarioInfo);
-#line 128
+#line 131
  testRunner.When("the university exchanges 3 sheep for 1 brick");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -520,9 +520,9 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "Orange",
                         "3g, 2s, 2w, b"});
-#line 129
+#line 132
  testRunner.Then("the university information should be the following:", ((string)(null)), table12);
-#line 135
+#line 138
  testRunner.And("the current university of the turn should be \'Orange\'");
 #line hidden
             this.ScenarioCleanup();
@@ -535,11 +535,11 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("130 Build an internet link", new string[] {
                         "ignore"});
-#line 138
+#line 141
 this.ScenarioSetup(scenarioInfo);
-#line 139
+#line 142
  testRunner.When("the university build an internet link at (0, 3, t)");
-#line 140
+#line 143
  testRunner.Then("an Orange internet link should be at (0, 3, t)");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -567,9 +567,9 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "(2, 2, bl); (1, 3, tl); (0, 3, t)",
                         "3g, 2s, w"});
-#line 141
+#line 144
  testRunner.And("the university information should be the following:", ((string)(null)), table13);
-#line 147
+#line 150
  testRunner.And("the current university of the turn should be \'Orange\'");
 #line hidden
             this.ScenarioCleanup();

@@ -53,10 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameSetup.feature.cs">
+    <Compile Include="GamePlay.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GameSetup.feature</DependentUpon>
+      <DependentUpon>GamePlay.feature</DependentUpon>
     </Compile>
     <Compile Include="Mocks\FakeRandomEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,9 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="GameSetup.feature">
+    <None Include="GamePlay.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GameSetup.feature.cs</LastGenOutput>
+      <LastGenOutput>GamePlay.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="BoardSetup.feature">

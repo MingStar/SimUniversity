@@ -29,50 +29,20 @@ namespace MingStar.SimUniversity.Game.Move
             possibleMoves.Add(new EndTurn());
             return possibleMoves;
         }
-
-        public static List<Type> GenerateAllMoveTypes(Game game)
-        {
-            return null;
-        }
-
+        
         private static IEnumerable<IPlayerMoveForUpdate> GenerateTradeMoves(Game game)
         {
-            University currentUni = game.CurrentUniversity;
-            var moves = new List<IPlayerMoveForUpdate>();
-            var checkedD = new HashSet<DegreeType>();
-            foreach (SpecialTradingSite specialSite in currentUni.SpecialSites)
-            {
-                if (currentUni.HasStudentsFor(specialSite.StudentsNeeded))
-                {
-                    checkedD.Add(specialSite.TradeOutDegree);
-                    AddTradingMoves(moves, specialSite.TradeOutDegree, SpecialTradingSite.TradeOutStudentQuantity);
-                }
-            }
-            foreach (DegreeType outDegree in GameConstants.RealDegrees)
-            {
-                if (checkedD.Contains(outDegree))
-                {
-                    continue;
-                }
-                if (currentUni.HasNormalTradingSite
-                    && currentUni.HasStudentsFor(new StudentGroup(outDegree, TradingSite.TradeOutStudentQuantity)))
-                {
-                    AddTradingMoves(moves, outDegree, TradingSite.TradeOutStudentQuantity);
-                }
-                else if (
-                    currentUni.HasStudentsFor(new StudentGroup(outDegree, GameConstants.NormalTradingStudentQuantity)))
-                {
-                    AddTradingMoves(moves, outDegree, GameConstants.NormalTradingStudentQuantity);
-                }
-            }
-            return moves;
+            var uni = game.CurrentUniversity;
+            return uni.GetDegreeTradingRates()
+                .Where(rate => uni.HasStudentsFor(rate))
+                .SelectMany(GetTradingMoves);
         }
 
-        private static void AddTradingMoves(List<IPlayerMoveForUpdate> moves, DegreeType outDegree, int quantity)
+        private static IEnumerable<IPlayerMoveForUpdate> GetTradingMoves(StudentGroup studentGroup)
         {
-            moves.AddRange((from degree in GameConstants.RealDegrees
-                            where degree != outDegree
-                            select new TradingMove(outDegree, quantity, degree)));
+            return (from inDegree in GameConstants.RealDegrees
+                    where inDegree != studentGroup.Degree
+                    select new TradingMove(studentGroup.Degree, studentGroup.Quantity, inDegree));
         }
 
         private static IEnumerable<IPlayerMoveForUpdate> GenerateBuildLinkMoves(Game game)

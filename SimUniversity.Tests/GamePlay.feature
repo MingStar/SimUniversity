@@ -1,4 +1,7 @@
-﻿Feature: Test the set up phase of the game
+﻿Feature: Game Play
+	* build internet link
+	* try start up
+	* 
 
 Scenario: 010 Set up the Catan beginnger's game
 	Given the dice roll is predefined to 5 
