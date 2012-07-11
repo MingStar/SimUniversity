@@ -13,11 +13,13 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 ### Difference from the original COMP1711 SimUniversity game
 * Resource are Wood, Brick, Ore, Grain and Sheep (as student degrees are too hard to remember)
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
-
+* When a startup company failed, no card stealing from other players (yet)
 
 ### TODO:
+* Use dice cards instead of dice rolls for AI learning (to minimise the dice roll variance)
 * Write tests for the game play
 * Enable deep copy of game state (so AI cannot break the actual game)
+* Persist game state
 
 ### Tidy up:
 * Remove game state hashing

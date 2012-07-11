@@ -5,8 +5,13 @@ namespace MingStar.SimUniversity.Board.Constructor
     public class SettlerBeginnerBoardConstructor : BoardConstructor, IPredefinedBoardConstructor
     {
         #region IPredefinedBoardConstructor Members
+        IBoard IPredefinedBoardConstructor.ConstructBoard()
+        {
+            return ConstructBoard();
+        }
+        #endregion
 
-        public IBoard ConstructBoard()
+        public Board ConstructBoard()
         {
             Board = new Board();
             // 1st bottom row - left to right
@@ -48,7 +53,5 @@ namespace MingStar.SimUniversity.Board.Constructor
             Lock();
             return Board;
         }
-
-        #endregion
     }
 }

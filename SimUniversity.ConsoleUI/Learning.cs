@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MingStar.SimUniversity.AI.Evaluation;
+using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
@@ -10,7 +11,7 @@ using MingStar.Utilities;
 using MingStar.Utilities.Linq;
 using log4net;
 
-namespace MingStar.SimUniversity.AI.Learning
+namespace MingStar.SimUniversity.ConsoleUI
 {
     public class Learning
     {

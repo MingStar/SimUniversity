@@ -24,8 +24,8 @@ namespace MingStar.SimUniversity.AI.Evaluation
             }
 
             score +=
-                currentScore*Scores.PlayerScoreBase +
-                uni.InternetLinks.Count*Scores.InternetLinkMultiplier;
+                currentScore * Scores.PlayerScoreBase +
+                uni.InternetLinks.Count * Scores.InternetLinkMultiplier;
             // check for production chances
             DegreeCount productionChances = uni.ProductionChances;
             if (productionChances.Values.Count(v => v != 0)

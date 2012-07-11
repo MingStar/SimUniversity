@@ -1,6 +1,6 @@
 ﻿namespace MingStar.SimUniversity.Game.Random
 {
-    public class RandomEvent : IRandomEvent
+    public class DiceRollRandomEvent : IRandomEvent
     {
         #region IRandomEvent Members
 

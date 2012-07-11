@@ -112,7 +112,7 @@ namespace MingStar.SimUniversity.Game
 
         public Game(IBoard board, int numOfPlayers, IGameRules rules)
         {
-            Board = (Board.Board) board; //FIXME: remove type casting
+            Board = (Board.Board)board; //TODO: remove type casting
             Rules = rules;
             NumberOfUniversities = numOfPlayers;
             ProbabilityWithNoCut = Math.Pow(

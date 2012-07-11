@@ -30,13 +30,13 @@ namespace MingStar.SimUniversity.Tests
         [When(@"I set up the beginner board for Catan")]
         public void WhenISetUpTheBeginnerBoardForCatan()
         {
-            _board = (new SettlerBeginnerBoardConstructor()).ConstructBoard() as Board.Board; //FIXME: remove casting
+            _board = (new SettlerBeginnerBoardConstructor()).ConstructBoard();
         }
 
         [When(@"I set up the basic board for Catan")]
         public void WhenISetUpTheBasicBoardForCatan()
         {
-            _board = (new SettlerBoardConstructor()).ConstructBoard() as Board.Board; //FIXME: remove casting
+            _board = (new SettlerBoardConstructor()).ConstructBoard();
         }
 
         [Given(@"the dice roll is predefined to (.*)")]

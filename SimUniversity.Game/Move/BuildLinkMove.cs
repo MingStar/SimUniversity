@@ -43,16 +43,5 @@ namespace MingStar.SimUniversity.Game.Move
         {
             return string.Format("Build internet link at [{0}]", WhereAt);
         }
-
-
-        public void ApplyTo(IGame game)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Undo(IGame game)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

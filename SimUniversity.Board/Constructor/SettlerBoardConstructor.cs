@@ -19,8 +19,13 @@ namespace MingStar.SimUniversity.Board.Constructor
         }
 
         #region IPredefinedBoardConstructor Members
+        IBoard IPredefinedBoardConstructor.ConstructBoard()
+        {
+            return ConstructBoard();
+        }
+        #endregion
 
-        public IBoard ConstructBoard()
+        public Board ConstructBoard()
         {
             Board = new Board();
             var degrees = GetDegrees();
@@ -81,7 +86,6 @@ namespace MingStar.SimUniversity.Board.Constructor
             return Board;
         }
 
-        #endregion
 
         public virtual IEnumerable<DegreeType> GetDegrees()
         {

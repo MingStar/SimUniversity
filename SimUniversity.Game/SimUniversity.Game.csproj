@@ -71,7 +71,7 @@
   <ItemGroup>
     <Compile Include="IGameForUpdate.cs" />
     <Compile Include="IPlayerMoveForUpdate.cs" />
-    <Compile Include="Random\RandomEvent.cs" />
+    <Compile Include="Random\DiceRollRandomEvent.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="GameStats.cs" />
