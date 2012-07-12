@@ -7,19 +7,19 @@ namespace MingStar.SimUniversity.AI.Evaluation
     [Serializable]
     public class GameScores
     {
-        public XmlSerializableDictionary<DegreeType, double> DegreeModifier { get; protected set; }
-        public double FutureCampus { get; protected set; }
-        public double HasAllDegrees { get; protected set; }
-        public double InternetLinkMultiplier { get; protected set; }
-        public double LeadMostScore { get; protected set; }
-        public double NormalSite { get; protected set; }
+        public XmlSerializableDictionary<DegreeType, double> DegreeModifier { get; set; }
+        public double FutureCampus { get; set; }
+        public double HasAllDegrees { get; set; }
+        public double InternetLinkMultiplier { get; set; }
+        public double LeadMostScore { get; set; }
+        public double NormalSite { get; set; }
 
-        public double PlayerScoreBase { get; protected set; }
-        public double ProductionBase { get; protected set; }
-        public double SpecialSiteMultiplier { get; protected set; }
-        public double StudentNumber { get; protected set; }
-        public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier { get; protected set; }
-        public double TakenOtherPlayerCampus { get; protected set; }
+        public double PlayerScoreBase { get; set; }
+        public double ProductionBase { get; set; }
+        public double SpecialSiteMultiplier { get; set; }
+        public double StudentNumber { get; set; }
+        public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier { get; set; }
+        public double TakenOtherPlayerCampus { get; set; }
 
         public GameScores()
         {

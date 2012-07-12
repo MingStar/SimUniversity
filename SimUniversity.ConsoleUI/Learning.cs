@@ -45,10 +45,11 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private static void LogDoubleArray(string prefix, IEnumerable<double> array)
         {
-            _log.InfoFormat("{0} [{1}]",
-                            prefix,
-                            string.Join(", ", (from item in array select item.ToString()).ToArray())
-                );
+            var str = string.Format("{0} [{1}]",
+                                    prefix,
+                                    string.Join(", ", (from item in array select item.ToString()).ToArray()));
+            _log.Info(str);
+            ColorConsole.WriteLine(ConsoleColor.Cyan, str);
         }
 
 
