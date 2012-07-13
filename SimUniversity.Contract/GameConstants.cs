@@ -10,23 +10,23 @@ namespace MingStar.SimUniversity.Contract
 
         public const int NormalTradingStudentQuantity = 4;
 
-        public static readonly Dictionary<int, int> HexID2Chance = new Dictionary<int, int>();
+        public static readonly Dictionary<int, int> DiceRollNumber2Chance = new Dictionary<int, int>();
 
 
         static GameConstants()
         {
-            HexID2Chance[0] = 0; // desert
-            HexID2Chance[2] = 1;
-            HexID2Chance[3] = 2;
-            HexID2Chance[4] = 3;
-            HexID2Chance[5] = 4;
-            HexID2Chance[6] = 5;
-            HexID2Chance[7] = 6;
-            HexID2Chance[8] = 5;
-            HexID2Chance[9] = 4;
-            HexID2Chance[10] = 3;
-            HexID2Chance[11] = 2;
-            HexID2Chance[12] = 1;
+            DiceRollNumber2Chance[0] = 0; // desert
+            DiceRollNumber2Chance[2] = 1;
+            DiceRollNumber2Chance[3] = 2;
+            DiceRollNumber2Chance[4] = 3;
+            DiceRollNumber2Chance[5] = 4;
+            DiceRollNumber2Chance[6] = 5;
+            DiceRollNumber2Chance[7] = 6;
+            DiceRollNumber2Chance[8] = 5;
+            DiceRollNumber2Chance[9] = 4;
+            DiceRollNumber2Chance[10] = 3;
+            DiceRollNumber2Chance[11] = 2;
+            DiceRollNumber2Chance[12] = 1;
         }
 
         public static readonly DegreeType[] RealDegrees = 

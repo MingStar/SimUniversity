@@ -30,7 +30,7 @@ namespace MingStar.SimUniversity.Tests
             // assert
             foreach (var roll in result.Keys)
             {
-                Assert.AreEqual(GameConstants.HexID2Chance[roll]*testRun, result[roll]);
+                Assert.AreEqual(GameConstants.DiceRollNumber2Chance[roll]*testRun, result[roll]);
             }
         }
     }

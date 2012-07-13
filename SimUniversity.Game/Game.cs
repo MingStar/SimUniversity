@@ -116,7 +116,7 @@ namespace MingStar.SimUniversity.Game
             Rules = rules;
             NumberOfUniversities = numOfPlayers;
             ProbabilityWithNoCut = Math.Pow(
-                (1 - GameConstants.HexID2Chance[7]/GameConstants.Chance.TotalDiceRoll),
+                (1 - GameConstants.DiceRollNumber2Chance[7]/GameConstants.Chance.TotalDiceRoll),
                 NumberOfUniversities
                 );
             CreateUniversities(numOfPlayers);
@@ -398,7 +398,7 @@ namespace MingStar.SimUniversity.Game
                     var productionChance = new DegreeCount();
                     foreach (var hex in Board.GetHexagons())
                     {
-                        productionChance[hex.Degree] += GameConstants.HexID2Chance[hex.ProductionNumber];
+                        productionChance[hex.Degree] += GameConstants.DiceRollNumber2Chance[hex.ProductionNumber];
                         hexCount[hex.Degree] += 1;
                     }
                     foreach (var degree in productionChance.Keys)
@@ -484,7 +484,7 @@ namespace MingStar.SimUniversity.Game
             if (!_vertexProductionChances.ContainsKey(vertex))
             {
                 _vertexProductionChances[vertex] =
-                    vertex.Adjacent.Hexagons.Sum(hex => GameConstants.HexID2Chance[hex.ProductionNumber]);
+                    vertex.Adjacent.Hexagons.Sum(hex => GameConstants.DiceRollNumber2Chance[hex.ProductionNumber]);
             }
             return _vertexProductionChances[vertex];
         }

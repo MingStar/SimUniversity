@@ -7,6 +7,9 @@ using MingStar.Utilities.Linq;
 
 namespace MingStar.SimUniversity.Game.Random
 {
+    /// <summary>
+    /// Uses 36 dice cards to simulate the dice rolls, to ensure the distribution is always even.
+    /// </summary>
     public class DiceCardRandomEvent : IRandomEvent
     {
         public IEnumerable<int> _cards;
@@ -26,7 +29,7 @@ namespace MingStar.SimUniversity.Game.Random
         private IEnumerable<int> GenerateCards()
         {
             var cards = new List<int>();
-            foreach (var item in GameConstants.HexID2Chance)
+            foreach (var item in GameConstants.DiceRollNumber2Chance)
             {
                 for (var i = 0; i < item.Value; ++i)
                 {

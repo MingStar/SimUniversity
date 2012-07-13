@@ -197,7 +197,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                                              };
             printNumberNegRed(hex.Position.X, pos.Y, pos.X - 1, true, defaultForeColor);
             printNumberNegRed(hex.Position.Y, pos.Y, pos.X + 1, false, defaultForeColor);
-            PrintNumber(GameConstants.HexID2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true,
+            PrintNumber(GameConstants.DiceRollNumber2Chance[hex.ProductionNumber], pos.Y + 1, pos.X, true,
                         ConsoleColor.DarkMagenta);
         }
 

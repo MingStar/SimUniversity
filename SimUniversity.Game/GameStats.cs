@@ -72,7 +72,7 @@ namespace MingStar.SimUniversity.Game
             double error = 0.0;
             for (int i = 2; i <= 12; ++i)
             {
-                double expectedProbability = GameConstants.HexID2Chance[i] / GameConstants.Chance.TotalDiceRoll;
+                double expectedProbability = GameConstants.DiceRollNumber2Chance[i] / GameConstants.Chance.TotalDiceRoll;
                 double expectedNumer = TotalDiceRoll*expectedProbability;
                 double diffNumber = expectedNumer - DiceRolls[i];
                 error += (diffNumber*diffNumber)/expectedNumer;

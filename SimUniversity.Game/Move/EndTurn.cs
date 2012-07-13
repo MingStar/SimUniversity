@@ -25,7 +25,7 @@ namespace MingStar.SimUniversity.Game.Move
         {
             DiceTotal = total;
             IsDeterminated = true;
-            Probability = GameConstants.HexID2Chance[total]/
+            Probability = GameConstants.DiceRollNumber2Chance[total]/
                           GameConstants.Chance.TotalDiceRoll;
         }
 
