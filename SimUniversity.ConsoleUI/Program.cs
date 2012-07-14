@@ -96,7 +96,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
                 game.Round = i;
                 var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
-                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexScoresOnSetup.Load(Learning.FileName));
+                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexLearnedScores.Load(Learning.FileName));
                 var players = new IPlayer[numPlayers];
                 players.Fill(improvedEmmAiPlayerNormal);
                 players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;

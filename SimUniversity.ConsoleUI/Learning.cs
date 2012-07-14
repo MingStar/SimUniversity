@@ -20,6 +20,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         private readonly IPredefinedBoardConstructor _boardConstructor;
         private readonly IGameViewer _gameViewer;
         private int _roundsToWin;
+        private SimplexLearnedScores _learnedScores;
 
         public Learning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
@@ -32,16 +33,10 @@ namespace MingStar.SimUniversity.ConsoleUI
             _roundsToWin = roundsToWin;
             _log.Info("Start to do simplex learning");
             RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
-            SaveResult(result);
-            _log.Info("Finish to do simplex learning");
-        }
-
-        private void SaveResult(RegressionResult result)
-        {
             LogDoubleArray("GOT RESULT:", result.Constants);
-            var s = new SimplexScoresOnSetup();
-            s.FromResult(result.Constants);
-            s.Save(FileName);
+            _learnedScores.FromResult(result.Constants);
+            _learnedScores.Save(FileName);
+            _log.Info("Finish to do simplex learning");
         }
 
         private static void LogDoubleArray(string prefix, IEnumerable<double> array)
@@ -57,26 +52,23 @@ namespace MingStar.SimUniversity.ConsoleUI
             ColorConsole.WriteLine(ConsoleColor.Magenta, format, args);
         }
 
-
-        private static SimplexConstant[] LoadSimplexConstants()
+        private SimplexConstant[] LoadSimplexConstants()
         {
-            SimplexScoresOnSetup s;
             try
             {
-                s = SimplexScoresOnSetup.Load(FileName);
+                _learnedScores = SimplexLearnedScores.Load(FileName);
             }
             catch
             {
-                s = new SimplexScoresOnSetup();
+                _learnedScores = new SimplexLearnedScores();
             }
-            return s.ToSimplexConstants();
+            return _learnedScores.ToSimplexConstants();
         }
 
         private double RunTournament(double[] values)
         {
             DateTime startedTime = DateTime.Now;
-            var learnedScores = new SimplexScoresOnSetup();
-            learnedScores.FromResult(values);
+            _learnedScores.FromResult(values);
             var stats = new Dictionary<string, TournamentPlayerStats>();
             const int numPlayers = 2;
             int round = 0;
@@ -87,7 +79,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 int challengerIndex = RandomGenerator.Next(numPlayers);
                 var game = new Game.Game(_boardConstructor.ConstructBoard(), numPlayers) {Round = round};
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(new GameScores());
-                var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(learnedScores);
+                var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(_learnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(_improvedEMM_AIPlayer_normal);
                 players[challengerIndex] = _improvedEMM_AIPlayer_expansion;

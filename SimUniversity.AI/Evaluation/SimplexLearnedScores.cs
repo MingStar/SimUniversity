@@ -90,7 +90,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
         private double GetRandomPerturbation(double value)
         {
             // [0.0, 1) --> [-value, value)
-            return (_randomGenerator.NextDouble()*2 - 1.0)*value;
+            return (_randomGenerator.NextDouble() * 2 - 1.0) * value * 100;
         }
 
         public void Save(string fileName)
