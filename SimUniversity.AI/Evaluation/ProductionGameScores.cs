@@ -1,5 +1,8 @@
 ﻿namespace MingStar.SimUniversity.AI.Evaluation
 {
+    /// <summary>
+    /// Focus more on production
+    /// </summary>
     public class ProductionGameScores : GameScores
     {
         public ProductionGameScores()

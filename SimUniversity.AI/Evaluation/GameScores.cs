@@ -21,6 +21,21 @@ namespace MingStar.SimUniversity.AI.Evaluation
         public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier { get; set; }
         public double TakenOtherPlayerCampus { get; set; }
 
+        private string _name;
+
+        public virtual string Name
+        {
+            get
+            {
+                if (_name == null)
+                {
+                    _name = GetType().Name;
+                }
+                return _name;
+            }
+            set { _name = value; }
+        }
+
         public GameScores()
         {
             PlayerScoreBase = 80.0;

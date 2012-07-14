@@ -55,7 +55,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                     _log.Info("start ai learning");
                     Game.Game.RandomEventChance = new DiceCardRandomEvent();
                     var learning = new Learning(new ConsoleViewer(), new SettlerBoardConstructor());
-                    learning.Learn(30);
+                    learning.Learn(40, 7);
                     break;
                 default:
                     _log.Info("start human vs. ai");
@@ -96,7 +96,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
                 game.Round = i;
                 var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
-                var improvedEmmAiPlayerExpansion = new ImprovedEMN(new ProductionGameScores());
+                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexScoresOnSetup.Load(Learning.FileName));
                 var players = new IPlayer[numPlayers];
                 players.Fill(improvedEmmAiPlayerNormal);
                 players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;
@@ -119,7 +119,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                                        controller.Game.GetUniversityByIndex(winnerIndex).Color,
                                        stat.PlayerName
                     );
-                stat.HasWon(controller.Game.GameStats.AreDiceFair());
+                stat.HasWon();
                 foreach (TournamentPlayerStats statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();

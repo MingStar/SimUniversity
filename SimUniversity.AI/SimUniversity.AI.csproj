@@ -71,12 +71,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluation\SimplexScoresOnSetup.cs" />
     <Compile Include="Evaluation\ExpansionGameScores.cs" />
     <Compile Include="Evaluation\GameEvaluation.cs" />
     <Compile Include="Evaluation\GameScores.cs" />
     <Compile Include="Evaluation\SimplexLearnedScores.cs" />
     <Compile Include="Evaluation\ProductionGameScores.cs" />
     <Compile Include="HashedGameInfo.cs" />
+    <Compile Include="Learning\TournamentResult.cs" />
     <Compile Include="Learning\NelderMeadSimplex.cs" />
     <Compile Include="Learning\RegressionResult.cs" />
     <Compile Include="Learning\SimplexConstant.cs" />

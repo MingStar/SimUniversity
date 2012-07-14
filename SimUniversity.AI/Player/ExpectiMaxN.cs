@@ -39,7 +39,7 @@ namespace MingStar.SimUniversity.AI.Player
 
         public string Name
         {
-            get { return "ExpectiMax N, with " + _gameEvaluation.Scores.GetType().Name; }
+            get { return "ExpectiMax N, with " + _gameEvaluation.Scores.Name; }
         }
 
         #endregion

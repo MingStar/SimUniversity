@@ -15,11 +15,11 @@ namespace MingStar.SimUniversity.ConsoleUI
 {
     public class Learning
     {
-        private const string FileName = "LearningResult.xml";
+        public const string FileName = "LearningResult.xml";
         private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
-        private static bool IsFirstCall = true;
         private readonly IPredefinedBoardConstructor _boardConstructor;
         private readonly IGameViewer _gameViewer;
+        private int _roundsToWin;
 
         public Learning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
@@ -27,8 +27,9 @@ namespace MingStar.SimUniversity.ConsoleUI
             _boardConstructor = boardConstructor;
         }
 
-        public void Learn(int rounds)
+        public void Learn(int rounds, int roundsToWin)
         {
+            _roundsToWin = roundsToWin;
             _log.Info("Start to do simplex learning");
             RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
             SaveResult(result);
@@ -37,52 +38,50 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void SaveResult(RegressionResult result)
         {
-            LogDoubleArray("Got result:", result.Constants);
-            var s = new SimplexLearnedScores();
+            LogDoubleArray("GOT RESULT:", result.Constants);
+            var s = new SimplexScoresOnSetup();
             s.FromResult(result.Constants);
             s.Save(FileName);
         }
 
         private static void LogDoubleArray(string prefix, IEnumerable<double> array)
         {
-            var str = string.Format("{0} [{1}]",
-                                    prefix,
-                                    string.Join(", ", (from item in array select item.ToString()).ToArray()));
-            _log.Info(str);
-            ColorConsole.WriteLine(ConsoleColor.Cyan, str);
+            LogInfo("{0} [{1}]", prefix,
+                string.Join(", ", (from item in array select item.ToString("N2")).ToArray())
+                );
+        }
+
+        private static void LogInfo(string format, params object[] args)
+        {
+            _log.InfoFormat(format, args);
+            ColorConsole.WriteLine(ConsoleColor.Magenta, format, args);
         }
 
 
         private static SimplexConstant[] LoadSimplexConstants()
         {
-            SimplexLearnedScores s;
+            SimplexScoresOnSetup s;
             try
             {
-                s = SimplexLearnedScores.Load(FileName);
+                s = SimplexScoresOnSetup.Load(FileName);
             }
             catch
             {
-                s = new SimplexLearnedScores();
+                s = new SimplexScoresOnSetup();
             }
             return s.ToSimplexConstants();
         }
 
         private double RunTournament(double[] values)
         {
-            if (IsFirstCall)
-            {
-                IsFirstCall = false;
-                return 0.0;
-            }
-            LogDoubleArray("Got parameters:", values);
-            var learnedScores = new SimplexLearnedScores();
+            DateTime startedTime = DateTime.Now;
+            var learnedScores = new SimplexScoresOnSetup();
             learnedScores.FromResult(values);
             var stats = new Dictionary<string, TournamentPlayerStats>();
             const int numPlayers = 2;
             int round = 0;
-            double totalScore = 0;
-            const int maxTotalWinningRound = 7;
-            while (true)
+            var tournamentResult = new TournamentResult();
+            while (round < _roundsToWin)
             {
                 ++round;
                 int challengerIndex = RandomGenerator.Next(numPlayers);
@@ -91,7 +90,6 @@ namespace MingStar.SimUniversity.ConsoleUI
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(learnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(_improvedEMM_AIPlayer_normal);
-                string challengerName = _improvedEMM_AIPlayer_expansion.Name;
                 players[challengerIndex] = _improvedEMM_AIPlayer_expansion;
                 for (var j = 0; j < numPlayers; ++j)
                 {
@@ -112,49 +110,22 @@ namespace MingStar.SimUniversity.ConsoleUI
                                        controller.Game.GetUniversityByIndex(winnerIndex).Color,
                                        stat.PlayerName
                     );
-                bool areDiceFair = controller.Game.GameStats.AreDiceFair();
-                stat.HasWon(areDiceFair);
-                if (areDiceFair)
-                {
-                    totalScore += GetChallengerScore(controller.Game, challengerIndex);
-                }
-                int totalRealWinCount = 0;
-                foreach (TournamentPlayerStats statForPrint in stats.Values)
+                stat.HasWon();
+                var challengerUni = game.GetUniversityByIndex(challengerIndex);
+                tournamentResult.AddRound(
+                    new RoundResult(game.GetScore(challengerUni),
+                                    winnerIndex == challengerIndex,
+                                    game.Universities.Where(u => u != challengerUni).Select(game.GetScore)
+                        ));
+                foreach (var statForPrint in stats.Values)
                 {
                     statForPrint.PrintToConsole();
-                    totalRealWinCount += statForPrint.RealWinCount;
-                }
-                if (totalRealWinCount >= maxTotalWinningRound)
-                {
-                    double winningRate = stats[challengerName].RealWinCount - (double) maxTotalWinningRound/numPlayers;
-                    totalScore += winningRate * 200.0;
-                    break;
                 }
             }
-            _log.InfoFormat("Got Score: {0}", totalScore);
+            var totalScore = tournamentResult.CalculateTotalScore();
+            LogDoubleArray("Got Parameters:", values);
+            LogInfo("Got Score: {0}, Time Taken: {1}", totalScore, DateTime.Now - startedTime);
             return -totalScore; // return negative for function minimisation
-        }
-
-
-        private static double GetChallengerScore(IGame game, int challengerIndex)
-        {
-            double totalScore = 0.0;
-            IUniversity challengerUni = game.GetUniversityByIndex(challengerIndex);
-            int challengerScore = game.GetScore(challengerUni);
-            // score difference to other players
-            foreach (var uni in game.Universities)
-            {
-                if (uni == challengerUni)
-                {
-                    continue;
-                }
-                int otherScore = game.GetScore(uni);
-                int diff = challengerScore - otherScore;
-                int diffSquared = diff*diff;
-                totalScore += diff > 0 ? diffSquared : -diffSquared; // to retain the sign;
-            }
-            // winning score
-            return totalScore;
         }
     }
 }

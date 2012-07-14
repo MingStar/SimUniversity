@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.Board;
 using MingStar.SimUniversity.Board.Constructor;
 using MingStar.SimUniversity.Contract;
@@ -356,5 +357,57 @@ namespace MingStar.SimUniversity.Tests
         {
             //CheckAndApply(new TradingMove(ParseStudent()));
         }
+
+        private TournamentResult _tournamentResult;
+            
+        [Given(@"the AI tournament result is as the following:")]
+        public void GivenTheAITournamentResultIsAsTheFollowing(Table table)
+        {
+            _tournamentResult = new TournamentResult();
+            foreach (var row in table.Rows)
+            {
+                string raw = row["Round Result"];
+                IEnumerable<int> scores = raw.Split('-').Select(int.Parse);
+                var roundResult = new RoundResult(
+                    scores.First(),
+                    scores.First() == 10,
+                    scores.Skip(1));
+                Assert.AreEqual(int.Parse(row["Expected Score"]), roundResult.GetRoundTotal());
+                _tournamentResult.AddRound(roundResult);
+            }
+
+        }
+
+        [When(@"the AI tournament result score is calculated")]
+        public void WhenTheAITournamentResultScoreIsCalculated()
+        {
+            // do nothing
+        }
+
+        [Then(@"the total round count should be (.*)")]
+        public void ThenTheTotalRoundCountShouldBe(int expected)
+        {
+            Assert.AreEqual(expected, _tournamentResult.RoundResults.Count());
+        }
+
+        [Then(@"the challenger winning count should be (.*)")]
+        public void ThenTheChallengerWinningCountIs(int expected)
+        {
+            Assert.AreEqual(expected, _tournamentResult.ChallengerWinningCount);
+        }
+
+        [Then(@"the tournament score from rounds should be (.*)")]
+        public void ThenTheTournamentScoreFromRoundsIs(int expected)
+        {
+            Assert.AreEqual(expected, _tournamentResult.CalculateScoreFromRounds());            
+        }
+
+        [Then(@"the tournament score from winning should be (.*)")]
+        public void ThenTheTournamentScoreFromWinningIs(double expected)
+        {
+            Assert.AreEqual(expected, _tournamentResult.CalculateScoreFromWinning());
+        }
+
+
     }
 }

@@ -53,6 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckLearningScore.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CheckLearningScore.feature</DependentUpon>
+    </Compile>
     <Compile Include="GamePlay.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CheckLearningScore.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CheckLearningScore.feature.cs</LastGenOutput>
+    </None>
     <None Include="GamePlay.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GamePlay.feature.cs</LastGenOutput>
@@ -80,6 +89,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SimUniversity.AI\SimUniversity.AI.csproj">
+      <Project>{D93E5DE9-0DD7-4A09-B522-663E275388EC}</Project>
+      <Name>SimUniversity.AI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimUniversity.Board\SimUniversity.Board.csproj">
       <Project>{F37E59E9-3ABF-4597-AB7A-3E9516528F0A}</Project>
       <Name>SimUniversity.Board</Name>
