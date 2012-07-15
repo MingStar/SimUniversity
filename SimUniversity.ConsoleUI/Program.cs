@@ -43,7 +43,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         private static void RunMain()
         {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
-            ConsoleKey key = Console.ReadKey().Key;
+            var key = Console.ReadKey().Key;
             switch (key)
             {
                 case ConsoleKey.A:

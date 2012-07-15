@@ -6,12 +6,12 @@ namespace MingStar.SimUniversity.AI.Evaluation
 {
     public class GameEvaluation
     {
+        public GameScores Scores { get; private set; }
+
         public GameEvaluation(GameScores scores)
         {
             Scores = scores;
         }
-
-        public GameScores Scores { get; internal set; }
 
         public double Evaluate(IGame game, IUniversity uni)
         {

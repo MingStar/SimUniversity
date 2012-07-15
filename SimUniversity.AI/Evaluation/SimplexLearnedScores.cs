@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MingStar.SimUniversity.AI.Learning;
@@ -10,6 +11,16 @@ namespace MingStar.SimUniversity.AI.Evaluation
     [Serializable]
     public class SimplexLearnedScores : GameScores
     {
+
+
+        public enum LearningParams
+        {
+            All,
+            DegreeMultiplierOre,
+            DegreeMultiplierBrick,
+            // more to add
+        }
+
         private readonly Random _randomGenerator = new Random();
 
         public void FromResult(double[] result)
@@ -21,9 +32,10 @@ namespace MingStar.SimUniversity.AI.Evaluation
             ++i;
             DegreeModifier[DegreeType.Wood] = result[i];
             ++i;
-            DegreeModifier[DegreeType.Sheep] = result[i];
-            ++i;
             DegreeModifier[DegreeType.Grain] = result[i];
+            ++i;
+            DegreeModifier[DegreeType.Sheep] = result[i];            
+            ++i;
 
             SetupDegreeModifier[DegreeType.Ore] = result[i];
             ++i;
@@ -31,9 +43,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
             ++i;
             SetupDegreeModifier[DegreeType.Wood] = result[i];
             ++i;
-            SetupDegreeModifier[DegreeType.Sheep] = result[i];
-            ++i;
             SetupDegreeModifier[DegreeType.Grain] = result[i];
+            ++i;
+            SetupDegreeModifier[DegreeType.Sheep] = result[i];            
             ++i;
 
             PlayerScoreMultiplier = result[i];
@@ -55,11 +67,8 @@ namespace MingStar.SimUniversity.AI.Evaluation
             TakenOtherPlayerCampus = result[i];
             ++i;
             LeadMostScore = result[i];
-        }
-
-        public override string ToString()
-        {
-            return "To be implemented, ideally return name-value pairs";
+            ++i;
+            Debug.Assert(i == 20);
         }
 
         public SimplexConstant[] ToSimplexConstants()
@@ -69,29 +78,29 @@ namespace MingStar.SimUniversity.AI.Evaluation
                     DegreeModifier[DegreeType.Ore], //0
                     DegreeModifier[DegreeType.Brick],
                     DegreeModifier[DegreeType.Wood],
-                    DegreeModifier[DegreeType.Sheep],
                     DegreeModifier[DegreeType.Grain],
-                    SetupDegreeModifier[DegreeType.Ore], //4
+                    DegreeModifier[DegreeType.Sheep],
+                    SetupDegreeModifier[DegreeType.Ore], //5
                     SetupDegreeModifier[DegreeType.Brick],
                     SetupDegreeModifier[DegreeType.Wood],
-                    SetupDegreeModifier[DegreeType.Sheep],
                     SetupDegreeModifier[DegreeType.Grain],
-                    PlayerScoreMultiplier, // 9
+                    SetupDegreeModifier[DegreeType.Sheep],
+                    PlayerScoreMultiplier, // 10
                     ProductionMultiplier,
                     StudentNumberMultiplier,
                     FutureCampus,
                     SpecialSiteMultiplier,
-                    NormalSite, // 14
+                    NormalSite, // 15
                     InternetLinkMultiplier,
                     HasAllDegrees,
                     TakenOtherPlayerCampus,
-                    LeadMostScore
+                    LeadMostScore // 19
                 };
+            Debug.Assert(values.Length == 20);
             return (from value in values
                     select new SimplexConstant(value, GetRandomPerturbation(value))
                    ).ToArray();
         }
-
 
         private double GetRandomPerturbation(double value)
         {
@@ -100,7 +109,7 @@ namespace MingStar.SimUniversity.AI.Evaluation
             var baseValue = (_randomGenerator.NextDouble() * 2 - 1.0) * value;
             if (baseValue < 0)
                 return baseValue;
-            return baseValue*5;
+            return baseValue * 5;
         }
 
         public void Save(string fileName)

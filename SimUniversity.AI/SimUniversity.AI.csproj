@@ -71,7 +71,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Evaluation\SimplexScoresOnSetup.cs" />
     <Compile Include="Evaluation\ExpansionGameScores.cs" />
     <Compile Include="Evaluation\GameEvaluation.cs" />
     <Compile Include="Evaluation\GameScores.cs" />

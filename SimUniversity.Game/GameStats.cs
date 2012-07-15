@@ -47,7 +47,7 @@ namespace MingStar.SimUniversity.Game
             double pearsonError = GetPearsonError();
             bool isFair = pearsonError < PearsonThreshold;
             ColorConsole.WriteLine(ConsoleColor.DarkYellow,
-                                   "Pearson error rate: {0} {1} 11.07, dice is {2}fair.",
+                                   "Pearson error rate: {0:N5} {1} 11.07, dice is {2}fair.",
                                    pearsonError, isFair ? "<" : ">", isFair ? "" : "not ");
         }
 

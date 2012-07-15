@@ -35,17 +35,10 @@ namespace MingStar.SimUniversity.ConsoleUI
             _log.Info("Start to do simplex learning");
             _learningStartedDT = DateTime.Now;
             RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
-            LogDoubleArray("GOT RESULT:", result.Constants);
             _learnedScores.FromResult(result.Constants);
+            LogInfo("GOT LEARNING RESULT: {0}", _learnedScores);
             _learnedScores.Save(FileName);
             _log.Info("Finish to do simplex learning");
-        }
-
-        private static void LogDoubleArray(string prefix, IEnumerable<double> array)
-        {
-            LogInfo("{0} [{1}]", prefix,
-                string.Join(", ", (from item in array select item.ToString("N2")).ToArray())
-                );
         }
 
         private static void LogInfo(string format, params object[] args)
@@ -75,10 +68,11 @@ namespace MingStar.SimUniversity.ConsoleUI
             const int numPlayers = 2;
             int round = 0;
             var tournamentResult = new TournamentResult();
+            int challengerIndex = 0;
             while (round < _roundsToWin)
             {
                 ++round;
-                int challengerIndex = RandomGenerator.Next(numPlayers);
+                challengerIndex = (challengerIndex + 1) % numPlayers;
                 var game = new Game.Game(_boardConstructor.ConstructBoard(), numPlayers) {Round = round};
                 var _improvedEMM_AIPlayer_normal = new ImprovedEMN(new GameScores());
                 var _improvedEMM_AIPlayer_expansion = new ImprovedEMN(_learnedScores);
@@ -117,10 +111,10 @@ namespace MingStar.SimUniversity.ConsoleUI
                 }
             }
             var totalScore = tournamentResult.CalculateTotalScore();
-            LogDoubleArray("Got Parameters:", values);
-            LogInfo("Challenger won {0} rounds. Got score: {1}. Time taken this round: {2}. Total time taken: {3}", 
-                tournamentResult.ChallengerWinningCount,
+            LogInfo(_learnedScores.ToString());
+            LogInfo("Got score: {0}. Challenger won {1} rounds. Time taken this round: {2}. Total time taken: {3}",
                 totalScore, 
+                tournamentResult.ChallengerWinningCount,
                 DateTime.Now - startedTime,
                 DateTime.Now - _learningStartedDT);
             return -totalScore; // return negative for function minimisation

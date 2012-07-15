@@ -44,11 +44,6 @@ namespace MingStar.SimUniversity.AI.Player
 
         #endregion
 
-        public void SetGameScores(GameScores scores)
-        {
-            _gameEvaluation.Scores = scores;
-        }
-
         public virtual GameState SearchBestMoves(IGame game)
         {
             return SearchBestMoves(game, 3);

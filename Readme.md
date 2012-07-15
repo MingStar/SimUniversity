@@ -54,8 +54,8 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 
 
 ### TODO:
+* Need to be able to be select only a subset of parameters to learn => SimplexScores
 * Estimate Learning Finish time, 
-* matching learnt parameters with names
 * Make the simplex learning method to take into account of winning ratio (e.g. a 5-0 win should be MUCH better than a 3-2 win), the winning difference in one round is less important.
 * Ask Resharper not to modify some files
 * Write tests for the game play
