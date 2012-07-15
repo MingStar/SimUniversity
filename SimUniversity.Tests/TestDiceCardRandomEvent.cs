@@ -33,5 +33,29 @@ namespace MingStar.SimUniversity.Tests
                 Assert.AreEqual(GameConstants.DiceRollNumber2Chance[roll]*testRun, result[roll]);
             }
         }
+
+        [Test]
+        public void TestStartupCardReturnCorrectNumbers()
+        {
+            // setup
+            var result = new Dictionary<bool, int>();
+            var cardGen = new DiceCardRandomEvent();
+            const int testRun = 10;
+            // run
+            for (var i = 0; i < 5 * testRun; i++)
+            {
+                var key = cardGen.IsNextStartUpSuccessful();
+                if (!result.ContainsKey(key))
+                {
+                    result[key] = 0;
+                }
+                result[key]++;
+            }
+            // assert
+            foreach (var key in result.Keys)
+            {
+                Assert.AreEqual((key ? 1 : 4) * testRun, result[key]);
+            }
+        }
     }
 }

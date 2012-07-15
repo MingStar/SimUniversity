@@ -12,21 +12,21 @@ namespace MingStar.SimUniversity.Game.Random
     /// </summary>
     public class DiceCardRandomEvent : IRandomEvent
     {
-        public IEnumerable<int> _cards;
-        public IEnumerator<int> _cardsEnumerator;
+        private IEnumerable<int> _diceCards;
+        private IEnumerator<int> _diceCardsEnumerator;
 
         public int GetNextDiceTotal()
         {
-            if (_cards == null || !_cardsEnumerator.MoveNext())
+            if (_diceCards == null || !_diceCardsEnumerator.MoveNext())
             {
-                _cards = GenerateCards();
-                _cardsEnumerator = _cards.GetEnumerator();
-                _cardsEnumerator.MoveNext();
+                _diceCards = GenerateDiceCards();
+                _diceCardsEnumerator = _diceCards.GetEnumerator();
+                _diceCardsEnumerator.MoveNext();
             }
-            return _cardsEnumerator.Current;
+            return _diceCardsEnumerator.Current;
         }
 
-        private IEnumerable<int> GenerateCards()
+        private IEnumerable<int> GenerateDiceCards()
         {
             var cards = new List<int>();
             foreach (var item in GameConstants.DiceRollNumber2Chance)
@@ -39,9 +39,19 @@ namespace MingStar.SimUniversity.Game.Random
             return cards.Shuffle();
         }
 
+        private IEnumerable<int> _startupCards;
+        private IEnumerator<int> _startupCardsEnumerator;
+        private readonly int[] _startupSuccessChance = new [] { 0, 0, 0, 0, 1};
+
         public bool IsNextStartUpSuccessful()
         {
-            return RandomGenerator.Next(5) == 0;
+            if (_startupCards == null || !_startupCardsEnumerator.MoveNext())
+            {
+                _startupCards = _startupSuccessChance.Shuffle();
+                _startupCardsEnumerator = _startupCards.GetEnumerator();
+                _startupCardsEnumerator.MoveNext();
+            }
+            return _startupCardsEnumerator.Current == 1;
         }
     }
 }
