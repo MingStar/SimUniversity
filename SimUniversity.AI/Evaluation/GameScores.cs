@@ -14,10 +14,10 @@ namespace MingStar.SimUniversity.AI.Evaluation
         public double LeadMostScore { get; set; }
         public double NormalSite { get; set; }
 
-        public double PlayerScoreBase { get; set; }
-        public double ProductionBase { get; set; }
+        public double PlayerScoreMultiplier { get; set; }
+        public double ProductionMultiplier { get; set; }
         public double SpecialSiteMultiplier { get; set; }
-        public double StudentNumber { get; set; }
+        public double StudentNumberMultiplier { get; set; }
         public XmlSerializableDictionary<DegreeType, double> SetupDegreeModifier { get; set; }
         public double TakenOtherPlayerCampus { get; set; }
 
@@ -38,9 +38,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
 
         public GameScores()
         {
-            PlayerScoreBase = 80.0;
-            ProductionBase = 100.0;
-            StudentNumber = 16.0; // 3.0;
+            PlayerScoreMultiplier = 80.0;
+            ProductionMultiplier = 100.0;
+            StudentNumberMultiplier = 16.0;
             FutureCampus = 30.0;
             SpecialSiteMultiplier = 10.0;
             NormalSite = 200.0;

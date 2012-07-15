@@ -21,6 +21,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         private readonly IGameViewer _gameViewer;
         private int _roundsToWin;
         private SimplexLearnedScores _learnedScores;
+        private DateTime _learningStartedDT;
 
         public Learning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
@@ -32,6 +33,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         {
             _roundsToWin = roundsToWin;
             _log.Info("Start to do simplex learning");
+            _learningStartedDT = DateTime.Now;
             RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
             LogDoubleArray("GOT RESULT:", result.Constants);
             _learnedScores.FromResult(result.Constants);
@@ -116,7 +118,11 @@ namespace MingStar.SimUniversity.ConsoleUI
             }
             var totalScore = tournamentResult.CalculateTotalScore();
             LogDoubleArray("Got Parameters:", values);
-            LogInfo("Got Score: {0}, Time Taken: {1}", totalScore, DateTime.Now - startedTime);
+            LogInfo("Challenger won {0} rounds. Got score: {1}. Time taken this round: {2}. Total time taken: {3}", 
+                tournamentResult.ChallengerWinningCount,
+                totalScore, 
+                DateTime.Now - startedTime,
+                DateTime.Now - _learningStartedDT);
             return -totalScore; // return negative for function minimisation
         }
     }

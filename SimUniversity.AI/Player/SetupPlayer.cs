@@ -64,18 +64,18 @@ namespace MingStar.SimUniversity.AI.Player
                 int hasDegreeNumber = productionChances.Values.Count(v => v != 0);
                 if (hasDegreeNumber == GameConstants.RealDegrees.Length)
                 {
-                    score += _gameEvaluation.Scores.ProductionBase * 3;
+                    score += _gameEvaluation.Scores.ProductionMultiplier * 3;
                 }
                 else if (hasDegreeNumber == GameConstants.RealDegrees.Length - 1)
                 {
-                    score += _gameEvaluation.Scores.ProductionBase;
+                    score += _gameEvaluation.Scores.ProductionMultiplier;
                 }
             }
             var productionScores = new Dictionary<DegreeType, double>();
             foreach (DegreeType degree in productionChances.Keys)
             {
                 productionScores[degree] =
-                    productionChances[degree] * _gameEvaluation.Scores.ProductionBase;
+                    productionChances[degree] * _gameEvaluation.Scores.ProductionMultiplier;
             }
             if (game.CurrentPhase == GamePhase.Setup1)
             {

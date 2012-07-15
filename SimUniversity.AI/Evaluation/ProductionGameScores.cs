@@ -7,8 +7,8 @@
     {
         public ProductionGameScores()
         {
-            ProductionBase = 200;
-            StudentNumber = 3;
+            ProductionMultiplier = 200;
+            StudentNumberMultiplier = 3;
             FutureCampus = 60;
             SpecialSiteMultiplier = 20;
             NormalSite = 500;

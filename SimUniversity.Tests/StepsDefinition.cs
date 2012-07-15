@@ -372,7 +372,7 @@ namespace MingStar.SimUniversity.Tests
                     scores.First(),
                     scores.First() == 10,
                     scores.Skip(1));
-                Assert.AreEqual(int.Parse(row["Expected Score"]), roundResult.GetRoundTotal());
+                Assert.AreEqual(int.Parse(row["Expected Score"]), roundResult.RoundTotalScore);
                 _tournamentResult.AddRound(roundResult);
             }
 

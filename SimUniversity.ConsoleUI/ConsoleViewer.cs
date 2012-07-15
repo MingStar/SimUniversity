@@ -48,11 +48,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                     int degreeChance = uni.ProductionChances[degree];
                     if (degreeChance > 0)
                     {
-                        ColorConsole.Write(uniColor, "{0}: {1} ", // ({2:#.##;;0}) ",
-                                           degree,
-                                           degreeChance //(int)GameConstants.Chance.TotalDiceRoll,
-                            //degreeChance / GameConstants.Chance.TotalDiceRoll
-                            );
+                        ColorConsole.Write(uniColor, "{0}: {1} ", degree, degreeChance);
                         total += degreeChance;
                     }
                 }
@@ -60,13 +56,13 @@ namespace MingStar.SimUniversity.ConsoleUI
             }
         }
 
-        public void PrintFinalResult(TimeSpan timeTaken)
+        public void PrintRoundResult(TimeSpan timeTaken)
         {
             Console.Title = string.Format("Round {0}, Winner: {1}!", _game.Round, _game.CurrentUniversityColor);
             PrintGame();
             ColorConsole.WriteLine(ConsoleColor.Magenta, "Round {0}, turn {1}: the game has a winner!", _game.Round,
                                    _game.CurrentTurn);
-            ColorConsole.WriteLine(ConsoleColor.Green, "Total time taken: {0}", timeTaken);
+            ColorConsole.WriteLine(ConsoleColor.Green, "Time taken this round: {0}", timeTaken);
             _game.GameStats.PrintDiceRolls();
         }
 
@@ -118,9 +114,9 @@ namespace MingStar.SimUniversity.ConsoleUI
         {
             // find out whether even X is at the top
             _maxXWithMaxY = _board.MinX;
-            foreach (Hexagon hex in _board.GetHexagons())
+            foreach (var hex in _board.GetHexagons())
             {
-                Position pos = hex.Position;
+                var pos = hex.Position;
                 if (pos.Y == _board.MaxY)
                 {
                     _maxXWithMaxY = Math.Max(pos.X, _maxXWithMaxY);
@@ -134,7 +130,7 @@ namespace MingStar.SimUniversity.ConsoleUI
             _printBuffer = new ConsolePixel[maxY,maxX];
         }
 
-        private Position HexToConsole(Position hexPos)
+        private Position HexPosToConsolePos(Position hexPos)
         {
             int x = (hexPos.X - _board.MinX)*4 + 3;
             int y = (_board.MaxY - hexPos.Y)*4 + 3 - hexPos.X*2;
@@ -186,7 +182,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer(Hexagon hex)
         {
-            var pos = HexToConsole(hex.Position);
+            var pos = HexPosToConsolePos(hex.Position);
             var defaultForeColor = (hex.ProductionNumber == 0)
                                                 ? ConsolePixel.DefaultForeColor
                                                 : ConsoleViewerColor.Degree[hex.Degree];
@@ -249,7 +245,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer(Edge edge)
         {
-            var pos = HexToConsole(edge.Position.HexPosition);
+            var pos = HexPosToConsolePos(edge.Position.HexPosition);
             char value = ' ';
             switch (edge.Position.Orientation)
             {
@@ -283,7 +279,7 @@ namespace MingStar.SimUniversity.ConsoleUI
 
         private void UpdateBuffer(Vertex vertex)
         {
-            Position pos = HexToConsole(vertex.Position.HexPosition);
+            Position pos = HexPosToConsolePos(vertex.Position.HexPosition);
             switch (vertex.Position.Orientation)
             {
                 case VertexOrientation.TopLeft:

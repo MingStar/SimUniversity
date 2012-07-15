@@ -55,7 +55,13 @@ namespace MingStar.SimUniversity.ConsoleUI
                     _log.Info("start ai learning");
                     Game.Game.RandomEventChance = new DiceCardRandomEvent();
                     var learning = new Learning(new ConsoleViewer(), new SettlerBoardConstructor());
-                    learning.Learn(40, 7);
+                    ColorConsole.Write(ConsoleColor.Yellow, "\nHow many evaluations do you want to perform (Enter = 30)?");
+                    var num = Console.ReadLine();
+                    if (num == "")
+                    {
+                        num = "30";
+                    }
+                    learning.Learn(int.Parse(num), 7);
                     break;
                 default:
                     _log.Info("start human vs. ai");

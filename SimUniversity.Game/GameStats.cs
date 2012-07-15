@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MingStar.SimUniversity.Contract;
 using MingStar.Utilities;
 using MingStar.Utilities.Generics;
+using Enumerable = System.Linq.Enumerable;
 
 namespace MingStar.SimUniversity.Game
 {
@@ -33,38 +35,20 @@ namespace MingStar.SimUniversity.Game
 
         public void PrintDiceRolls()
         {
-            for (int i = 2; i <= 12; ++i)
-            {
-                ColorConsole.WriteLine(ConsoleColor.White, "{0}{1}: {2}",
-                                       i < 10 ? " " : "",
-                                       i,
-                                       DiceRolls[i]
-                    );
-            }
+            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Total dice rolls: {0}", TotalDiceRoll);
+            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Distribution: [{0}]",
+                string.Join(", ", Enumerable.Range(2, 11).Select(i => string.Format("{0}: {1}", i, DiceRolls[i])))
+                );
             PrintVariance();
         }
 
         private void PrintVariance()
         {
-            /*
-            double error = 0.0;
-            for (int i = 2; i <= 12; ++i)
-            {
-                double expectedProbability = GameConstants.HexID2Chance[i] / (double)GameConstants.TotalDiceRollChances;
-                double actualProbability = DiceRolls[i] / (double)TotalDiceRoll;
-                double diff = expectedProbability - actualProbability;
-                error += (diff * diff) / expectedProbability;
-            }
-             */
-            ColorConsole.WriteLine(ConsoleColor.DarkYellow, "Total dice rolls: {0}", TotalDiceRoll);
             double pearsonError = GetPearsonError();
             bool isFair = pearsonError < PearsonThreshold;
             ColorConsole.WriteLine(ConsoleColor.DarkYellow,
                                    "Pearson error rate: {0} {1} 11.07, dice is {2}fair.",
                                    pearsonError, isFair ? "<" : ">", isFair ? "" : "not ");
-            /*
-            ConsoleHelper.WriteLine(ConsoleColor.DarkYellow, "Another error rate: {0}", error);
-             */
         }
 
         public double GetPearsonError()

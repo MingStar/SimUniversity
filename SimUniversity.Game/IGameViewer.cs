@@ -7,7 +7,7 @@ namespace MingStar.SimUniversity.Game
     {
         void PrintGame();
         void PrintStats();
-        void PrintFinalResult(TimeSpan timeTaken);
+        void PrintRoundResult(TimeSpan timeTaken);
         void PrintTitle();
         void PrintLegalMove(IPlayerMove move);
         void PrintIllegalMove(IPlayerMove move);

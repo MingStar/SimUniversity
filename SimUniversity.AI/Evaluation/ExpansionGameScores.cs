@@ -6,9 +6,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
     {
         public ExpansionGameScores()
         {
-            PlayerScoreBase = 150;
-            ProductionBase = 100;
-            StudentNumber = 3;
+            PlayerScoreMultiplier = 150;
+            ProductionMultiplier = 100;
+            StudentNumberMultiplier = 3;
             FutureCampus = 30;
             SpecialSiteMultiplier = 10;
             NormalSite = 200;

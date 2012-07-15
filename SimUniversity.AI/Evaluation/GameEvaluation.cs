@@ -24,17 +24,17 @@ namespace MingStar.SimUniversity.AI.Evaluation
             }
 
             score +=
-                currentScore * Scores.PlayerScoreBase +
+                currentScore * Scores.PlayerScoreMultiplier +
                 uni.InternetLinks.Count * Scores.InternetLinkMultiplier;
             // check for production chances
-            DegreeCount productionChances = uni.ProductionChances;
+            var productionChances = uni.ProductionChances;
             if (productionChances.Values.Count(v => v != 0)
                 == GameConstants.RealDegrees.Length)
             {
                 score += Scores.HasAllDegrees;
             }
             score += productionChances.Keys.Sum(degree =>
-                                                productionChances[degree]*Scores.ProductionBase*
+                                                productionChances[degree] * Scores.ProductionMultiplier *
                                                 Scores.DegreeModifier[degree]);
             // evaluation special sites and normalsites
             if (uni.HasNormalTradingSite)
@@ -79,10 +79,10 @@ namespace MingStar.SimUniversity.AI.Evaluation
                 expectedStudents = expectedStudents*game.ProbabilityWithNoCut +
                                    (expectedStudents/2)*(1 - game.ProbabilityWithNoCut);
             }
-            score += expectedStudents*Scores.StudentNumber;
+            score += expectedStudents * Scores.StudentNumberMultiplier;
 
-            // check for student types
-            foreach (DegreeType degree in uni.Students.Keys)
+            // check for student types in hand, encourage to trade students with rare production chance
+            foreach (var degree in uni.Students.Keys)
             {
                 int degreeCount = uni.Students[degree];
                 if (degreeCount > 0)
@@ -92,9 +92,11 @@ namespace MingStar.SimUniversity.AI.Evaluation
                     {
                         chance = 0.1;
                     }
-                    score += degreeCount/chance*(GameConstants.Chance.TotalDiceRoll/6);
+                    score += degreeCount / chance * (GameConstants.Chance.TotalDiceRoll/ 6);
                 }
             }
+            
+            // finally
             return score;
         }
     }

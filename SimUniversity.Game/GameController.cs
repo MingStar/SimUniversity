@@ -77,7 +77,7 @@ namespace MingStar.SimUniversity.Game
                 }
             }
             // now the game has a winner
-            Viewer.PrintFinalResult(DateTime.Now - _startTime);
+            Viewer.PrintRoundResult(DateTime.Now - _startTime);
             return Game.CurrentUniversityIndex;
         }
     }

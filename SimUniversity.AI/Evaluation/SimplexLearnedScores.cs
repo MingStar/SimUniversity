@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.Contract;
@@ -35,11 +36,11 @@ namespace MingStar.SimUniversity.AI.Evaluation
             SetupDegreeModifier[DegreeType.Grain] = result[i];
             ++i;
 
-            PlayerScoreBase = result[i];
+            PlayerScoreMultiplier = result[i];
             ++i;
-            ProductionBase = result[i];
+            ProductionMultiplier = result[i];
             ++i;
-            StudentNumber = result[i];
+            StudentNumberMultiplier = result[i];
             ++i;
             FutureCampus = result[i];
             ++i;
@@ -56,6 +57,11 @@ namespace MingStar.SimUniversity.AI.Evaluation
             LeadMostScore = result[i];
         }
 
+        public override string ToString()
+        {
+            return "To be implemented, ideally return name-value pairs";
+        }
+
         public SimplexConstant[] ToSimplexConstants()
         {
             double[] values =
@@ -70,9 +76,9 @@ namespace MingStar.SimUniversity.AI.Evaluation
                     SetupDegreeModifier[DegreeType.Wood],
                     SetupDegreeModifier[DegreeType.Sheep],
                     SetupDegreeModifier[DegreeType.Grain],
-                    PlayerScoreBase, // 9
-                    ProductionBase,
-                    StudentNumber,
+                    PlayerScoreMultiplier, // 9
+                    ProductionMultiplier,
+                    StudentNumberMultiplier,
                     FutureCampus,
                     SpecialSiteMultiplier,
                     NormalSite, // 14
@@ -89,8 +95,12 @@ namespace MingStar.SimUniversity.AI.Evaluation
 
         private double GetRandomPerturbation(double value)
         {
-            // [0.0, 1) --> [-value, value)
-            return (_randomGenerator.NextDouble() * 2 - 1.0) * value * 100;
+            // [0.0, 0.5) --> [-value, 0)
+            // [0.5, 0.1) --> [0, value * 5)
+            var baseValue = (_randomGenerator.NextDouble() * 2 - 1.0) * value;
+            if (baseValue < 0)
+                return baseValue;
+            return baseValue*5;
         }
 
         public void Save(string fileName)
@@ -100,7 +110,14 @@ namespace MingStar.SimUniversity.AI.Evaluation
 
         public static SimplexLearnedScores Load(string fileName)
         {
-            return XmlDataStore<SimplexLearnedScores>.Deserialize(fileName);
+            try
+            {
+                return XmlDataStore<SimplexLearnedScores>.Deserialize(fileName);
+            }
+            catch (FileNotFoundException)
+            {
+                return new SimplexLearnedScores();
+            }
         }
     }
 }
