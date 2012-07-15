@@ -23,6 +23,11 @@ namespace MingStar.SimUniversity.AI.Evaluation
 
         private readonly Random _randomGenerator = new Random();
 
+        public int NumberOfParametersToLearn
+        {
+            get { return 20; }
+        }
+
         public void FromResult(double[] result)
         {
             int i = 0;

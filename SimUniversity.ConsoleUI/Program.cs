@@ -54,14 +54,14 @@ namespace MingStar.SimUniversity.ConsoleUI
                 case ConsoleKey.L:
                     _log.Info("start ai learning");
                     Game.Game.RandomEventChance = new DiceCardRandomEvent();
-                    var learning = new Learning(new ConsoleViewer(), new SettlerBoardConstructor());
+                    var learning = new SimplexLearning(new ConsoleViewer(), new SettlerBoardConstructor());
                     ColorConsole.Write(ConsoleColor.Yellow, "\nHow many evaluations do you want to perform (Enter = 30)?");
                     var num = Console.ReadLine();
                     if (num == "")
                     {
                         num = "30";
                     }
-                    learning.Learn(int.Parse(num), 7);
+                    learning.Learn(int.Parse(num), 15);
                     break;
                 default:
                     _log.Info("start human vs. ai");
@@ -102,7 +102,7 @@ namespace MingStar.SimUniversity.ConsoleUI
                 var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
                 game.Round = i;
                 var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
-                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexLearnedScores.Load(Learning.FileName));
+                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexLearnedScores.Load(SimplexLearning.FileName));
                 var players = new IPlayer[numPlayers];
                 players.Fill(improvedEmmAiPlayerNormal);
                 players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;

@@ -6,35 +6,39 @@ using MingStar.SimUniversity.AI.Learning;
 using MingStar.SimUniversity.AI.Player;
 using MingStar.SimUniversity.Contract;
 using MingStar.SimUniversity.Game;
-using MingStar.SimUniversity.Game.Random;
 using MingStar.Utilities;
 using MingStar.Utilities.Linq;
 using log4net;
 
 namespace MingStar.SimUniversity.ConsoleUI
 {
-    public class Learning
+    public class SimplexLearning
     {
         public const string FileName = "LearningResult.xml";
-        private static readonly ILog _log = LogManager.GetLogger(typeof (Learning));
+        private static readonly ILog _log = LogManager.GetLogger(typeof (SimplexLearning));
         private readonly IPredefinedBoardConstructor _boardConstructor;
         private readonly IGameViewer _gameViewer;
-        private int _roundsToWin;
+        private int _roundsToWinInTournament;
         private SimplexLearnedScores _learnedScores;
         private DateTime _learningStartedDT;
+        private int _totalTournamentsToRun;
+        private int _touranmentCount;
 
-        public Learning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
+        public SimplexLearning(IGameViewer gameGameViewer, IPredefinedBoardConstructor boardConstructor)
         {
             _gameViewer = gameGameViewer;
             _boardConstructor = boardConstructor;
         }
 
-        public void Learn(int rounds, int roundsToWin)
+        public void Learn(int maxEvaluationCount, int roundsToWinInTournament)
         {
-            _roundsToWin = roundsToWin;
-            _log.Info("Start to do simplex learning");
+            _roundsToWinInTournament = roundsToWinInTournament;
+            _learnedScores = LoadSimplexConstants();
+            _totalTournamentsToRun = maxEvaluationCount + 1 + _learnedScores.NumberOfParametersToLearn;
+            _touranmentCount = 0;
+            _log.Info("Start to do Simplex Learning");
             _learningStartedDT = DateTime.Now;
-            RegressionResult result = NelderMeadSimplex.Regress(LoadSimplexConstants(), 0.01, rounds, RunTournament);
+            RegressionResult result = NelderMeadSimplex.Regress(_learnedScores.ToSimplexConstants(), 0.01, maxEvaluationCount, RunTournament);
             _learnedScores.FromResult(result.Constants);
             LogInfo("GOT LEARNING RESULT: {0}", _learnedScores);
             _learnedScores.Save(FileName);
@@ -47,17 +51,16 @@ namespace MingStar.SimUniversity.ConsoleUI
             ColorConsole.WriteLine(ConsoleColor.Magenta, format, args);
         }
 
-        private SimplexConstant[] LoadSimplexConstants()
+        private static SimplexLearnedScores LoadSimplexConstants()
         {
             try
             {
-                _learnedScores = SimplexLearnedScores.Load(FileName);
+                return SimplexLearnedScores.Load(FileName);
             }
             catch
             {
-                _learnedScores = new SimplexLearnedScores();
+                return new SimplexLearnedScores();
             }
-            return _learnedScores.ToSimplexConstants();
         }
 
         private double RunTournament(double[] values)
@@ -69,7 +72,7 @@ namespace MingStar.SimUniversity.ConsoleUI
             int round = 0;
             var tournamentResult = new TournamentResult();
             int challengerIndex = 0;
-            while (round < _roundsToWin)
+            while (round < _roundsToWinInTournament)
             {
                 ++round;
                 challengerIndex = (challengerIndex + 1) % numPlayers;
@@ -112,12 +115,24 @@ namespace MingStar.SimUniversity.ConsoleUI
             }
             var totalScore = tournamentResult.CalculateTotalScore();
             LogInfo(_learnedScores.ToString());
-            LogInfo("Got score: {0}. Challenger won {1} rounds. Time taken this round: {2}. Total time taken: {3}",
+            _touranmentCount++;
+            var remainingTimeSpan = GetEstimatedFinishedTime();
+            LogInfo("Got score: {0}. Challenger won {1} rounds. Time taken this tournament: {2}." + 
+                " Total time taken: {3}. Estimated finished time: {4} ({5} to go)",
                 totalScore, 
                 tournamentResult.ChallengerWinningCount,
                 DateTime.Now - startedTime,
-                DateTime.Now - _learningStartedDT);
+                DateTime.Now - _learningStartedDT,
+                DateTime.Now + remainingTimeSpan,
+                remainingTimeSpan);
             return -totalScore; // return negative for function minimisation
+        }
+
+        private TimeSpan GetEstimatedFinishedTime()
+        {
+            var averageMilliseconds = (DateTime.Now - _learningStartedDT).TotalMilliseconds/_touranmentCount;
+            var remainingTouraments = _totalTournamentsToRun - _touranmentCount;
+            return TimeSpan.FromMilliseconds(averageMilliseconds*remainingTouraments);
         }
     }
 }
