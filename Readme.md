@@ -47,16 +47,22 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 		<td>Student/Degree</td><td>Resource</td>
 	</tr>
 	<tr>
-		<td>Startup Company</td><td>Development Card^</td>
+		<td>Successful Startup</td><td>Development Card - Victory Point</td>
+	</tr>
+	<tr>
+		<td>Failed Startup</td><td>Development Card - Knight</td>
+	</tr>
+	<tr>
+		<td>Longest Internet Link</td><td>Longest Road</td>
+	</tr>
+	<tr>
+		<td>Most Failed Startup</td><td>Largest Army</td>
 	</tr>
 </table>
-^Startup Company is roughly equivalent to Development Card.
 
 
 ### TODO:
-* Need to be able to be select only a subset of parameters to learn => SimplexScores
-* Make the simplex learning method to take into account of winning ratio (e.g. a 5-0 win should be MUCH better than a 3-2 win), the winning difference in one round is less important.
-* Ask Resharper not to modify some files
+* Added round results after the AI tournament in learning
 * Write tests for the game play
 * Have another AI to search all possible moves within the turn (particular useful in late game)
 * Enable deep copy of game state (so AI won't be possible to break the actual game)

@@ -15,6 +15,7 @@ namespace MingStar.SimUniversity.ConsoleUI
     public class SimplexLearning
     {
         public const string FileName = "LearningResult.xml";
+
         private static readonly ILog _log = LogManager.GetLogger(typeof (SimplexLearning));
         private readonly IPredefinedBoardConstructor _boardConstructor;
         private readonly IGameViewer _gameViewer;
@@ -36,13 +37,13 @@ namespace MingStar.SimUniversity.ConsoleUI
             _learnedScores = LoadSimplexConstants();
             _totalTournamentsToRun = maxEvaluationCount + 1 + _learnedScores.NumberOfParametersToLearn;
             _touranmentCount = 0;
-            _log.Info("Start to do Simplex Learning");
+            _log.Info("Start simplex learning");
             _learningStartedDT = DateTime.Now;
             RegressionResult result = NelderMeadSimplex.Regress(_learnedScores.ToSimplexConstants(), 0.01, maxEvaluationCount, RunTournament);
             _learnedScores.FromResult(result.Constants);
             LogInfo("GOT LEARNING RESULT: {0}", _learnedScores);
             _learnedScores.Save(FileName);
-            _log.Info("Finish to do simplex learning");
+            _log.Info("Finish simplex learning");
         }
 
         private static void LogInfo(string format, params object[] args)

@@ -61,7 +61,13 @@ namespace MingStar.SimUniversity.ConsoleUI
                     {
                         num = "30";
                     }
-                    learning.Learn(int.Parse(num), 15);
+                    ColorConsole.Write(ConsoleColor.Yellow, "\nHow many rounds do you want to run in each tournament (Enter = 21)?");
+                    var num2 = Console.ReadLine();
+                    if (num2 == "")
+                    {
+                        num2 = "21";
+                    }
+                    learning.Learn(int.Parse(num), int.Parse(num2));
                     break;
                 default:
                     _log.Info("start human vs. ai");
