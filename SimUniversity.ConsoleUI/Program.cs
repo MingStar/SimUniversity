@@ -44,6 +44,7 @@ namespace MingStar.SimUniversity.ConsoleUI
         {
             ColorConsole.Write(ConsoleColor.Green, "Learning (L), AI touranament (A) or Play a game (Enter)? ");
             var key = Console.ReadKey().Key;
+            Console.WriteLine();
             switch (key)
             {
                 case ConsoleKey.A:
@@ -103,12 +104,14 @@ namespace MingStar.SimUniversity.ConsoleUI
         {
             DateTime startTime = DateTime.Now;
             var stats = new Dictionary<string, TournamentPlayerStats>();
+            var simplexLearnedScores = SimplexLearnedScores.Load(SimplexLearning.FileName);
+            ColorConsole.WriteLine(ConsoleColor.Cyan, "Loaded parameters: {0}", simplexLearnedScores);
             for (int i = 1; i <= round; ++i)
             {
                 var game = new Game.Game((new SettlerBoardConstructor()).ConstructBoard(), numPlayers);
                 game.Round = i;
                 var improvedEmmAiPlayerNormal = new ImprovedEMN(new GameScores());
-                var improvedEmmAiPlayerExpansion = new ImprovedEMN(SimplexLearnedScores.Load(SimplexLearning.FileName));
+                var improvedEmmAiPlayerExpansion = new ImprovedEMN(simplexLearnedScores);
                 var players = new IPlayer[numPlayers];
                 players.Fill(improvedEmmAiPlayerNormal);
                 players[RandomGenerator.Next(numPlayers)] = improvedEmmAiPlayerExpansion;

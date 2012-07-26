@@ -16,7 +16,7 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 * When a startup company failed, no card stealing from other players (yet)
 
 ### Console UI
-![Console UI](https://github.com/MingStar/SimUniversity/blob/master/images/ConsoleUI.png)
+![Console UI](https://github.com/MingStar/SimUniversity/raw/master/images/ConsoleUI.png)
 
 ### Game Concept Translation Table
 
