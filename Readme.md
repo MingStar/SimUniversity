@@ -15,12 +15,14 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
 * When a startup company failed, no card stealing from other players (yet)
 
+### Console UI
+![Console UI](https://github.com/MingStar/SimUniversity/blob/master/images/ConsoleUI.png)
 
-### Translation Table
+### Game Concept Translation Table
 
 <table>
 	<tr>
-		<th>Concepts in SimUniversity</th><th>Concepts in Catan</th>
+		<th>SimUniversity</th><th>Original Catan</th>
 	</tr>
 	<tr>
 		<td>Hexagon (Suburb)</td><td>Hex Terrian</td>
@@ -60,8 +62,22 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 	</tr>
 </table>
 
+### New Features Coming
+* .NET Game Engine
+	* support multiple games
+	* support multiple clients
+	* with a WCF/web service interface (to support game clients written in other languages)
+	* simple user management
+
+* Game Engine admin/viewer (Front end)
+
+* .NET Game Client (Console/Web UI)
+	* join a game
+	* play a multi-player game
+	* Display the game
 
 ### TODO:
+* Test whether the solution can be compiled using Mono
 * Added round results after the AI tournament in learning
 * Write tests for the game play
 * Have another AI to search all possible moves within the turn (particular useful in late game)
@@ -70,3 +86,4 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 
 ### Tidy up:
 * Remove game state hashing
+
