@@ -4,6 +4,27 @@
 
 Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Richard Buckland.
 
+### Console UI
+![Console UI](https://github.com/MingStar/SimUniversity/raw/master/images/ConsoleUI.png)
+
+
+### Running the code on Linux/OS X
+* Install [Mono](http://www.mono-project.com/)
+
+Build:
+
+```
+$ xbuild SimUniversity.ConsoleUI/SimUniversity.ConsoleUI.csproj
+```
+
+Start the Console UI
+
+```
+$ mono SimUniversity.ConsoleUI/bin/Release/MingStar.SimUniversity.ConsoleUI.exe
+```
+
+Then press Enter to play a game.
+
 ### Difference from the original Settlers of Catan game:
 * No player trading (yet)
 * No robber
@@ -15,8 +36,6 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 * Acquire students from the 2nd campus in the setup phase (same as Catan)
 * When a startup company failed, no card stealing from other players (yet)
 
-### Console UI
-![Console UI](https://github.com/MingStar/SimUniversity/raw/master/images/ConsoleUI.png)
 
 ### Game Concept Translation Table
 
@@ -62,6 +81,9 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 	</tr>
 </table>
 
+
+
+
 ### New Features Coming
 * .NET Game Engine
 	* support multiple games
@@ -77,7 +99,6 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 	* Display the game
 
 ### TODO:
-* Test whether the solution can be compiled using Mono
 * Added round results after the AI tournament in learning
 * Write tests for the game play
 * Have another AI to search all possible moves within the turn (particular useful in late game)
