@@ -2,7 +2,7 @@
 
 *Variance of the board game Settlers of Catan, with a University/Campus theme.*
 
-Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Richard Buckland.
+Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer [Richard Buckland](http://www.cse.unsw.edu.au/~richardb/).
 
 ### Console UI
 ![Console UI](https://github.com/MingStar/SimUniversity/raw/master/images/ConsoleUI.png)
