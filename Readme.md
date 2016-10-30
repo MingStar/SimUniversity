@@ -77,7 +77,7 @@ Idea from the project in COMP1711 UNSW CSE computing course in 2002, lecturer Ri
 	* Display the game
 
 ### TODO:
-* Test whether the solution can be compiled using Mono
+* Test whether the solution can be compiled using .Net Core
 * Added round results after the AI tournament in learning
 * Write tests for the game play
 * Have another AI to search all possible moves within the turn (particular useful in late game)
